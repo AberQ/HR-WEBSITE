@@ -13,6 +13,7 @@ class TechStackTag(models.Model):
 
     def __str__(self):
         return self.name
+    
 class Vacancy(models.Model):
     WORK_FORMAT_CHOICES = [
         ('remote', 'Удаленная'),
@@ -35,15 +36,17 @@ class Vacancy(models.Model):
     ]
 
     EXPERIENCE_CHOICES = [
-        ('<1', 'До 1 года'),
+        ('0', 'Без опыта'),
+        ('1', 'До 1 года'),
         ('1-3', 'от 1 до 3 лет'),
         ('3-6', 'от 3 до 6 лет'),
-        ('>6', 'более 6 лет'),
+        ('6', 'более 6 лет'),
     ]
 
     STATUS_CHOICES = [
         ('published', 'Опубликована'),
         ('archived', 'В архиве'),
+        ('checking','На проверке'),
     ]
 
     title = models.CharField(max_length=255)
@@ -65,7 +68,10 @@ class Vacancy(models.Model):
     publication_date = models.DateTimeField(auto_now_add=True)  # Изменено на DateTimeField
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='published')
 
-
+    def formatted_publication_date(self):
+        # Форматирование даты на русском языке
+        return self.publication_date.strftime('%d %B %Y, %H:%M')
+    
     def clean(self):
         super().clean()
         if self.number_of_openings <= 0:
