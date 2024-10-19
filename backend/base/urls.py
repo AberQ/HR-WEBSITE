@@ -1,10 +1,12 @@
 from django.urls import path
+from registration.views import register
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from api.views import *
 from django.contrib import admin
 from django.urls import path, include
+from registration.views import *
 schema_view = get_schema_view(
     openapi.Info(
         title="Job Vacancy API",
@@ -20,6 +22,9 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('api/vacancies/', VacancyListAPIView.as_view(), name='vacancy-list'),
+    path('', home, name='home'),  # Определение маршрута с именем 'home'
+    path('register/', register, name='register'),
+    path('login/', login_view, name='login'),
     path('admin/', admin.site.urls),
     path('api/vacancies/create/', VacancyCreateAPIView.as_view(), name='vacancy-create'),  # POST запросы
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
