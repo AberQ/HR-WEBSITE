@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'registration.CustomUser'
 
 # Application definition
 
@@ -41,7 +40,6 @@ INSTALLED_APPS = [
     'api',
     'rest_framework',
     'drf_yasg',
-    'registration',
 ]
 
 MIDDLEWARE = [
