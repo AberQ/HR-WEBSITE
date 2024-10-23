@@ -5,6 +5,7 @@ from drf_yasg import openapi
 from api.views import *
 from django.contrib import admin
 from django.urls import path, include
+from registration.views import *
 schema_view = get_schema_view(
     openapi.Info(
         title="Job Vacancy API",
@@ -19,9 +20,11 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('', home, name='home'),
     path('api/vacancies/', VacancyListAPIView.as_view(), name='vacancy-list'),
     path('admin/', admin.site.urls),
     path('api/vacancies/create/', VacancyCreateAPIView.as_view(), name='vacancy-create'),  # POST запросы
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('registration/', registration),
 ]
