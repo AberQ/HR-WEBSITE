@@ -10,7 +10,7 @@ def registration(request):
             user = form.save()
             # сохранение номера
             raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=user.CUSTOM_username, password=raw_password)
+            user = authenticate(username=user.email, password=raw_password)
             login(request, user)
             return redirect('/')
     else:
