@@ -23,9 +23,7 @@ class CustomAuthenticationForm(forms.Form):
         widget=forms.PasswordInput(attrs={"class": "form-control"}),
     )
 
-    class Meta:
-        model = User
-        fields = ['email', 'password']
+
 
     def clean(self):
         email = self.cleaned_data.get('email')
