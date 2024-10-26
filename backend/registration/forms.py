@@ -4,13 +4,14 @@ from django.contrib.auth.models import User
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import get_user_model
+from .models import *
 class SignUpForm(UserCreationForm):
     class Meta:
-        model = User
-        fields = ('username', 'email', 'password1', 'password2',)
+        model = CustomUser
+        fields = ('CUSTOM_username', 'email', 'password1', 'password2',)
 
 
-User = get_user_model()
+CustomUser = get_user_model()
 
 class CustomAuthenticationForm(forms.Form):
     email = forms.EmailField(
@@ -31,8 +32,8 @@ class CustomAuthenticationForm(forms.Form):
 
         # Проверяем, существует ли пользователь с данным email
         try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
+            user = CustomUser.objects.get(email=email)
+        except CustomUser.DoesNotExist:
             raise forms.ValidationError("Неверный email или пароль")
 
         # Проверка пароля
