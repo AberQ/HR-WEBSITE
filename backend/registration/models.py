@@ -26,8 +26,8 @@ class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
 
 
 
-    first_name = models.CharField(_("first name"), max_length=150, blank=True)
-    last_name = models.CharField(_("last name"), max_length=150, blank=True)
+    first_name = models.CharField(_("first name"), max_length=150)
+    last_name = models.CharField(_("last name"), max_length=150)
     patronymic = models.CharField(_("Отчество"), max_length=150, blank=True)
     email = models.EmailField(_("email address"), blank=False, unique=True)
     is_staff = models.BooleanField(
@@ -47,7 +47,7 @@ class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
     USERNAME_FIELD = 'email'  # или 'username' в зависимости от настроек
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['first_name, last_name']
 
     class Meta:
         verbose_name = _("custom_user")
