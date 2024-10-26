@@ -12,7 +12,7 @@ class SignUpForm(UserCreationForm):
 
 User = get_user_model()
 
-class CustomAuthenticationForm(AuthenticationForm):
+class CustomAuthenticationForm(forms.Form):
     email = forms.EmailField(
         label="Email",
         widget=forms.EmailInput(attrs={"class": "form-control"}),

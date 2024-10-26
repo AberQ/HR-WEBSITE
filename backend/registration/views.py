@@ -25,11 +25,11 @@ from .forms import CustomAuthenticationForm
 
 def custom_login_view(request):
     if request.method == 'POST':
-        form = CustomAuthenticationForm(request, data=request.POST)
+        form = CustomAuthenticationForm(data=request.POST)
         if form.is_valid():
-            user = form.get_user()
+            user = form.user_cache  # Получаем пользователя из кэша
             login(request, user)
-            return redirect('home')  # Перенаправляем на нужную страницу после успешной авторизации
+            return redirect('home')
     else:
         form = CustomAuthenticationForm()
 
