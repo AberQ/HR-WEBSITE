@@ -7,7 +7,7 @@
 </head>
 <body>
 {% if user.is_authenticated %}
-  <p>Вы вошли как {{ user.CUSTOM_username }}.</p>
+  <p>Вы вошли как {{ user.email }}.</p>
 {% else %}
    <p>Вы не авторизованы</p>
 {% endif %}

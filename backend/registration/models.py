@@ -12,7 +12,7 @@ from django.db.models.manager import EmptyManager
 from django.utils import timezone
 from django.utils.itercompat import is_iterable
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.validators import UnicodeUsernameValidator
+from django.contrib.auth.validators import *
 
 
 class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
@@ -39,7 +39,7 @@ class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
     )
     first_name = models.CharField(_("first name"), max_length=150, blank=True)
     last_name = models.CharField(_("last name"), max_length=150, blank=True)
-    email = models.EmailField(_("email address"), blank=True)
+    email = models.EmailField(_("email address"), blank=False, unique=True)
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,
