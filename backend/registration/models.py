@@ -13,7 +13,33 @@ from django.utils import timezone
 from django.utils.itercompat import is_iterable
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.validators import *
+from django.contrib.auth.models import BaseUserManager
 
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('Пользователь должен указать адрес электронной почты.')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Суперпользователь должен иметь is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Суперпользователь должен иметь is_superuser=True.')
+
+        # Установите значение username по умолчанию
+        
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
 class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
     """
@@ -45,9 +71,9 @@ class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
 
-    objects = UserManager()
+    objects = CustomUserManager()
     USERNAME_FIELD = 'email'  # или 'username' в зависимости от настроек
-    REQUIRED_FIELDS = ['first_name, last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     class Meta:
         verbose_name = _("custom_user")
