@@ -146,9 +146,20 @@ button:hover {
     text-align: center;  /* Выровнять текст по центру, если это нужно */
 }
 
+.unique-login-form .form-group {
+    display: flex;
+    flex-direction: column;  /* Каждую метку и поле располагаем в колонку */
+    align-items: flex-start;  /* Выровнять метки и поля по левому краю */
+    margin-bottom: 15px;  /* Отступ между полями */
+    width: 300px;  /* Ширина для всех полей и меток */
+}
+
+.unique-login-form label {
+    margin-bottom: 5px;  /* Отступ между меткой и полем */
+}
+
 .unique-login-form input {
-    width: 300px;  /* Установите фиксированную ширину для полей */
-    margin-bottom: 10px;  /* Отступ между полями */
+    width: 100%;  /* Поля будут занимать всю ширину родительского контейнера */
     padding: 10px;  /* Отступ внутри полей */
     border: 1px solid #ccc;  /* Граница для полей */
     border-radius: 4px;  /* Закругленные углы */

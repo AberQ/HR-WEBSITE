@@ -10,11 +10,11 @@
     {% else %}
         <form method="post" class="unique-login-form">
             {% csrf_token %}
-            <div>
+            <div class="form-group">
                 {{ form.email.label_tag }}  <!-- Явное отображение метки для email -->
                 {{ form.email }}  <!-- Просто выводим поле email -->
             </div>
-            <div>
+            <div class="form-group">
                 {{ form.password.label_tag }}  <!-- Явное отображение метки для пароля -->
                 {{ form.password }}  <!-- Просто выводим поле password -->
             </div>
