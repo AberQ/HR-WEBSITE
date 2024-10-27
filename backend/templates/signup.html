@@ -8,6 +8,18 @@
     <title>Регистрация - JobSite</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <style>
+        body {
+            font-family: Arial, sans-serif; /* Шрифт для всей страницы */
+            margin: 0; /* Убираем внешние отступы */
+            padding: 0; /* Убираем внутренние отступы */
+            background-color: #f8f9fa; /* Цвет фона страницы */
+        }
+
+        header {
+            background-color: #ffffff; /* Цвет фона для шапки */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень под шапкой */
+        }
+
         main {
             max-width: 800px; /* Максимальная ширина основного контента */
             margin: 20px auto; /* Центрирование контента с отступами сверху и снизу */
@@ -24,7 +36,6 @@
         form {
             display: flex;
             flex-direction: column; /* Вертикальное размещение элементов формы */
-            gap: 10px; /* Отступ между элементами формы */
         }
 
         button {
@@ -35,6 +46,7 @@
             border-radius: 5px; /* Скругленные углы */
             cursor: pointer; /* Курсор при наведении */
             transition: background-color 0.3s; /* Плавный переход цвета */
+            margin-top: 10px; /* Отступ сверху для кнопки */
         }
 
         button:hover {
@@ -63,7 +75,7 @@
                     <a href="/logout" class="button">Выйти</a>
                 {% else %}
                     <a href="/login" class="button">Войти</a>
-                    <a href="/signup" class="button">Зарегистрироваться</a>
+                    <a href="/registration" class="button">Зарегистрироваться</a>
                 {% endif %}
             </div>
         </nav>
