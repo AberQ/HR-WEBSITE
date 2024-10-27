@@ -88,6 +88,28 @@ main {
     margin: 5px 0;
 }
 
+/* Стили для формы регистрации */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Выровнять элементы формы по левому краю */
+    width: 100%; /* Задаем ширину формы 100% */
+}
+
+input, select {
+    width: 100%; /* Сделать поля ввода шириной 100% */
+    padding: 10px;
+    margin: 10px 0; /* Отступы между полями */
+    border: 1px solid #ced4da; /* Граница вокруг полей */
+    border-radius: 5px; /* Скругленные углы */
+    transition: border-color 0.3s; /* Плавный переход цвета границы */
+}
+
+input:focus, select:focus {
+    border-color: #007BFF; /* Цвет границы при фокусе */
+    outline: none; /* Убираем контур по умолчанию */
+}
+
 /* Подвал */
 footer {
     background-color: #343a40;

@@ -1,144 +1,96 @@
+{% extends "base.html" %}
+
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Регистрация - JobSite</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-        }
+{% block title %}
+<title>Регистрация - JobSite</title>
+{% endblock %}
 
-        header {
-            background-color: #ffffff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+    }
 
-        main {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+    main {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-        h2 {
-            text-align: center;
-        }
+    h2 {
+        text-align: center;
+    }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start; /* Выровнять элементы формы по левому краю */
-        }
+    form {
+        display: flex;
+        flex-direction: column;
+        /* Убираем выравнивание элементов */
+        width: 100%; /* Задаем ширину формы 100% */
+    }
 
-        input, select {
-            width: 100%; /* Сделать поля ввода шириной 100% */
-            padding: 10px;
-            margin: 10px 0; /* Отступы между полями */
-            border: 1px solid #ced4da; /* Граница вокруг полей */
-            border-radius: 5px; /* Скругленные углы */
-            transition: border-color 0.3s; /* Плавный переход цвета границы */
-        }
+    input, select {
+        width: 100%; /* Сделать поля ввода шириной 100% */
+        padding: 10px;
+        margin: 10px 0; /* Отступы между полями */
+        border: 1px solid #ced4da; /* Граница вокруг полей */
+        border-radius: 5px; /* Скругленные углы */
+        transition: border-color 0.3s; /* Плавный переход цвета границы */
+    }
 
-        input:focus, select:focus {
-            border-color: #007BFF; /* Цвет границы при фокусе */
-            outline: none; /* Убираем контур по умолчанию */
-        }
+    input:focus, select:focus {
+        border-color: #007BFF; /* Цвет границы при фокусе */
+        outline: none; /* Убираем контур по умолчанию */
+    }
 
-        button {
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            width: 100%; /* Кнопка шириной 100% */
-            margin-top: 10px;
-        }
+    button {
+        padding: 10px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        width: 100%; /* Кнопка шириной 100% */
+        margin-top: 10px;
+    }
 
-        button:hover {
-            background-color: #0056b3;
-        }
+    button:hover {
+        background-color: #0056b3;
+    }
 
-        .message {
-            text-align: center;
-            margin: 20px 0;
-        }
+    .message {
+        text-align: center;
+        margin: 20px 0;
+    }
+</style>
+{% endblock %}
 
-        footer {
-            text-align: center;
-            padding: 20px 0;
-            background-color: #ffffff; /* Фон подвала */
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Тень над подвалом */
-        }
+{% block content %}
+<main>
+    <h2>Регистрация</h2>
 
-        .nav-links {
-            list-style: none; /* Убираем маркеры списка */
-            padding: 0; /* Убираем внутренние отступы */
-            display: flex; /* Используем Flexbox для навигации */
-            justify-content: space-around; /* Распределяем ссылки по ширине */
-        }
+    {% if user.is_authenticated %}
+        <p class="message">Вы вошли как {{ user.email }}.</p>
+    {% else %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Отправить</button>
+        </form>
+    {% endif %}
+</main>
+{% endblock %}
 
-        .user-info {
-            display: flex;
-            justify-content: flex-end; /* Выровнять информацию о пользователе вправо */
-        }
-
-        .button {
-            margin-left: 10px; /* Отступ между кнопками */
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Шапка сайта -->
-    <header>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="/">Главная</a></li>
-                <li><a href="/vacancies">Вакансии</a></li>
-                <li><a href="/contact">Контакты</a></li>
-            </ul>
-            <div class="user-info">
-                {% if user.is_authenticated %}
-                    <p>Вы вошли по почте <strong>{{ user.email }}</strong></p>
-                    <a href="/logout" class="button">Выйти</a>
-                {% else %}
-                    <a href="/login" class="button">Войти</a>
-                    <a href="/registration" class="button">Зарегистрироваться</a>
-                {% endif %}
-            </div>
-        </nav>
-    </header>
-
-    <!-- Основной контент -->
-    <main>
-        <h2>Регистрация</h2>
-
-        {% if user.is_authenticated %}
-            <p class="message">Вы вошли как {{ user.email }}.</p>
-        {% else %}
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Отправить</button>
-            </form>
-        {% endif %}
-    </main>
-
-    <!-- Подвал сайта -->
-    <footer>
-        <p>&copy; 2024 JobSite. Все права защищены.</p>
-    </footer>
-
-</body>
-</html>
+{% block footer %}
+<footer>
+    <p>&copy; 2024 JobSite. Все права защищены.</p>
+</footer>
+{% endblock %}
