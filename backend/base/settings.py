@@ -126,3 +126,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'registration.CustomUser'  # Убедитесь, что путь правильный
+LOGIN_URL = '/login/'

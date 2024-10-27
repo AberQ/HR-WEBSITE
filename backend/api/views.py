@@ -7,6 +7,9 @@ from rest_framework import status
 from .models import Vacancy
 from .serializers import VacancySerializer
 from django.shortcuts import render
+from registration.views import *
+from django.contrib.auth.decorators import login_required
+
 class VacancyListAPIView(generics.ListAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializer
@@ -21,5 +24,6 @@ class VacancyCreateAPIView(generics.CreateAPIView):
             self.perform_create(serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+@login_required
 def home(request):
     return render(request, 'home.html')
