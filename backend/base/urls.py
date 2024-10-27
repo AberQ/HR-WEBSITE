@@ -29,5 +29,7 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('registration/', registration),
     path('login/', custom_login_view, name='login'),
+    path('logout/', logout_view, name='logout'),  
     path('vacancies/', vacancy_list, name='vacancy_list'),
+
 ]

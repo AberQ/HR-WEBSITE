@@ -3,6 +3,15 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from .forms import SignUpForm
 from .models import *
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from .forms import CustomAuthenticationForm
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+
+
+
 def registration(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -18,9 +27,7 @@ def registration(request):
     return render(request, 'signup.html', {'form': form})
 
 
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from .forms import CustomAuthenticationForm
+
 
 def custom_login_view(request):
     if request.method == 'POST':
@@ -33,3 +40,8 @@ def custom_login_view(request):
         form = CustomAuthenticationForm()
 
     return render(request, 'login.html', {'form': form})
+
+
+def logout_view(request):
+    logout(request)  # Выход из учетной записи
+    return redirect('home')  # Перенаправление на главную страницу или другую страницу
