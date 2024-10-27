@@ -33,7 +33,7 @@ def contact(request):
 
 from django.shortcuts import render
 from .models import Vacancy
-
+@login_required
 def vacancy_list(request):
     vacancies = Vacancy.objects.all()
     return render(request, 'vacancy_list.html', {'vacancies': vacancies})
