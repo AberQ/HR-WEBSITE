@@ -137,3 +137,33 @@ button {
 button:hover {
     background-color: #0056b3; /* Цвет фона при наведении */
 }
+
+/* styles.css */
+.unique-login-form {
+    display: flex;
+    flex-direction: column;  /* Располагаем элементы в колонку */
+    align-items: center;  /* Центрируем элементы по горизонтали */
+    text-align: center;  /* Выровнять текст по центру, если это нужно */
+}
+
+.unique-login-form input {
+    width: 300px;  /* Установите фиксированную ширину для полей */
+    margin-bottom: 10px;  /* Отступ между полями */
+    padding: 10px;  /* Отступ внутри полей */
+    border: 1px solid #ccc;  /* Граница для полей */
+    border-radius: 4px;  /* Закругленные углы */
+}
+
+.unique-login-form button {
+    width: 150px;  /* Установите ширину кнопки */
+    padding: 10px;  /* Отступ внутри кнопки */
+    background-color: #007BFF;  /* Цвет фона кнопки */
+    color: white;  /* Цвет текста кнопки */
+    border: none;  /* Убираем границы */
+    border-radius: 4px;  /* Закругленные углы */
+    cursor: pointer;  /* Курсор в виде руки */
+}
+
+.unique-login-form button:hover {
+    background-color: #0056b3;  /* Цвет кнопки при наведении */
+}

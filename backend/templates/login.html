@@ -8,9 +8,16 @@
     {% if user.is_authenticated %}
         <p class="message">Вы вошли как {{ user.email }}.</p>
     {% else %}
-        <form method="post">
+        <form method="post" class="unique-login-form">
             {% csrf_token %}
-            {{ form.as_p|safe }}  <!-- Используйте safe, если в форме есть HTML -->
+            <div>
+                {{ form.email.label_tag }}  <!-- Явное отображение метки для email -->
+                {{ form.email }}  <!-- Просто выводим поле email -->
+            </div>
+            <div>
+                {{ form.password.label_tag }}  <!-- Явное отображение метки для пароля -->
+                {{ form.password }}  <!-- Просто выводим поле password -->
+            </div>
             <button type="submit">Войти</button>
         </form>
     {% endif %}
