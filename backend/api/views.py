@@ -35,5 +35,5 @@ from django.shortcuts import render
 from .models import Vacancy
 @login_required
 def vacancy_list(request):
-    vacancies = Vacancy.objects.all()
+    vacancies = Vacancy.objects.filter(status='published')  # Фильтрация по статусу
     return render(request, 'vacancy_list.html', {'vacancies': vacancies})
