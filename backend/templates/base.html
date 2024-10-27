@@ -7,6 +7,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}JobSite{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        nav {
+            display: flex;
+            justify-content: space-between; /* Равномерное распределение элементов */
+            align-items: center; /* Выравнивание по центру по вертикали */
+            padding: 10px 20px; /* Внутренние отступы для навигации */
+            background-color: #f8f9fa; /* Цвет фона навигации */
+            border-bottom: 1px solid #e0e0e0; /* Нежная граница снизу */
+        }
+
+        .nav-links {
+            list-style: none; /* Убираем маркеры списка */
+            padding: 0; /* Убираем внутренние отступы */
+            margin: 0; /* Убираем внешние отступы */
+            display: flex; /* Горизонтальное размещение элементов списка */
+        }
+
+        .nav-links li {
+            margin-right: 20px; /* Отступы между пунктами меню */
+        }
+
+        .nav-links li a {
+            text-decoration: none; /* Убираем подчеркивание */
+            color: #007BFF; /* Цвет текста ссылок */
+            transition: color 0.3s; /* Плавный переход цвета при наведении */
+        }
+
+        .nav-links li a:hover {
+            color: #0056b3; /* Цвет текста при наведении */
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px; /* Отступы внутри кнопки */
+            margin-left: 10px; /* Отступ между кнопками */
+            background-color: #007BFF; /* Цвет фона кнопки */
+            color: white; /* Цвет текста */
+            text-decoration: none; /* Убираем подчеркивание */
+            border-radius: 5px; /* Скругленные углы */
+            transition: background-color 0.3s; /* Плавный переход цвета */
+        }
+
+        .button:hover {
+            background-color: #0056b3; /* Цвет при наведении */
+        }
+    </style>
 </head>
 <body>
 
@@ -21,9 +67,10 @@
             <div class="user-info">
                 {% if user.is_authenticated %}
                     <p>Вы вошли по почте <strong>{{ user.email }}</strong></p>
-                    <a href="/logout">Выйти</a>
+                    <a href="/logout" class="button">Выйти</a>
                 {% else %}
-                    <a href="/login">Войти</a>
+                    <a href="/login" class="button">Войти</a>
+                    <a href="/signup" class="button">Зарегистрироваться</a>
                 {% endif %}
             </div>
         </nav>
