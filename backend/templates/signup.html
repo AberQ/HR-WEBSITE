@@ -1,12 +1,93 @@
-<h2>Регистрация</h2>
+{% load static %}
 
-{% if user.is_authenticated %}
-  <p>Вы вошли как {{ user.email }}.</p>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - JobSite</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        main {
+            max-width: 800px; /* Максимальная ширина основного контента */
+            margin: 20px auto; /* Центрирование контента с отступами сверху и снизу */
+            padding: 20px; /* Внутренние отступы */
+            background-color: #ffffff; /* Цвет фона для основного контента */
+            border-radius: 8px; /* Скругленные углы */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень под контентом */
+        }
 
-{% else %}
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Отправить</button>
-  </form>
-{% endif %}
+        h2 {
+            text-align: center; /* Выравнивание заголовка по центру */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column; /* Вертикальное размещение элементов формы */
+            gap: 10px; /* Отступ между элементами формы */
+        }
+
+        button {
+            padding: 10px; /* Внутренние отступы для кнопки */
+            background-color: #007BFF; /* Цвет фона кнопки */
+            color: white; /* Цвет текста */
+            border: none; /* Убираем границу */
+            border-radius: 5px; /* Скругленные углы */
+            cursor: pointer; /* Курсор при наведении */
+            transition: background-color 0.3s; /* Плавный переход цвета */
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Цвет при наведении */
+        }
+
+        .message {
+            text-align: center; /* Выравнивание сообщений по центру */
+            margin: 20px 0; /* Отступы для сообщения */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <header>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/">Главная</a></li>
+                <li><a href="/vacancies">Вакансии</a></li>
+                <li><a href="/contact">Контакты</a></li>
+            </ul>
+            <div class="user-info">
+                {% if user.is_authenticated %}
+                    <p>Вы вошли по почте <strong>{{ user.email }}</strong></p>
+                    <a href="/logout" class="button">Выйти</a>
+                {% else %}
+                    <a href="/login" class="button">Войти</a>
+                    <a href="/signup" class="button">Зарегистрироваться</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <!-- Основной контент -->
+    <main>
+        <h2>Регистрация</h2>
+
+        {% if user.is_authenticated %}
+            <p class="message">Вы вошли как {{ user.email }}.</p>
+        {% else %}
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Отправить</button>
+            </form>
+        {% endif %}
+    </main>
+
+    <!-- Подвал сайта -->
+    <footer>
+        <p>&copy; 2024 JobSite. Все права защищены.</p>
+    </footer>
+
+</body>
+</html>
