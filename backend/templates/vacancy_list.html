@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список вакансий</title>
+    
+</head>
+<body>
+    <h1>Список вакансий</h1>
+
+    <div class="vacancy-list">
+        {% for vacancy in vacancies %}
+        <div class="vacancy-item">
+            <h2>{{ vacancy.title }}</h2>
+            <p><strong>Формат работы:</strong> {{ vacancy.get_work_format_display }}</p>
+            <p><strong>Зарплата:</strong> {{ vacancy.min_salary }} - {{ vacancy.max_salary }} {{ vacancy.currency }}</p>
+            <p><strong>Требуемый опыт:</strong> {{ vacancy.get_experience_display }}</p>
+            <p><strong>Город:</strong> {{ vacancy.city }}</p>
+            <p><strong>Адрес:</strong> {{ vacancy.address }}</p>
+            <p><strong>Количество мест:</strong> {{ vacancy.number_of_openings }}</p>
+            <p><strong>Описание:</strong> {{ vacancy.description }}</p>
+            <p><strong>Теги тех. стека:</strong> 
+                {% for tag in vacancy.tech_stack_tags.all %}
+                    {{ tag.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            <p><strong>Условия работы:</strong> {{ vacancy.get_work_condition_tags_display }}</p>
+            <p><strong>Дата публикации:</strong> {{ vacancy.formatted_publication_date }}</p>
+            <p><strong>Статус:</strong> {{ vacancy.get_status_display }}</p>
+        </div>
+        <hr>
+        {% empty %}
+        <p>Вакансий нет</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

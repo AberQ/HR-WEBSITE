@@ -24,6 +24,14 @@ class VacancyCreateAPIView(generics.CreateAPIView):
             self.perform_create(serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-@login_required
+
 def home(request):
     return render(request, 'home.html')
+
+
+from django.shortcuts import render
+from .models import Vacancy
+
+def vacancy_list(request):
+    vacancies = Vacancy.objects.all()
+    return render(request, 'vacancy_list.html', {'vacancies': vacancies})
