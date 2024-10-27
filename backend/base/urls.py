@@ -27,7 +27,7 @@ urlpatterns = [
     path('api/vacancies/create/', VacancyCreateAPIView.as_view(), name='vacancy-create'),  # POST запросы
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('registration/', registration),
+    path('registration/', registration, name='registration'),
     path('login/', custom_login_view, name='login'),
     path('logout/', logout_view, name='logout'),  
     path('vacancies/', vacancy_list, name='vacancy_list'),
