@@ -1,17 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-</head>
-<body>
-{% if user.is_authenticated %}
-  <p>Вы вошли как {{ user.email }}.</p>
-{% else %}
-   <p>Вы не авторизованы</p>
-{% endif %}
-    <h1>Welcome to the Home Page</h1>
-    <p>This is a simple home page in Django.</p>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+    <main>
+        {% if user.is_authenticated %}
+            <p>Вы вошли как <strong>{{ user.email }}</strong>.</p>
+        {% else %}
+            <p>Вы не авторизованы. <a href="/login">Войдите</a> для доступа ко всем функциям сайта.</p>
+        {% endif %}
+
+        <h1>Добро пожаловать на JobSite!</h1>
+        <p>Это простая главная страница на Django.</p>
+    </main>
+{% endblock %}

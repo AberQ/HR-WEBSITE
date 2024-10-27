@@ -1,26 +1,56 @@
-/* Основные стили для страницы */
+/* Основные стили */
 body {
     font-family: Arial, sans-serif;
     background-color: #f8f9fa;
     margin: 0;
     padding: 0;
-}
-
-/* Заголовок */
-h1 {
     color: #333;
-    text-align: center;
-    padding: 20px 0;
-    background-color: #007bff;
-    color: #fff;
-    margin: 0;
 }
 
-/* Список вакансий */
-.vacancy-list {
+/* Шапка */
+header {
+    background-color: #007bff;
+    padding: 10px 20px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo a {
+    color: #fff;
+    font-size: 1.5em;
+    text-decoration: none;
+}
+
+header .nav-links {
+    list-style: none;
+    display: flex;
+}
+
+header .nav-links li {
+    margin-left: 15px;
+}
+
+header .nav-links a {
+    color: #fff;
+    text-decoration: none;
+}
+
+header .nav-links a:hover {
+    text-decoration: underline;
+}
+
+/* Основной контент */
+main {
     max-width: 800px;
     margin: 20px auto;
     padding: 0 20px;
+    text-align: center;
+}
+
+.vacancy-list {
+    margin-top: 20px;
 }
 
 .vacancy-item {
@@ -29,19 +59,26 @@ h1 {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
     margin-bottom: 20px;
+    text-align: left;
 }
 
 .vacancy-item h2 {
     color: #007bff;
-    margin: 0 0 10px;
+    margin-bottom: 10px;
 }
 
 .vacancy-item p {
     margin: 5px 0;
 }
 
-.vacancy-item hr {
-    border: none;
-    border-top: 1px solid #e9ecef;
-    margin: 20px 0;
+/* Подвал */
+footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 15px 0;
+    text-align: center;
+}
+
+footer p {
+    margin: 5px 0;
 }

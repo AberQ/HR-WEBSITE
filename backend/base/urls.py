@@ -21,6 +21,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('', home, name='home'),
+    path('contact', contact, name='contact'),
     path('api/vacancies/', VacancyListAPIView.as_view(), name='vacancy-list'),
     path('admin/', admin.site.urls),
     path('api/vacancies/create/', VacancyCreateAPIView.as_view(), name='vacancy-create'),  # POST запросы

@@ -1,16 +1,9 @@
-{% load static %}
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Список вакансий</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
+{% block title %}Список вакансий{% endblock %}
+
+{% block content %}
     <h1>Список вакансий</h1>
-
     <div class="vacancy-list">
         {% for vacancy in vacancies %}
         <div class="vacancy-item">
@@ -36,5 +29,4 @@
         <p>Вакансий нет</p>
         {% endfor %}
     </div>
-</body>
-</html>
+{% endblock %}

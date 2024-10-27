@@ -1,0 +1,41 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}JobSite{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="/">JobSite</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Главная</a></li>
+                <li><a href="/vacancies">Вакансии</a></li>
+                <li><a href="/contact">Контакты</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Основной контент -->
+    <main>
+        {% block content %}
+        <!-- Контент страницы будет вставлен сюда -->
+        {% endblock %}
+    </main>
+
+    <!-- Подвал сайта -->
+    <footer>
+        <p>&copy; 2024 JobSite. Все права защищены.</p>
+        <p>Контакты: info@jobsite.com | +7 (123) 456-7890</p>
+    </footer>
+
+</body>
+</html>
