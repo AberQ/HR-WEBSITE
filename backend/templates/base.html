@@ -20,7 +20,7 @@
             </ul>
             <div class="user-info">
                 {% if user.is_authenticated %}
-                    <p>Вы вошли как <strong>{{ user.email }}</strong></p>
+                    <p>Вы вошли по почте <strong>{{ user.email }}</strong></p>
                     <a href="/logout">Выйти</a>
                 {% else %}
                     <a href="/login">Войти</a>

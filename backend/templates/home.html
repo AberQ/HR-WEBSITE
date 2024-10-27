@@ -4,11 +4,7 @@
 
 {% block content %}
     <main>
-        {% if user.is_authenticated %}
-            <p>Вы вошли как <strong>{{ user.email }}</strong>.</p>
-        {% else %}
-            <p>Вы не авторизованы. <a href="/login">Войдите</a> для доступа ко всем функциям сайта.</p>
-        {% endif %}
+        
 
         <h1>Добро пожаловать на JobSite!</h1>
         <p>Это простая главная страница на Django.</p>
