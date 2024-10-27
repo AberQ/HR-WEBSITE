@@ -121,3 +121,19 @@ footer {
 footer p {
     margin: 5px 0;
 }
+button {
+    padding: 15px; /* Увеличиваем отступы для увеличения размера кнопки */
+    background-color: #007bff; /* Цвет фона кнопки */
+    color: white; /* Цвет текста */
+    border: none; /* Убираем границу */
+    border-radius: 5px; /* Скругленные углы */
+    cursor: pointer; /* Указатель при наведении */
+    transition: background-color 0.3s; /* Плавный переход цвета фона */
+    width: 100%; /* Кнопка шириной 100% */
+    margin-top: 10px; /* Отступ сверху */
+    font-size: 16px; /* Увеличиваем размер шрифта для кнопки */
+}
+
+button:hover {
+    background-color: #0056b3; /* Цвет фона при наведении */
+}
