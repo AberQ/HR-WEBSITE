@@ -13,23 +13,20 @@ header {
     padding: 10px 20px;
     color: #fff;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-header .logo a {
-    color: #fff;
-    font-size: 1.5em;
-    text-decoration: none;
+    justify-content: space-between; /* Распределение элементов по ширине */
+    align-items: center; /* Выравнивание по центру по вертикали */
+    position: relative; /* Устанавливаем относительное позиционирование */
 }
 
 header .nav-links {
     list-style: none;
     display: flex;
+    margin: 0; /* Убираем отступы */
+    padding: 0; /* Убираем отступы */
 }
 
 header .nav-links li {
-    margin-left: 15px;
+    margin-left: 15px; /* Отступы между ссылками */
 }
 
 header .nav-links a {
@@ -39,6 +36,26 @@ header .nav-links a {
 
 header .nav-links a:hover {
     text-decoration: underline;
+}
+
+/* Информация о пользователе */
+.user-info {
+    position: absolute; /* Устанавливаем абсолютное позиционирование */
+    right: 20px; /* Отступ от правого края */
+    top: 10px; /* Отступ от верхнего края */
+    display: flex;
+    align-items: center; /* Выравнивание по центру по вертикали */
+    font-size: 0.9em; /* Уменьшаем размер шрифта */
+}
+
+.user-info p {
+    margin: 0; /* Убираем отступы у параграфа */
+    padding-right: 10px; /* Отступ справа для разделения */
+}
+
+.user-info a {
+    color: #fff;
+    margin-left: 10px; /* Отступ между информацией о пользователе и ссылкой "Выйти" */
 }
 
 /* Основной контент */
