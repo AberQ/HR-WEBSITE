@@ -1,0 +1,47 @@
+/* Основные стили для страницы */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* Заголовок */
+h1 {
+    color: #333;
+    text-align: center;
+    padding: 20px 0;
+    background-color: #007bff;
+    color: #fff;
+    margin: 0;
+}
+
+/* Список вакансий */
+.vacancy-list {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.vacancy-item {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.vacancy-item h2 {
+    color: #007bff;
+    margin: 0 0 10px;
+}
+
+.vacancy-item p {
+    margin: 5px 0;
+}
+
+.vacancy-item hr {
+    border: none;
+    border-top: 1px solid #e9ecef;
+    margin: 20px 0;
+}
