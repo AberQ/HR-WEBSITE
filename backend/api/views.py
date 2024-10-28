@@ -37,6 +37,6 @@ from .models import Vacancy
 def vacancy_list(request):
     vacancies = Vacancy.objects.filter(status='published')  # Фильтрация по статусу
     return render(request, 'vacancy_list.html', {'vacancies': vacancies})
-
+@login_required
 def redirect_to_api_vacancyes_create(request):
     return redirect('/api/vacancies/create')
