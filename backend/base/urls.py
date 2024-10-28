@@ -32,5 +32,6 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),  
     path('vacancies/', vacancy_list, name='vacancy_list'),
     path('redirect_to_create/', redirect_to_api_vacancyes_create, name='redirect_to_api_vacancyes_create'),
+    path('add/', add_vacancy, name='add_vacancy'),
 
 ]

@@ -45,3 +45,17 @@ def custom_login_view(request):
 def logout_view(request):
     logout(request)  # Выход из учетной записи
     return redirect('home')  # Перенаправление на главную страницу или другую страницу
+
+from django.shortcuts import render, redirect
+from .forms import VacancyForm
+
+def add_vacancy(request):
+    if request.method == 'POST':
+        form = VacancyForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('vacancy_list')  # Здесь укажите путь к вашему списку вакансий
+    else:
+        form = VacancyForm()
+    
+    return render(request, 'add_vacancy.html', {'form': form})

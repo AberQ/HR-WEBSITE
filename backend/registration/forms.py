@@ -42,3 +42,24 @@ class CustomAuthenticationForm(forms.Form):
 
         self.user_cache = user
         return self.cleaned_data
+    
+from django import forms
+from api.models import Vacancy
+
+class VacancyForm(forms.ModelForm):
+    class Meta:
+        model = Vacancy
+        fields = [
+            'title',
+            'work_format',
+            'min_salary',
+            'max_salary',
+            'currency',
+            'experience',
+            'city',
+            'address',
+            'number_of_openings',
+            'description',
+            'tech_stack_tags',
+            'work_condition_tags',
+        ]
