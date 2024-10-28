@@ -48,7 +48,9 @@ def logout_view(request):
 
 from django.shortcuts import render, redirect
 from .forms import VacancyForm
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def add_vacancy(request):
     if request.method == 'POST':
         form = VacancyForm(request.POST)

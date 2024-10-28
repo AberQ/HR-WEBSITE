@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Добавить вакансию</title>
-    {% load static %}  <!-- Загрузка тегов статических файлов -->
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Подключите ваш CSS файл -->
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Добавить вакансию{% endblock %}
+
+{% block content %}
     <h1>Добавить вакансию</h1>
     <form method="POST">
         {% csrf_token %}
@@ -15,5 +10,4 @@
         <button type="submit">Сохранить вакансию</button>
     </form>
     <a href="{% url 'vacancy_list' %}">Назад к списку вакансий</a>
-</body>
-</html>
+{% endblock %}
