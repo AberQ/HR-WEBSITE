@@ -10,48 +10,50 @@
     
 </head>
 <body>
-
+  <div class="wrapper">
     <!-- Шапка сайта -->
-    <header>
-        <nav>
-            <div class="menu">
-                <input type="checkbox" id="burger-checkbox" class="burger-checkbox">
-                <label for="burger-checkbox" class="burger"></label>
-                <ul class="menu-list">
-                    <li><a href="/" class="menu-item">Главная</a><li>
-                    <li><a href="/vacancies" class="menu-item">Вакансии</a><li>
-                    <li><a href="/contact" class="menu-item">Контакты</a><li>
-                    <li><a href="/add" class="menu-item">Создание вакансии</a><li>
-                </ul>
-            </div>
-            <ul class="nav-links">
-                <li><a href="/">Главная</a></li>
-                <li><a href="/vacancies">Вакансии</a></li>
-                <li><a href="/contact">Контакты</a></li>
-                <li><a href="/add">Создание вакансии</a></li>
-            </ul>
-            <div class="user-info">
-                {% if user.is_authenticated %}
-                    <p>Вы вошли по почте <strong>{{ user.email }}</strong></p>
-                    <a href="/logout" class="button">Выйти</a>
-                {% else %}
-                    <a href="/login" class="button">Войти</a>
-                    <a href="/registration" class="button">Зарегистрироваться</a>
-                {% endif %}
-            </div>
+    <header class="header">
+      <div class="header__inner">
+        <nav class="nav">
+          <div class="menu">
+              <input type="checkbox" id="burger-checkbox" class="burger-checkbox">
+              <label for="burger-checkbox" class="burger"></label>
+              <ul class="menu-list">
+                <li><a href="/" class="menu-item">Главная</a></li>
+                <li><a href="/vacancies" class="menu-item">Вакансии</a></li>
+                <li><a href="/contact" class="menu-item">Контакты</a></li>
+                <li><a href="/add" class="menu-item">Создание вакансии</a></li>
+              </ul>
+          </div>
+          <ul class="nav-links">
+              <li><a href="/">Главная</a></li>
+              <li><a href="/vacancies">Вакансии</a></li>
+              <li><a href="/contact">Контакты</a></li>
+              <li><a href="/add">Создание вакансии</a></li>
+          </ul>
         </nav>
+          <div class="header__btns">
+              {% if user.is_authenticated %}
+                  <span class="user-email">{{ user.email }}</span>
+                  <a href="/logout" class="button">Выйти</a>
+              {% else %}
+                  <a href="/login" class="button">Войти</a>
+                  <a href="/registration" class="button">Зарегистрироваться</a>
+              {% endif %}
+          </div>
+      </div>
     </header>
 
     <!-- Основной контент -->
-    <main>
+    <main class="main">
         {% block content %}
         {% endblock %}
     </main>
 
     <!-- Подвал сайта -->
-    <footer>
+    <footer class="footer">
         <p>&copy; 2024 JobSite. Все права защищены.</p>
     </footer>
-
+  </div>
 </body>
 </html>
