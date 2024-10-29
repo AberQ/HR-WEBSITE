@@ -80,7 +80,7 @@ class Vacancy(models.Model):
     )
     city = models.CharField(max_length=255, verbose_name='Город')
     address = models.CharField(max_length=255, verbose_name='Адрес')
-    number_of_openings = models.PositiveIntegerField(verbose_name='Количество мест')
+    number_of_openings = models.PositiveIntegerField(verbose_name='Количество вакантных мест')
     description = models.TextField(verbose_name='Описание')
     tech_stack_tags = models.ManyToManyField('TechStackTag', blank=True, verbose_name='Навыки')
     work_condition_tags = models.CharField(
