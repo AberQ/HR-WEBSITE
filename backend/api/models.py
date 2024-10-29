@@ -1,10 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django.db import models
 from django.core.exceptions import ValidationError
-from django.db import models
-from django.core.exceptions import ValidationError
-from django.utils import timezone
 
 class WorkConditionTag(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name='Условие работы')
@@ -25,7 +21,7 @@ class TechStackTag(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 class Vacancy(models.Model):
     WORK_FORMAT_CHOICES = [
         ('remote', 'Удаленная'),
@@ -86,7 +82,7 @@ class Vacancy(models.Model):
     address = models.CharField(max_length=255, verbose_name='Адрес')
     number_of_openings = models.PositiveIntegerField(verbose_name='Количество мест')
     description = models.TextField(verbose_name='Описание')
-    tech_stack_tags = models.ManyToManyField('TechStackTag', blank=True, verbose_name='Технологии')
+    tech_stack_tags = models.ManyToManyField('TechStackTag', blank=True, verbose_name='Навыки')
     work_condition_tags = models.CharField(
         max_length=20, 
         choices=WORK_CONDITION_CHOICES, 
@@ -112,7 +108,9 @@ class Vacancy(models.Model):
         super().clean()
         if self.number_of_openings <= 0:
             raise ValidationError('Количество мест должно быть больше 0.')
-        
+        if self.min_salary > self.max_salary:
+            raise ValidationError('Минимальная зарплата не может превышать максимальную.')
+
     def save(self, *args, **kwargs):
         if self.status == 'published':
             self.publication_date = timezone.now()

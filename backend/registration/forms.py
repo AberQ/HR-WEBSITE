@@ -45,7 +45,7 @@ class CustomAuthenticationForm(forms.Form):
     
 from django import forms
 from api.models import Vacancy
-
+from django_select2.forms import Select2MultipleWidget
 class VacancyForm(forms.ModelForm):
     class Meta:
         model = Vacancy
@@ -63,3 +63,6 @@ class VacancyForm(forms.ModelForm):
             'tech_stack_tags',
             'work_condition_tags',
         ]
+        widgets = {
+            'tech_stack_tags': Select2MultipleWidget,  # Подключаем Select2 для tech_stack_tags
+        }

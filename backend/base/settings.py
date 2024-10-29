@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'registration',
+    'django_select2',
 ]
 
 MIDDLEWARE = [

@@ -4,6 +4,13 @@
 
 {% block content %}
     <h1>Добавить вакансию</h1>
+
+    <!-- Подключаем jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Подключаем стили и скрипты Select2 -->
+    {{ form.media }}
+
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
