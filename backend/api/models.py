@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-
+from django.conf import settings
 class WorkConditionTag(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name='Условие работы')
 
@@ -95,6 +95,11 @@ class Vacancy(models.Model):
         choices=STATUS_CHOICES, 
         default='published',
         verbose_name='Статус'
+    )
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,  # Указываем модель пользователя
+        on_delete=models.CASCADE,
+        verbose_name='Создатель вакансии'
     )
 
     class Meta:

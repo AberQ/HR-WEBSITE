@@ -23,6 +23,8 @@ class VacancyListAPIView(generics.ListAPIView):
     serializer_class = VacancySerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
 
 
 
@@ -31,7 +33,7 @@ class VacancyCreateAPIView(generics.CreateAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializer
     permission_classes = [permissions.IsAuthenticated]
-    
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -56,7 +58,9 @@ def add_vacancy(request):
     if request.method == 'POST':
         form = VacancyForm(request.POST)
         if form.is_valid():
-            form.save()
+            vacancy = form.save(commit=False)  # Не сохраняем сразу
+            vacancy.created_by = request.user  # Устанавливаем текущего пользователя
+            vacancy.save()  # Теперь сохраняем с установленным пользователем
             return redirect('vacancy_list')  # Здесь укажите путь к вашему списку вакансий
     else:
         form = VacancyForm()
