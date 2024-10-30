@@ -15,10 +15,18 @@ from registration.forms import VacancyForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import Vacancy
+from rest_framework import permissions
+
+
 class VacancyListAPIView(generics.ListAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializer
+    permission_classes = [permissions.IsAuthenticated]
 
+
+
+
+    
 class VacancyCreateAPIView(generics.CreateAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializer
