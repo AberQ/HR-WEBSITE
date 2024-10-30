@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Vacancy, TechStackTag
+from api.models import Vacancy, TechStackTag
 from django.core.exceptions import ValidationError
 
 @admin.register(Vacancy)
