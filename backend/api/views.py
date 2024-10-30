@@ -26,11 +26,12 @@ class VacancyListAPIView(generics.ListAPIView):
 
 
 
-    
+
 class VacancyCreateAPIView(generics.CreateAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializer
-
+    permission_classes = [permissions.IsAuthenticated]
+    
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
