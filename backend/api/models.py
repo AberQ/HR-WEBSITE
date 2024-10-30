@@ -13,11 +13,11 @@ class WorkConditionTag(models.Model):
         return self.name
 
 class TechStackTag(models.Model):
-    name = models.CharField(max_length=100, unique=True, verbose_name='Технология')
+    name = models.CharField(max_length=100, unique=True, verbose_name='Навык')
 
     class Meta:
-        verbose_name = 'Технология'
-        verbose_name_plural = 'Технологии'
+        verbose_name = 'Навык'
+        verbose_name_plural = 'Навыки'
 
     def __str__(self):
         return self.name
