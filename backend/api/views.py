@@ -13,11 +13,11 @@ from rest_framework.permissions import IsAuthenticated
 class VacancyListAPIView(generics.ListAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializer
-    permission_classes = [IsAuthenticated]
+
 class VacancyCreateAPIView(generics.CreateAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializer
-    permission_classes = [IsAuthenticated]
+
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
