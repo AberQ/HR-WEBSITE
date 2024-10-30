@@ -8,11 +8,10 @@ from django.urls import path, include
 from registration.views import *
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('contact', contact, name='contact'),
+    path('test/', home, name='home'),
+    path('test/contact', contact, name='contact'),
+    path('test/vacancies/', vacancy_list, name='vacancy_list'),
+    path('test/add/', add_vacancy, name='add_vacancy'),
     path('api/vacancies/', VacancyListAPIView.as_view(), name='vacancy-list'),
     path('api/vacancies/create/', VacancyCreateAPIView.as_view(), name='vacancy-create'),  # POST запросы
-    path('vacancies/', vacancy_list, name='vacancy_list'),
-    path('add/', add_vacancy, name='add_vacancy'),
-
 ]

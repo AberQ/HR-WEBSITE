@@ -10,6 +10,11 @@ from django.shortcuts import render
 from registration.views import *
 from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import render, redirect
+from registration.forms import VacancyForm
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import Vacancy
 class VacancyListAPIView(generics.ListAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializer
@@ -31,9 +36,20 @@ def home(request):
 def contact(request):
     return render(request, 'contact.html')
 
-from django.shortcuts import render
-from .models import Vacancy
+
 @login_required
 def vacancy_list(request):
     vacancies = Vacancy.objects.filter(status='published')  # Фильтрация по статусу
     return render(request, 'vacancy_list.html', {'vacancies': vacancies})
+
+@login_required
+def add_vacancy(request):
+    if request.method == 'POST':
+        form = VacancyForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('vacancy_list')  # Здесь укажите путь к вашему списку вакансий
+    else:
+        form = VacancyForm()
+    
+    return render(request, 'add_vacancy.html', {'form': form})
