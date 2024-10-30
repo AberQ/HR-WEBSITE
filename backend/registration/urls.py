@@ -12,4 +12,5 @@ urlpatterns = [
     path('registration/', registration, name='registration'),
     path('login/', custom_login_view, name='login'),
     path('logout/', logout_view, name='logout'),  
+    path('api/registration/', register_user, name='register_user'),
 ]

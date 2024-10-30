@@ -53,3 +53,5 @@ def add_vacancy(request):
         form = VacancyForm()
     
     return render(request, 'add_vacancy.html', {'form': form})
+
+
