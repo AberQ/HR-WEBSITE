@@ -1,0 +1,15 @@
+from django.urls import path
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from api.views import *
+from django.contrib import admin
+from django.urls import path, include
+from registration.views import *
+
+
+urlpatterns = [
+    path('registration/', registration, name='registration'),
+    path('login/', custom_login_view, name='login'),
+    path('logout/', logout_view, name='logout'),  
+]

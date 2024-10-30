@@ -20,19 +20,11 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('', home, name='home'),
-    path('contact', contact, name='contact'),
-    path('api/vacancies/', VacancyListAPIView.as_view(), name='vacancy-list'),
     path('admin/', admin.site.urls),
-    path('api/vacancies/create/', VacancyCreateAPIView.as_view(), name='vacancy-create'),  # POST запросы
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path("select2/", include("django_select2.urls")),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('registration/', registration, name='registration'),
-    path('login/', custom_login_view, name='login'),
-    path('logout/', logout_view, name='logout'),  
-    path('vacancies/', vacancy_list, name='vacancy_list'),
-    path('redirect_to_create/', redirect_to_api_vacancyes_create, name='redirect_to_api_vacancyes_create'),
-    path('add/', add_vacancy, name='add_vacancy'),
+    path('', include('api.urls')),  # Подключаем urls из приложения api
+    path('', include('registration.urls')),  # Подключаем urls из приложения api
 
 ]
