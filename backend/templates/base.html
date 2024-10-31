@@ -34,7 +34,9 @@
         </nav>
           <div class="header__btns">
               {% if user.is_authenticated %}
-                  <span class="user-email">{{ user.email }}</span>
+                  <span class="user-email">
+                      {% if user.is_employer %}Соискатель{% else %}Работодатель{% endif %} - {{ user.email }}
+                  </span>
                   <a href="/logout" class="button">Выйти</a>
               {% else %}
                   <a href="/login" class="button">Войти</a>
