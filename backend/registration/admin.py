@@ -31,3 +31,22 @@ class CustomUserAdmin(BaseUserAdmin):
 
 # Зарегистрируйте свой пользовательский класс в админ-панели
 admin.site.register(CustomUser, CustomUserAdmin)
+
+
+from django.contrib import admin
+from .models import Employer  # Замените . на путь к вашей модели, если нужно
+
+@admin.register(Employer)
+class EmployerAdmin(admin.ModelAdmin):
+    list_display = ('email', 'first_name', 'last_name', 'patronymic', 'is_active', 'date_joined')
+    search_fields = ('email', 'first_name', 'last_name')
+    list_filter = ('is_active', 'date_joined')
+    ordering = ('date_joined',)
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset
+
+# Если вы используете CustomUser, можно также зарегистрировать его:
+# from .models import CustomUser
+# admin.site.register(CustomUser)

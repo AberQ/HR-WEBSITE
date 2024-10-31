@@ -7,8 +7,8 @@ from django.contrib.auth import get_user_model
 from .models import *
 class SignUpForm(UserCreationForm):
     class Meta:
-        model = CustomUser
-        fields = ('email', 'password1', 'password2',)
+        model = Employer
+        fields = ('email', 'first_name', 'last_name', 'patronymic', 'password1', 'password2')
 
 
 CustomUser = get_user_model()

@@ -76,24 +76,11 @@ class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     class Meta:
-        verbose_name = _("Соискатель")
-        verbose_name_plural = _("Соискатели")
+        verbose_name = _("Авторизационник")
+        verbose_name_plural = _("Авторизационники")
         abstract = True
 
-    def clean(self):
-        super().clean()
-        self.email = self.__class__.objects.normalize_email(self.email)
-
-    def get_full_name(self):
-        """
-        Return the first_name plus the last_name, with a space in between.
-        """
-        full_name = "%s %s" % (self.first_name, self.last_name)
-        return full_name.strip()
-
-    def get_short_name(self):
-        """Return the short name for the user."""
-        return self.first_name
+    
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
@@ -112,3 +99,32 @@ class CustomUser(CustomAbstractUser):
 
     class Meta(CustomAbstractUser.Meta):
         swappable = "AUTH_USER_MODEL"
+
+
+class Employer(CustomUser):
+    """
+    Модель для работодателей, которая наследует от модели пользователя.
+    """
+
+    first_name = models.CharField(_("first name"), max_length=150)
+    last_name = models.CharField(_("last name"), max_length=150)
+    patronymic = models.CharField(_("Отчество"), max_length=150, blank=True)
+    REQUIRED_FIELDS = ['first_name', "last_mame"]
+    class Meta:
+        verbose_name = _("Соискатель")
+        verbose_name_plural = _("Соискатели")
+
+    def clean(self):
+        super().clean()
+        self.email = self.__class__.objects.normalize_email(self.email)
+
+    def get_full_name(self):
+        """
+        Return the first_name plus the last_name, with a space in between.
+        """
+        full_name = "%s %s" % (self.first_name, self.last_name)
+        return full_name.strip()
+
+    def get_short_name(self):
+        """Return the short name for the user."""
+        return self.first_name
