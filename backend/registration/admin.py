@@ -4,15 +4,14 @@ from registration.models import CustomUser
 
 class CustomUserAdmin(BaseUserAdmin):
     # Определите поля, которые будут отображаться в списке пользователей
-    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'is_active', 'date_joined')
+    list_display = ('email', 'is_staff', 'is_active', 'date_joined')
     list_filter = ('is_staff', 'is_active')
     ordering = ('email',)
-    search_fields = ('email', 'first_name', 'last_name')
+    search_fields = ('email',)
 
     # Определите поля для формы редактирования
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Личные данные', {'fields': ('first_name', 'last_name', 'patronymic')}),
         ('Права доступа', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Даты', {'fields': ('last_login', 'date_joined')}),
     )
@@ -21,7 +20,7 @@ class CustomUserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2', 'first_name', 'last_name', 'is_staff', 'is_active')}
+            'fields': ('email', 'password1', 'password2', 'is_staff', 'is_active')}
         ),
     )
 
