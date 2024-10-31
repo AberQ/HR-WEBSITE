@@ -16,7 +16,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import Vacancy
 from rest_framework import permissions
-
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from .models import Vacancy
 
 class VacancyListAPIView(generics.ListAPIView):
     queryset = Vacancy.objects.all()
@@ -57,9 +59,7 @@ def vacancy_list(request):
     vacancies = Vacancy.objects.filter(status='published')  # Фильтрация по статусу
     return render(request, 'vacancy_list.html', {'vacancies': vacancies})
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from .models import Vacancy
+
 
 
 
