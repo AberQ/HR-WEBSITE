@@ -5,10 +5,15 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import get_user_model
 from .models import *
-class SignUpForm(UserCreationForm):
+class ApplicantSignUpForm(UserCreationForm):
     class Meta:
         model = Applicant
         fields = ('email', 'first_name', 'last_name', 'patronymic', 'password1', 'password2')
+
+class EmployerSignUpForm(UserCreationForm):
+    class Meta:
+        model = Employer
+        fields = ('email', 'company_name', 'company_info', 'password1', 'password2')
 
 
 CustomUser = get_user_model()

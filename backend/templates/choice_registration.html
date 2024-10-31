@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+    <section class="main">
+        <h2>Выберите тип аккаунта</h2>
+        <div class="header__btns">
+            <a href="{% url 'applicant_registration' %}" class="header__btns a">Зарегистрироваться как соискатель</a>
+            <a href="{% url 'employer_registration' %}" class="header__btns a">Зарегистрироваться как работодатель</a>
+        </div>
+    </section>
+{% endblock %}

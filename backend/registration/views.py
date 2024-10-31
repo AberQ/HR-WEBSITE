@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
-from .forms import SignUpForm
+from .forms import *
 from .models import *
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
@@ -12,9 +12,9 @@ from django.shortcuts import redirect
 
 
 
-def registration(request):
+def applicant_registration(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
+        form = ApplicantSignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
             # сохранение номера
@@ -23,9 +23,23 @@ def registration(request):
             login(request, user)
             return redirect('/test/')
     else:
-        form = SignUpForm()
+        form = ApplicantSignUpForm()
     return render(request, 'signup.html', {'form': form})
 
+
+def employer_registration(request):
+    if request.method == 'POST':
+        form = EmployerSignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # сохранение номера
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=user.email, password=raw_password)
+            login(request, user)
+            return redirect('/test/')
+    else:
+        form = EmployerSignUpForm()
+    return render(request, 'signup.html', {'form': form})
 
 
 def custom_login_view(request):
@@ -45,7 +59,8 @@ def logout_view(request):
     logout(request)  # Выход из учетной записи
     return redirect('home')  # Перенаправление на главную страницу или другую страницу
 
-
+def choice_registration(request):
+    return render(request, 'choice_registration.html')
 # views.py
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -62,3 +77,4 @@ def register_user(request):
         user = serializer.save()
         return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

@@ -9,10 +9,13 @@ from registration.views import *
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
-    path('registration/', registration, name='registration'),
+    path('applicant_registration/', applicant_registration, name='applicant_registration'),
+    path('employer_registration/', employer_registration, name='employer_registration'),
     path('login/', custom_login_view, name='login'),
     path('logout/', logout_view, name='logout'),  
+    path('choice_registration', choice_registration, name='choice_registration'),
     path('api/registration/', register_user, name='register_user'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    
 ]
