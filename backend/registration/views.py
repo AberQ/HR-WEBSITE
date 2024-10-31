@@ -8,7 +8,12 @@ from django.contrib.auth import login
 from .forms import CustomAuthenticationForm
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework import status
 
+from .serializers import *
+from django.contrib.auth import get_user_model
 
 
 
@@ -62,20 +67,25 @@ def logout_view(request):
 def choice_registration(request):
     return render(request, 'choice_registration.html')
 
-from django.contrib.auth import get_user_model
 
 
 User = get_user_model()
 
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Applicant
-from .serializers import ApplicantSerializer
+
 
 class RegisterApplicantView(generics.CreateAPIView):
     queryset = Applicant.objects.all()
     serializer_class = ApplicantSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+class RegisterEmployerView(generics.CreateAPIView):
+    queryset = Employer.objects.all()
+    serializer_class = EmployerSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

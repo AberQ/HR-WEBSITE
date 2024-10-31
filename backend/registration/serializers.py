@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 from rest_framework import serializers
-from .models import Applicant
+from .models import *
 
 class ApplicantSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,6 +18,21 @@ class ApplicantSerializer(serializers.ModelSerializer):
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
             patronymic=validated_data.get('patronymic', '')
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
+    
+class EmployerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Employer
+        fields = ['email', 'password', 'company_name', 'company_info']
+
+    def create(self, validated_data):
+        user = Employer(
+            email=validated_data['email'],
+            company_name=validated_data['company_name'],
+            company_info=validated_data.get('company_info', '')
         )
         user.set_password(validated_data['password'])
         user.save()
