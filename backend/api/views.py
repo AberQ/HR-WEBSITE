@@ -62,22 +62,24 @@ from django.shortcuts import render, redirect
 from .models import Vacancy
 
 
+
+
 @login_required
 def add_vacancy(request):
     # Проверка, является ли пользователь Employer
-    if not hasattr(request.user, 'employer'):
+    try:
+        employer = request.user.employer  # Получаем экземпляр Employer, связанный с текущим пользователем
+    except Employer.DoesNotExist:
         return render(request, 'access_denied.html')  # Показать страницу доступа запрещен
 
     if request.method == 'POST':
         form = VacancyForm(request.POST)
         if form.is_valid():
             vacancy = form.save(commit=False)  # Не сохраняем сразу
-            vacancy.created_by = request.user  # Устанавливаем текущего пользователя
-            vacancy.save()  # Теперь сохраняем с установленным пользователем
-            return redirect('vacancy_list')  # Здесь укажите путь к вашему списку вакансий
+            vacancy.created_by = employer  # Устанавливаем текущего работодателя как создателя вакансии
+            vacancy.save()  # Сохраняем вакансию
+            return redirect('vacancy_list')  # Переход к списку вакансий после успешного сохранения
     else:
-        form = VacancyForm()
+        form = VacancyForm()  # Создаем пустую форму для отображения
 
-    return render(request, 'add_vacancy.html', {'form': form})
-
-
+    return render(request, 'add_vacancy.html', {'form': form})  # Отображаем форму для добавления вакансии

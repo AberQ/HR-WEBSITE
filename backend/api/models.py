@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from registration.models import *
 class WorkConditionTag(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name='Условие работы')
 
@@ -37,6 +38,7 @@ class Vacancy(models.Model):
         ('one_time', 'Разовое задание'),
         ('project', 'Проектная работа'),
     ]
+    
     CURRENCY_CHOICES = [
         ('RUB', 'RUB'),
         ('USD', 'USD'),
@@ -97,7 +99,7 @@ class Vacancy(models.Model):
         verbose_name='Статус'
     )
     created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL,  # Указываем модель пользователя
+        Employer,  # Указываем модель работодателя
         on_delete=models.CASCADE,
         verbose_name='Создатель вакансии'
     )
@@ -122,4 +124,4 @@ class Vacancy(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.title
+        return f"{self.title} - {self.created_by.company_name}"  # Отображаем название вакансии и название компании

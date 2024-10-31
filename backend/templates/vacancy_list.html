@@ -22,8 +22,7 @@
             </p>
             <p><strong>Условия работы:</strong> {{ vacancy.get_work_condition_tags_display }}</p>
             <p><strong>Дата публикации:</strong> {{ vacancy.formatted_publication_date }}</p>
-            <p><strong>Создатель:</strong> {{ vacancy.created_by }}</p>
-            
+            <p><strong>Создатель:</strong> {{ vacancy.created_by.company_name }}</p>  <!-- Изменено на company_name -->
         </div>
         <hr>
         {% empty %}
