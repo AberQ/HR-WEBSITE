@@ -61,20 +61,24 @@ def logout_view(request):
 
 def choice_registration(request):
     return render(request, 'choice_registration.html')
-# views.py
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
+
 from django.contrib.auth import get_user_model
-from .serializers import UserRegistrationSerializer  # Создадим сериализатор ниже
+
 
 User = get_user_model()
 
-@api_view(['POST'])
-def register_user(request):
-    serializer = UserRegistrationSerializer(data=request.data)
-    if serializer.is_valid():
-        user = serializer.save()
-        return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+from rest_framework import generics
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Applicant
+from .serializers import ApplicantSerializer
 
+class RegisterApplicantView(generics.CreateAPIView):
+    queryset = Applicant.objects.all()
+    serializer_class = ApplicantSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
