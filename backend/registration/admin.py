@@ -43,16 +43,17 @@ class ApplicantAdmin(admin.ModelAdmin):
     list_filter = ('is_active', 'date_joined')
     ordering = ('date_joined',)
 
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        return queryset
+    def save_model(self, request, obj, form, change):
+        if not change:  # Если это новый объект
+            obj.set_password(obj.password)  # Шифруем пароль перед сохранением
+        super().save_model(request, obj, form, change)
 
-
-
-
+@admin.register(Employer)
 class EmployerAdmin(admin.ModelAdmin):
-    list_display = ('email', 'company_name', 'company_info')  # Поля, которые будут отображаться в списке
-    search_fields = ('email', 'company_name')  # Поисковые поля
+    list_display = ('email', 'company_name', 'company_info')
+    search_fields = ('email', 'company_name')
 
-admin.site.register(Employer, EmployerAdmin)  # Регистрация модели с кастомным админом
-
+    def save_model(self, request, obj, form, change):
+        if not change:  # Если это новый объект
+            obj.set_password(obj.password)  # Шифруем пароль перед сохранением
+        super().save_model(request, obj, form, change)

@@ -50,11 +50,24 @@ def contact(request):
 
 @login_required
 def vacancy_list(request):
+    # Проверка, является ли пользователь Applicant
+    if not hasattr(request.user, 'applicant'):
+        return render(request, 'access_denied.html')  # Показать страницу доступа запрещен
+    
     vacancies = Vacancy.objects.filter(status='published')  # Фильтрация по статусу
     return render(request, 'vacancy_list.html', {'vacancies': vacancies})
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from .models import Vacancy
+
+
 @login_required
 def add_vacancy(request):
+    # Проверка, является ли пользователь Employer
+    if not hasattr(request.user, 'employer'):
+        return render(request, 'access_denied.html')  # Показать страницу доступа запрещен
+
     if request.method == 'POST':
         form = VacancyForm(request.POST)
         if form.is_valid():
@@ -64,7 +77,7 @@ def add_vacancy(request):
             return redirect('vacancy_list')  # Здесь укажите путь к вашему списку вакансий
     else:
         form = VacancyForm()
-    
+
     return render(request, 'add_vacancy.html', {'form': form})
 
 

@@ -139,7 +139,7 @@ class Employer(CustomUser):
     
     company_name = models.CharField(_("Имя компании"), max_length=255)
     company_info = models.TextField(_("Информация о компании"), blank=True)
-
+    REQUIRED_FIELDS = ['company_name',]
     class Meta:
         verbose_name = _("Работодатель")
         verbose_name_plural = _("Работодатели")
