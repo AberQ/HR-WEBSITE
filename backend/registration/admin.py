@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from registration.models import CustomUser
+from registration.models import *
 
 class CustomUserAdmin(BaseUserAdmin):
     # Определите поля, которые будут отображаться в списке пользователей
@@ -36,8 +36,8 @@ admin.site.register(CustomUser, CustomUserAdmin)
 from django.contrib import admin
 from .models import Employer  # Замените . на путь к вашей модели, если нужно
 
-@admin.register(Employer)
-class EmployerAdmin(admin.ModelAdmin):
+@admin.register(Applicant)
+class ApplicantAdmin(admin.ModelAdmin):
     list_display = ('email', 'first_name', 'last_name', 'patronymic', 'is_active', 'date_joined')
     search_fields = ('email', 'first_name', 'last_name')
     list_filter = ('is_active', 'date_joined')
@@ -47,6 +47,12 @@ class EmployerAdmin(admin.ModelAdmin):
         queryset = super().get_queryset(request)
         return queryset
 
-# Если вы используете CustomUser, можно также зарегистрировать его:
-# from .models import CustomUser
-# admin.site.register(CustomUser)
+
+
+
+class EmployerAdmin(admin.ModelAdmin):
+    list_display = ('email', 'company_name', 'company_info')  # Поля, которые будут отображаться в списке
+    search_fields = ('email', 'company_name')  # Поисковые поля
+
+admin.site.register(Employer, EmployerAdmin)  # Регистрация модели с кастомным админом
+

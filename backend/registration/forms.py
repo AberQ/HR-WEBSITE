@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from .models import *
 class SignUpForm(UserCreationForm):
     class Meta:
-        model = Employer
+        model = Applicant
         fields = ('email', 'first_name', 'last_name', 'patronymic', 'password1', 'password2')
 
 

@@ -101,13 +101,13 @@ class CustomUser(CustomAbstractUser):
         swappable = "AUTH_USER_MODEL"
 
 
-class Employer(CustomUser):
+class Applicant(CustomUser):
     """
     Модель для работодателей, которая наследует от модели пользователя.
     """
 
-    first_name = models.CharField(_("first name"), max_length=150)
-    last_name = models.CharField(_("last name"), max_length=150)
+    first_name = models.CharField(_("first name"), max_length=150, blank=True)
+    last_name = models.CharField(_("last name"), max_length=150, blank=True)
     patronymic = models.CharField(_("Отчество"), max_length=150, blank=True)
     REQUIRED_FIELDS = ['first_name', "last_mame"]
     class Meta:
@@ -128,3 +128,21 @@ class Employer(CustomUser):
     def get_short_name(self):
         """Return the short name for the user."""
         return self.first_name
+    
+
+
+
+class Employer(CustomUser):
+    """
+    Модель для соискателей, которая наследует от модели пользователя.
+    """
+    
+    company_name = models.CharField(_("Имя компании"), max_length=255, blank=True)
+    company_info = models.TextField(_("Информация о компании"), blank=True)
+
+    class Meta:
+        verbose_name = _("Работодатель")
+        verbose_name_plural = _("Работодатели")
+
+    def __str__(self):
+        return self.email  # или другое поле, которое вы хотите использовать в админке
