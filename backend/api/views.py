@@ -23,7 +23,7 @@ from .models import Vacancy
 class VacancyListAPIView(generics.ListAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
