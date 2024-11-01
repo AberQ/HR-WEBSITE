@@ -25,9 +25,10 @@ class VacancyListAPIView(generics.ListAPIView):
     serializer_class = VacancySerializer
     #permission_classes = [permissions.IsAuthenticated]
 
-    def perform_create(self, serializer):
-        serializer.save(created_by=self.request.user)
-
+class VacancyDetailAPIView(generics.RetrieveAPIView):
+    queryset = Vacancy.objects.all()
+    serializer_class = VacancySerializer
+    lookup_field = 'id'  # Используем 'id' для поиска вакансии по ID
 
 
 
