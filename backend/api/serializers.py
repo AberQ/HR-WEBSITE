@@ -20,8 +20,8 @@ class VacancySerializer(serializers.ModelSerializer):
         required=False
     )
     
-    created_by = serializers.SlugRelatedField(
-        slug_field='email',
+    creator_id = serializers.PrimaryKeyRelatedField(
+        source='created_by',
         queryset=User.objects.all(),
         required=True
     )
@@ -32,5 +32,5 @@ class VacancySerializer(serializers.ModelSerializer):
         fields = [
             'id','title', 'city', 'address', 'work_format', 'experience', 'min_salary', 
             'max_salary', 'currency', 'number_of_openings', 'description', 'tech_stack_tags',
-            'work_condition_tags', 'status', 'publication_date', 'created_by'
+            'work_condition_tags', 'status', 'publication_date', 'creator_id'
         ]
