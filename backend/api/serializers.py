@@ -28,4 +28,9 @@ class VacancySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Vacancy
-        fields = '__all__'
+        # Укажите порядок полей в том порядке, в котором хотите видеть их в JSON
+        fields = [
+            'id','title', 'city', 'address', 'work_format', 'experience', 'min_salary', 
+            'max_salary', 'currency', 'number_of_openings', 'description', 'tech_stack_tags',
+            'work_condition_tags', 'status', 'publication_date', 'created_by'
+        ]
