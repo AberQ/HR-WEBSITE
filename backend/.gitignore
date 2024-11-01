@@ -1,0 +1,4 @@
+api/__pycache__
+api/migrations/__pycache__
+registration/__pycache__
+registration/migrations/__pycache__
