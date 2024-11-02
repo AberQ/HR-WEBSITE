@@ -20,28 +20,6 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Vacancy
 
-class VacancyListAPIView(generics.ListAPIView):
-    queryset = Vacancy.objects.all()
-    serializer_class = VacancySerializer
-    #permission_classes = [permissions.IsAuthenticated]
-
-class VacancyDetailAPIView(generics.RetrieveAPIView):
-    queryset = Vacancy.objects.all()
-    serializer_class = VacancySerializer
-    lookup_field = 'id'  # Используем 'id' для поиска вакансии по ID
-
-
-
-class VacancyCreateAPIView(generics.CreateAPIView):
-    queryset = Vacancy.objects.all()
-    serializer_class = VacancySerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            self.perform_create(serializer)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 def home(request):
@@ -84,3 +62,29 @@ def add_vacancy(request):
         form = VacancyForm()  # Создаем пустую форму для отображения
 
     return render(request, 'add_vacancy.html', {'form': form})  # Отображаем форму для добавления вакансии
+
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#API для вакансий
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+class VacancyListAPIView(generics.ListAPIView):
+    queryset = Vacancy.objects.all()
+    serializer_class = VacancySerializer
+    #permission_classes = [permissions.IsAuthenticated]
+
+class VacancyDetailAPIView(generics.RetrieveAPIView):
+    queryset = Vacancy.objects.all()
+    serializer_class = VacancySerializer
+    lookup_field = 'id'  # Используем 'id' для поиска вакансии по ID
+
+
+
+class VacancyCreateAPIView(generics.CreateAPIView):
+    queryset = Vacancy.objects.all()
+    serializer_class = VacancySerializer
+    #permission_classes = [permissions.IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            self.perform_create(serializer)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
