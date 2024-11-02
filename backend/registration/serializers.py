@@ -10,7 +10,7 @@ from .models import *
 class ApplicantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Applicant
-        fields = ['email', 'password', 'first_name', 'last_name', 'patronymic']
+        fields = ['id','email', 'password', 'first_name', 'last_name', 'patronymic']
 
     def create(self, validated_data):
         user = Applicant(
@@ -26,7 +26,7 @@ class ApplicantSerializer(serializers.ModelSerializer):
 class EmployerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employer
-        fields = ['email', 'password', 'company_name', 'company_info']
+        fields = ['id','email', 'password', 'company_name', 'company_info']
 
     def create(self, validated_data):
         user = Employer(

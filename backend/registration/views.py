@@ -11,10 +11,10 @@ from django.shortcuts import redirect
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
-
+from rest_framework.views import APIView
 from .serializers import *
 from django.contrib.auth import get_user_model
-
+from rest_framework.permissions import IsAuthenticated
 
 
 def applicant_registration(request):
@@ -99,3 +99,20 @@ class RegisterEmployerView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        # Определяем, является ли пользователь соискателем или работодателем
+        if hasattr(user, 'applicant'):
+            serializer = ApplicantSerializer(user.applicant)
+        elif hasattr(user, 'employer'):
+            serializer = EmployerSerializer(user.employer)
+        else:
+            return Response({"detail": "Профиль пользователя не найден"}, status=404)
+
+        return Response(serializer.data)
