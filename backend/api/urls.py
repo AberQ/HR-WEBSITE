@@ -12,7 +12,15 @@ urlpatterns = [
     path('test/contact', contact, name='contact'),
     path('test/vacancies/', vacancy_list, name='vacancy_list'),
     path('test/add/', add_vacancy, name='add_vacancy'),
+
+
+
     path('api/applicant/vacancies/', VacancyListAPIView.as_view(), name='vacancy-list'),
     path('api/applicant/vacancies/<int:id>/', VacancyDetailAPIView.as_view(), name='vacancy-detail'),
+
+
+
+
+    
     path('api/employer/vacancies/create/', VacancyCreateAPIView.as_view(), name='vacancy-create'),  # POST запросы
 ]
