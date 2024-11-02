@@ -67,6 +67,11 @@ def logout_view(request):
 def choice_registration(request):
     return render(request, 'choice_registration.html')
 
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import CustomTokenObtainPairSerializer
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #API для регистрации

@@ -37,3 +37,20 @@ class EmployerSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+    
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+     @classmethod
+     def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Добавляем роль пользователя в токен
+        if hasattr(user, 'applicant'):
+            token['role'] = 'Applicant'
+        elif hasattr(user, 'employer'):
+            token['role'] = 'Employer'
+        else:
+            token['role'] = 'Admin'  # Если не подходит под другие роли
+
+        return token

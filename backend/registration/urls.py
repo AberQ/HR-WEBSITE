@@ -16,7 +16,7 @@ urlpatterns = [
     path('choice_registration', choice_registration, name='choice_registration'),
     path('api/register/applicant', RegisterApplicantView.as_view(), name='register_applicant'),
     path('api/register/employer', RegisterEmployerView.as_view(), name='register_employer'),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     
 ]
