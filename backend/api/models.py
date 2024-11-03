@@ -129,6 +129,14 @@ class Vacancy(models.Model):
 
 
 class Resume(models.Model):
+
+
+    LANGUAGES_CHOICES = [
+        ('english', 'Английский'),
+        ('russian', 'Русский'),
+        ('spanish', 'Испанский'),
+        # Добавьте другие языки по желанию
+    ]
     # Основная информация
     desired_position = models.CharField(max_length=255, verbose_name='Желаемая должность')
     candidate_name = models.CharField(max_length=255, verbose_name='Имя кандидата')
@@ -147,7 +155,7 @@ class Resume(models.Model):
     skills = models.ManyToManyField('TechStackTag', blank=True, verbose_name='Навыки')  # Связь с TechStackTag
 
     # Дополнительные разделы
-    languages = models.CharField(max_length=255, blank=True, verbose_name='Языки')
+    languages = models.CharField(max_length=20, choices=LANGUAGES_CHOICES, blank=True, verbose_name='Языки')
     portfolio_link = models.URLField(blank=True, verbose_name='Ссылка на портфолио')
 
     # Временные метки
