@@ -81,10 +81,8 @@ class VacancyDetailAPIView(generics.RetrieveAPIView):
 class VacancyCreateAPIView(generics.CreateAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializer
-    #permission_classes = [permissions.IsAuthenticated]
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            self.perform_create(serializer)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    permission_classes = [permissions.IsAuthenticated]
+    def perform_create(self, serializer):
+        # Убедитесь, что текущий пользователь является экземпляром Employer
+        employer = Employer.objects.get(email=self.request.user.email)
+        serializer.save(created_by=employer)  # Устанавливаем создателя вакансии
