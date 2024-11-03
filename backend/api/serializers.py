@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Vacancy, TechStackTag, WorkConditionTag
+from .models import *
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -81,3 +81,8 @@ class VacancySerializer(serializers.ModelSerializer):
         ]
 
     
+
+class ResumeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Resume
+        fields = '__all__'  # или перечислите конкретные поля, например ['id', 'candidate_name', 'desired_position']

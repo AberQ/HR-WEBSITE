@@ -127,3 +127,12 @@ class VacancyDeleteAPIView(generics.DestroyAPIView):
             raise PermissionDenied("Вы не имеете права удалять эту вакансию.")
         # Вызываем метод удаления, если проверка пройдена
         super().perform_destroy(instance)
+
+class UserResumeListView(generics.ListAPIView):
+    serializer_class = ResumeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # Получаем текущего пользователя из запроса и фильтруем резюме по нему
+        user = self.request.user
+        return Resume.objects.filter(applicant=user)
