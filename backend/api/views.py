@@ -78,6 +78,25 @@ class VacancyDetailAPIView(generics.RetrieveAPIView):
 
 
 
+class VacancyListByEmployerAPIView(generics.ListAPIView):
+    serializer_class = VacancySerializer
+
+    def get_queryset(self):
+        employer_id = self.kwargs['employer_id']
+        return Vacancy.objects.filter(created_by__id=employer_id)
+
+    def get(self, request, *args, **kwargs):
+        employer_id = self.kwargs['employer_id']
+        try:
+            vacancies = self.get_queryset()
+            serializer = self.get_serializer(vacancies, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Employer.DoesNotExist:
+            return Response({'error': 'Работодатель не найден.'}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+
 class VacancyCreateAPIView(generics.CreateAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializerForCreateAPI
