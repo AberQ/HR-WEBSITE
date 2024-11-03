@@ -132,6 +132,9 @@ class Language(models.Model):
 
     def __str__(self):
         return self.name
+    class Meta:
+        verbose_name = 'Язык'
+        verbose_name_plural = 'Языки'
 class Resume(models.Model):
 
 

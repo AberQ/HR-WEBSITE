@@ -36,7 +36,7 @@ admin.site.register(Resume, ResumeAdmin)  # Регистрация модели 
 
 
 class LanguageAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')  # Поля, которые будут отображаться в списке
+    list_display = ( 'name',)  # Поля, которые будут отображаться в списке
     search_fields = ('name',)  # Поля, по которым будет осуществляться поиск
 
 # Регистрация моделей в админке
