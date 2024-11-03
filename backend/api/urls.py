@@ -27,5 +27,5 @@ urlpatterns = [
 
 
 
-    path('api/employer/<int:employer_id>/vacancies/<int:id>/delete', VacancyDeleteAPIView.as_view(), name='vacancy-delete'),
+    path('api/employer/vacancies/<int:id>/delete', VacancyDeleteAPIView.as_view(), name='vacancy-delete'),
 ]
