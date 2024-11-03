@@ -125,3 +125,37 @@ class Vacancy(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.created_by.company_name}"  # Отображаем название вакансии и название компании
+
+
+
+class Resume(models.Model):
+    # Основная информация
+    candidate_name = models.CharField(max_length=255, verbose_name='Имя кандидата')
+    email = models.EmailField(verbose_name='Email')
+    phone = models.CharField(max_length=20, verbose_name='Телефон')
+    city = models.CharField(max_length=255, verbose_name='Город')
+    desired_position = models.CharField(max_length=255, verbose_name='Желаемая должность')
+
+    # Образование
+    education_institution = models.CharField(max_length=255, verbose_name='Учебное заведение')
+    degree = models.CharField(max_length=100, verbose_name='Степень')
+    graduation_year = models.PositiveIntegerField(verbose_name='Год выпуска')
+
+    # Опыт работы
+    work_experience = models.TextField(verbose_name='Опыт работы')
+    skills = models.ManyToManyField('TechStackTag', blank=True, verbose_name='Навыки')  # Связь с TechStackTag
+
+    # Дополнительные разделы
+    languages = models.CharField(max_length=255, blank=True, verbose_name='Языки')
+    portfolio_link = models.URLField(blank=True, verbose_name='Ссылка на портфолио')
+
+    # Временные метки
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
+
+    class Meta:
+        verbose_name = 'Резюме'
+        verbose_name_plural = 'Резюме'
+
+    def __str__(self):
+        return f"{self.candidate_name} - {self.desired_position}"
