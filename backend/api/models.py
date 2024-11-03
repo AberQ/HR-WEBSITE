@@ -130,11 +130,12 @@ class Vacancy(models.Model):
 
 class Resume(models.Model):
     # Основная информация
+    desired_position = models.CharField(max_length=255, verbose_name='Желаемая должность')
     candidate_name = models.CharField(max_length=255, verbose_name='Имя кандидата')
     email = models.EmailField(verbose_name='Email')
     phone = models.CharField(max_length=20, verbose_name='Телефон')
     city = models.CharField(max_length=255, verbose_name='Город')
-    desired_position = models.CharField(max_length=255, verbose_name='Желаемая должность')
+    
 
     # Образование
     education_institution = models.CharField(max_length=255, verbose_name='Учебное заведение')
@@ -152,7 +153,7 @@ class Resume(models.Model):
     # Временные метки
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
-
+    applicant = models.ForeignKey(Applicant, on_delete=models.CASCADE, related_name='applicant_resumes')
     class Meta:
         verbose_name = 'Резюме'
         verbose_name_plural = 'Резюме'

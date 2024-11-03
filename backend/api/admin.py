@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import Vacancy, TechStackTag
+from api.models import *
 from django.core.exceptions import ValidationError
 
 @admin.register(Vacancy)
@@ -25,3 +25,10 @@ class TechStackTagAdmin(admin.ModelAdmin):
 
 
 
+class ResumeAdmin(admin.ModelAdmin):
+    list_display = ('candidate_name', 'desired_position', 'email', 'phone', 'city', 'created_at')  # Поля, которые будут отображаться в списке
+    search_fields = ('candidate_name', 'email', 'desired_position')  # Поля, по которым будет осуществляться поиск
+    list_filter = ('city', 'degree', 'graduation_year')  # Фильтры для списка
+    ordering = ('-created_at',)  # Сортировка по дате создания по убыванию
+
+admin.site.register(Resume, ResumeAdmin)  # Регистрация модели Resume с указанным админ-классом
