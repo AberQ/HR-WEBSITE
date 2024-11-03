@@ -120,8 +120,8 @@ class VacancyDeleteAPIView(generics.DestroyAPIView):
         return super().get_queryset().filter(created_by=self.request.user)
 
     def perform_destroy(self, instance):
-        print("Автор вакансии:", instance.created_by)
-        print("Текущий пользователь:", self.request.user)
+        #print("Автор вакансии:", instance.created_by)
+        #print("Текущий пользователь:", self.request.user)
         # Проверяем, что текущий пользователь — автор вакансии
         if instance.created_by.id != self.request.user.id:
             raise PermissionDenied("Вы не имеете права удалять эту вакансию.")
