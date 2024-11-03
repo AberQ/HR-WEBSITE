@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 # serializers.py
-class VacancySerializer(serializers.ModelSerializer):
+class VacancySerializerForCreateAPI(serializers.ModelSerializer):
     class Meta:
         model = Vacancy
         fields = [
@@ -24,7 +24,7 @@ class VacancySerializer(serializers.ModelSerializer):
             'work_condition_tags',  # Условия работы
             'publication_date',    # Дата публикации
             'status',              # Статус
-            'created_by',          # Создатель вакансии
+            
         ]
 
     def create(self, validated_data):
@@ -57,3 +57,27 @@ class VacancySerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+    
+class VacancySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vacancy
+        fields = [
+            'id',                  # Поле ID, если нужно
+            'title',               # Название вакансии
+            'description',         # Описание вакансии
+            'work_format',         # Формат работы
+            'min_salary',          # Минимальная зарплата
+            'max_salary',          # Максимальная зарплата
+            'currency',            # Валюта
+            'experience',          # Опыт работы
+            'city',                # Город
+            'address',             # Адрес
+            'number_of_openings',  # Количество вакантных мест
+            'tech_stack_tags',     # Навыки (многие ко многим)
+            'work_condition_tags',  # Условия работы
+            'publication_date',    # Дата публикации
+            'status',              # Статус
+            'created_by'
+        ]
+
+    

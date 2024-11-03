@@ -1,11 +1,11 @@
 from rest_framework import generics
 from .models import Vacancy
-from .serializers import VacancySerializer
+from .serializers import *
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Vacancy
-from .serializers import VacancySerializer
+
 from django.shortcuts import render
 from registration.views import *
 from django.contrib.auth.decorators import login_required
@@ -80,8 +80,9 @@ class VacancyDetailAPIView(generics.RetrieveAPIView):
 
 class VacancyCreateAPIView(generics.CreateAPIView):
     queryset = Vacancy.objects.all()
-    serializer_class = VacancySerializer
+    serializer_class = VacancySerializerForCreateAPI
     permission_classes = [permissions.IsAuthenticated]
+    
     def perform_create(self, serializer):
         # Убедитесь, что текущий пользователь является экземпляром Employer
         employer = Employer.objects.get(email=self.request.user.email)
