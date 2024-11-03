@@ -106,3 +106,24 @@ class VacancyCreateAPIView(generics.CreateAPIView):
         # Убедитесь, что текущий пользователь является экземпляром Employer
         employer = Employer.objects.get(email=self.request.user.email)
         serializer.save(created_by=employer)  # Устанавливаем создателя вакансии
+
+
+
+class VacancyDeleteAPIView(generics.DestroyAPIView):
+    queryset = Vacancy.objects.all()
+    serializer_class = VacancySerializer
+    permission_classes = [permissions.IsAuthenticated]
+    lookup_field = 'id'  # Указываем, что идентификатор будет 'id', а не 'pk'
+
+    def get_queryset(self):
+        # Ограничиваем выборку вакансиями, созданными текущим пользователем
+        return super().get_queryset().filter(created_by=self.request.user)
+
+    def perform_destroy(self, instance):
+        print("Автор вакансии:", instance.created_by)
+        print("Текущий пользователь:", self.request.user)
+        # Проверяем, что текущий пользователь — автор вакансии
+        if instance.created_by.id != self.request.user.id:
+            raise PermissionDenied("Вы не имеете права удалять эту вакансию.")
+        # Вызываем метод удаления, если проверка пройдена
+        super().perform_destroy(instance)
