@@ -58,29 +58,51 @@ class VacancySerializerForCreateAPI(serializers.ModelSerializer):
         instance.save()
         return instance
     
+from rest_framework import serializers
+from .models import Vacancy, TechStackTag, WorkConditionTag
+
+class SkillsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vacancy
+        fields = ['experience', 'tech_stack_tags']
+
+class WorkConditionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vacancy
+        fields = ['work_format', 'work_condition_tags']
+
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vacancy
+        fields = ['city', 'address']
+
+class SalarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vacancy
+        fields = ['min_salary', 'max_salary', 'currency']
+
 class VacancySerializer(serializers.ModelSerializer):
+    skills = SkillsSerializer(source='*')
+    work_condition = WorkConditionSerializer(source='*')
+    location = LocationSerializer(source='*')
+    salary = SalarySerializer(source='*')
+
     class Meta:
         model = Vacancy
         fields = [
-            'id',                  # Поле ID, если нужно
-            'title',               # Название вакансии
-            'description',         # Описание вакансии
-            'work_format',         # Формат работы
-            'min_salary',          # Минимальная зарплата
-            'max_salary',          # Максимальная зарплата
-            'currency',            # Валюта
-            'experience',          # Опыт работы
-            'city',                # Город
-            'address',             # Адрес
-            'number_of_openings',  # Количество вакантных мест
-            'tech_stack_tags',     # Навыки (многие ко многим)
-            'work_condition_tags',  # Условия работы
-            'publication_date',    # Дата публикации
-            'status',              # Статус
-            'created_by'
+            'id',
+            'title',
+            'description',
+            'work_condition',
+            'salary',
+            'location',
+            'number_of_openings',
+            'skills',
+            'publication_date',
+            'status',
+            'created_by',
         ]
 
-    
 
 class ResumeSerializer(serializers.ModelSerializer):
     class Meta:
