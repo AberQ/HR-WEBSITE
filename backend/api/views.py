@@ -142,3 +142,29 @@ class UserResumeListView(generics.ListAPIView):
         
         # Фильтруем резюме по текущему пользователю
         return Resume.objects.filter(applicant=user)
+    
+class VacancyUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+
+    def get_object(self, pk):
+        try:
+            vacancy = Vacancy.objects.get(pk=pk)
+            print("Vacancy created by user ID:", vacancy.created_by.id)
+            print("Current user ID from request:", self.request.user.id)
+            if vacancy.created_by.id != self.request.user.id:
+                raise PermissionDenied("Вы не имеете права редактировать эту вакансию.")
+            return vacancy
+        except Vacancy.DoesNotExist:
+            return None
+
+    def put(self, request, pk, format=None):
+        vacancy = self.get_object(pk)
+        if not vacancy:
+            return Response({"detail": "Vacancy not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = VacancySerializer(vacancy, data=request.data, partial=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

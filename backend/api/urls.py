@@ -25,7 +25,7 @@ urlpatterns = [
     path('api/employer/vacancies/create/', VacancyCreateAPIView.as_view(), name='vacancy-create'),  # POST запросы
 
 
-
+    path('api/employer/vacancies/<int:pk>/edit/', VacancyUpdateView.as_view(), name='vacancy-edit'),
 
     path('api/employer/vacancies/<int:id>/delete', VacancyDeleteAPIView.as_view(), name='vacancy-delete'),
 
