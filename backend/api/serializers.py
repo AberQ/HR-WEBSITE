@@ -60,7 +60,6 @@ class VacancySerializerForCreateAPI(serializers.ModelSerializer):
     
 from rest_framework import serializers
 from .models import Vacancy, TechStackTag, WorkConditionTag
-
 class SkillsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vacancy
@@ -102,6 +101,14 @@ class VacancySerializer(serializers.ModelSerializer):
             'status',
             'created_by',
         ]
+        read_only_fields = ['created_by']  # Делает поле created_by доступным только для чтения
+
+    def update(self, instance, validated_data):
+        # Убираем 'created_by' из validated_data, если оно присутствует
+        validated_data.pop('created_by', None)  # Исключаем created_by из данных, чтобы не было ошибки
+
+        # Сохраняем обновленный объект
+        return super().update(instance, validated_data)
 
 
 class ResumeSerializer(serializers.ModelSerializer):
