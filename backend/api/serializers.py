@@ -61,10 +61,16 @@ class VacancySerializerForCreateAPI(serializers.ModelSerializer):
 from rest_framework import serializers
 from .models import Vacancy, TechStackTag, WorkConditionTag
 class SkillsSerializer(serializers.ModelSerializer):
+    # Добавляем метод для получения названий тегов
+    tech_stack_tags = serializers.SerializerMethodField()
+
     class Meta:
         model = Vacancy
         fields = ['experience', 'tech_stack_tags']
 
+    def get_tech_stack_tags(self, obj):
+        # Получаем все теги и возвращаем их названия
+        return [tag.name for tag in obj.tech_stack_tags.all()]
 class WorkConditionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vacancy
