@@ -143,28 +143,18 @@ class UserResumeListView(generics.ListAPIView):
         # Фильтруем резюме по текущему пользователю
         return Resume.objects.filter(applicant=user)
     
-class VacancyUpdateView(APIView):
-    permission_classes = [IsAuthenticated]
-    
+class VacancyUpdateView(generics.UpdateAPIView):
+    queryset = Vacancy.objects.all()  # Должен быть указан queryset для поиска объекта
+    serializer_class = VacancySerializer  # Сериализатор, который будет использоваться для обновления
+    permission_classes = [permissions.IsAuthenticated]
 
-    def get_object(self, pk):
-        try:
-            vacancy = Vacancy.objects.get(pk=pk)
-            print("Vacancy created by user ID:", vacancy.created_by.id)
-            print("Current user ID from request:", self.request.user.id)
-            if vacancy.created_by.id != self.request.user.id:
-                raise PermissionDenied("Вы не имеете права редактировать эту вакансию.")
-            return vacancy
-        except Vacancy.DoesNotExist:
-            return None
+    def get_object(self):
+        """Переопределяем get_object, чтобы добавить проверку прав пользователя"""
+        obj = super().get_object()
+        if obj.created_by.id != self.request.user.id:
+            raise PermissionDenied("Вы не имеете права редактировать эту вакансию.")
+        return obj
 
-    def put(self, request, pk, format=None):
-        vacancy = self.get_object(pk)
-        if not vacancy:
-            return Response({"detail": "Vacancy not found."}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = VacancySerializer(vacancy, data=request.data, partial=False)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request, *args, **kwargs):
+        """Используем встроенную логику put"""
+        return super().put(request, *args, **kwargs)
