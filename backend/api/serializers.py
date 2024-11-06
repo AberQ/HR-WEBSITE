@@ -118,6 +118,15 @@ class VacancySerializer(serializers.ModelSerializer):
 
 
 class ResumeSerializer(serializers.ModelSerializer):
+    skills = serializers.SerializerMethodField()
+    languages = serializers.SerializerMethodField()
+
     class Meta:
         model = Resume
-        fields = '__all__'  # или перечислите конкретные поля, например ['id', 'candidate_name', 'desired_position']
+        fields = '__all__'
+
+    def get_skills(self, obj):
+        return [skill.name for skill in obj.skills.all()]
+
+    def get_languages(self, obj):
+        return [language.name for language in obj.languages.all()]
