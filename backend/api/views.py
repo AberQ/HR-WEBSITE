@@ -170,3 +170,17 @@ class UserResumeListView(generics.ListAPIView):
         
         # Фильтруем резюме по текущему пользователю
         return Resume.objects.filter(applicant=user)
+    
+class UserResumeDetailView(generics.RetrieveAPIView):
+    serializer_class = ResumeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # Получаем текущего пользователя
+        user = self.request.user
+        # Проверяем, является ли пользователь аппликантом
+        if not hasattr(user, 'applicant'):
+            raise PermissionDenied("Только пользователи-аппликанты могут просматривать резюме.")
+        
+        # Фильтруем резюме по текущему пользователю
+        return Resume.objects.filter(applicant=user)
