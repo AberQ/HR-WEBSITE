@@ -123,7 +123,24 @@ class ResumeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Resume
-        fields = '__all__'
+        fields = [
+            'id',
+            'desired_position',
+            'candidate_name',
+            'email',
+            'phone',
+            'city',
+            'education_institution',
+            'degree',
+            'graduation_year',
+            'work_experience',
+            'languages',         # Указано после work_experience
+            'skills',            # Указано после languages
+            'portfolio_link',
+            'created_at',
+            'updated_at',
+            'applicant',
+        ]
 
     def get_skills(self, obj):
         return [skill.name for skill in obj.skills.all()]
