@@ -5,7 +5,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Vacancy
-
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from registration.views import *
 from django.contrib.auth.decorators import login_required
@@ -187,14 +187,14 @@ class UserResumeDetailView(generics.RetrieveAPIView):
     
 
 class UserResumeCreateView(generics.CreateAPIView):
+    queryset = Resume.objects.all()
     serializer_class = ResumeSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        # Проверяем, является ли пользователь аппликантом
-        user = self.request.user
-        if not hasattr(user, 'applicant'):
-            raise PermissionDenied("Только пользователи-аппликанты могут создавать резюме.")
-        
-        # Сохраняем резюме с назначением текущего пользователя как аппликанта
-        serializer.save(applicant=user.applicant)
+        try:
+            # Проверка, что пользователь является экземпляром Applicant
+            applicant = Applicant.objects.get(email=self.request.user.email)
+            serializer.save(applicant=applicant)
+        except ObjectDoesNotExist:
+            raise ValidationError("Только соискатели могут создавать резюме.")

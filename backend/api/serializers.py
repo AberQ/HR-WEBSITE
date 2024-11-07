@@ -139,7 +139,7 @@ class ResumeSerializer(serializers.ModelSerializer):
             'portfolio_link',
             'created_at',
             'updated_at',
-            'applicant',
+
         ]
 
     def get_skills(self, obj):
