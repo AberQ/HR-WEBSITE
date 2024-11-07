@@ -12,7 +12,7 @@ class VacancySerializerForCreateAPI(serializers.ModelSerializer):
             'id',                  # Поле ID, если нужно
             'title',               # Название вакансии
             'description',         # Описание вакансии
-            'work_format',         # Формат работы
+            'format',         # Формат работы
             'min_salary',          # Минимальная зарплата
             'max_salary',          # Максимальная зарплата
             'currency',            # Валюта
@@ -21,7 +21,7 @@ class VacancySerializerForCreateAPI(serializers.ModelSerializer):
             'address',             # Адрес
             'number_of_openings',  # Количество вакантных мест
             'tech_stack_tags',     # Навыки (многие ко многим)
-            'work_condition_tags',  # Условия работы
+            'employment_type',  # Условия работы
             'publication_date',    # Дата публикации
             'status',              # Статус
             
@@ -30,13 +30,13 @@ class VacancySerializerForCreateAPI(serializers.ModelSerializer):
     def create(self, validated_data):
         # Валидация и создание новой вакансии
         tech_stack_tags = validated_data.pop('tech_stack_tags', [])
-        work_condition_tags = validated_data.pop('work_condition_tags', [])
+        employment_type = validated_data.pop('employment_type', [])
 
         vacancy = Vacancy.objects.create(**validated_data)
 
         # Устанавливаем многие ко многим (если необходимо)
         vacancy.tech_stack_tags.set(tech_stack_tags)
-        vacancy.work_condition_tags = work_condition_tags  # Установите правильное поле для условий работы
+        vacancy.employment_type = employment_type  # Установите правильное поле для условий работы
         vacancy.save()
 
         return vacancy
@@ -44,7 +44,7 @@ class VacancySerializerForCreateAPI(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         # Валидация и обновление существующей вакансии
         tech_stack_tags = validated_data.pop('tech_stack_tags', None)
-        work_condition_tags = validated_data.pop('work_condition_tags', None)
+        employment_type = validated_data.pop('employment_type', None)
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -52,8 +52,8 @@ class VacancySerializerForCreateAPI(serializers.ModelSerializer):
         if tech_stack_tags is not None:
             instance.tech_stack_tags.set(tech_stack_tags)
 
-        if work_condition_tags is not None:
-            instance.work_condition_tags = work_condition_tags
+        if employment_type is not None:
+            instance.employment_type = employment_type
 
         instance.save()
         return instance
@@ -71,10 +71,10 @@ class SkillsSerializer(serializers.ModelSerializer):
     def get_tech_stack_tags(self, obj):
         # Получаем все теги и возвращаем их названия
         return [tag.name for tag in obj.tech_stack_tags.all()]
-class WorkConditionSerializer(serializers.ModelSerializer):
+class WorkConditionsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Vacancy
-        fields = ['work_format', 'work_condition_tags']
+        model = Vacancy 
+        fields = ['format', 'employment_type']
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -88,7 +88,7 @@ class SalarySerializer(serializers.ModelSerializer):
 
 class VacancySerializer(serializers.ModelSerializer):
     skills = SkillsSerializer(source='*')
-    work_condition = WorkConditionSerializer(source='*')
+    work_conditions = WorkConditionsSerializer(source='*')
     location = LocationSerializer(source='*')
     salary = SalarySerializer(source='*')
 
@@ -98,7 +98,7 @@ class VacancySerializer(serializers.ModelSerializer):
             'id',
             'title',
             'description',
-            'work_condition',
+            'work_conditions',
             'salary',
             'location',
             'number_of_openings',

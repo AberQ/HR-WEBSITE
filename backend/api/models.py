@@ -60,7 +60,7 @@ class Vacancy(models.Model):
     ]
 
     title = models.CharField(max_length=255, verbose_name='Название')
-    work_format = models.CharField(
+    format = models.CharField(
         max_length=10, 
         choices=WORK_FORMAT_CHOICES, 
         default='onsite',
@@ -85,7 +85,7 @@ class Vacancy(models.Model):
     number_of_openings = models.PositiveIntegerField(verbose_name='Количество вакантных мест')
     description = models.TextField(verbose_name='Описание')
     tech_stack_tags = models.ManyToManyField('TechStackTag', blank=True, verbose_name='Навыки')
-    work_condition_tags = models.CharField(
+    employment_type = models.CharField(
         max_length=20, 
         choices=WORK_CONDITION_CHOICES, 
         default='full_time',

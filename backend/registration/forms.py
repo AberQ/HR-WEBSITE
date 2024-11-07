@@ -56,7 +56,7 @@ class VacancyForm(forms.ModelForm):
         model = Vacancy
         fields = [
             'title',
-            'work_format',
+            'format',
             'min_salary',
             'max_salary',
             'currency',
@@ -66,7 +66,7 @@ class VacancyForm(forms.ModelForm):
             'number_of_openings',
             'description',
             'tech_stack_tags',
-            'work_condition_tags',
+            'employment_type',
         ]
         widgets = {
             'tech_stack_tags': Select2MultipleWidget,  # Подключаем Select2 для tech_stack_tags

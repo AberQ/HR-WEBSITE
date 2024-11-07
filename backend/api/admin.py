@@ -4,9 +4,9 @@ from django.core.exceptions import ValidationError
 
 @admin.register(Vacancy)
 class VacancyAdmin(admin.ModelAdmin):
-    list_display = ('title', 'city', 'min_salary', 'max_salary', 'currency', 'experience', 'number_of_openings', 'publication_date', 'status', 'work_format', 'work_condition_tags')
+    list_display = ('title', 'city', 'min_salary', 'max_salary', 'currency', 'experience', 'number_of_openings', 'publication_date', 'status', 'format', 'employment_type')
     search_fields = ('title', 'city', 'description')
-    list_filter = ('currency', 'city', 'experience', 'publication_date', 'status', 'work_format', 'work_condition_tags')
+    list_filter = ('currency', 'city', 'experience', 'publication_date', 'status', 'format', 'employment_type')
     filter_horizontal = ('tech_stack_tags',)  # Оставляем только для tech_stack_tags
 
     # Добавление пользовательского сообщения при ошибке валидации
@@ -17,7 +17,7 @@ class VacancyAdmin(admin.ModelAdmin):
         except ValidationError as e:
             form.add_error('number_of_openings', e.messages)
 
-# Так как поле work_condition_tags больше не ManyToMany, удаляем его из админки
+# Так как поле employment_type больше не ManyToMany, удаляем его из админки
 @admin.register(TechStackTag)
 class TechStackTagAdmin(admin.ModelAdmin):
     list_display = ('name',)
