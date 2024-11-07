@@ -128,20 +128,7 @@ class VacancyDeleteAPIView(generics.DestroyAPIView):
         # Вызываем метод удаления, если проверка пройдена
         super().perform_destroy(instance)
 
-class UserResumeListView(generics.ListAPIView):
-    serializer_class = ResumeSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
-    def get_queryset(self):
-        # Получаем текущего пользователя из запроса
-        user = self.request.user
-        print("Текущий пользователь:", self.request.user)
-        # Проверяем, является ли пользователь экземпляром `Applicant`
-        if not hasattr(user, 'applicant'):
-            raise PermissionDenied("Только пользователи-аппликанты могут просматривать резюме.")
-        
-        # Фильтруем резюме по текущему пользователю
-        return Resume.objects.filter(applicant=user)
     
 class VacancyUpdateView(generics.UpdateAPIView):
     queryset = Vacancy.objects.all()  # Должен быть указан queryset для поиска объекта
@@ -164,3 +151,22 @@ class VacancyUpdateView(generics.UpdateAPIView):
     def put(self, request, *args, **kwargs):
         """Используем встроенную логику put"""
         return super().put(request, *args, **kwargs)
+    
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#API для резюме
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+class UserResumeListView(generics.ListAPIView):
+    serializer_class = ResumeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # Получаем текущего пользователя из запроса
+        user = self.request.user
+        print("Текущий пользователь:", self.request.user)
+        # Проверяем, является ли пользователь экземпляром `Applicant`
+        if not hasattr(user, 'applicant'):
+            raise PermissionDenied("Только пользователи-аппликанты могут просматривать резюме.")
+        
+        # Фильтруем резюме по текущему пользователю
+        return Resume.objects.filter(applicant=user)
