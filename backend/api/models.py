@@ -135,13 +135,20 @@ class Language(models.Model):
     class Meta:
         verbose_name = 'Язык'
         verbose_name_plural = 'Языки'
+
+
+        
 class Resume(models.Model):
+
+    def validate_numeric_experience(value):
+        if not value.isdigit():
+            raise ValidationError(('Опыт работы должен содержать только цифры.'))
     DEGREE_CHOICES = [
         ('speciality', 'Специалитет'),
         ('bachelor', 'Бакалавриат'),
         ('unfinished_higher', 'Неоконченное высшее'),
         ('vocational', 'СПО'),
-        ('unfinished_secondary', 'Неоконченное СПО'),
+        ('unfinished_secondary', 'Неоконченное среднее'),
     ]
 
     # Основная информация
@@ -151,6 +158,9 @@ class Resume(models.Model):
     phone = models.CharField(max_length=20, verbose_name='Телефон')
     city = models.CharField(max_length=255, verbose_name='Город')
     
+    # Специальность
+    specialization = models.CharField(max_length=255, verbose_name='Специальность')  # Новое поле перед степенью
+
     # Образование
     degree = models.CharField(
         max_length=100,
@@ -159,7 +169,9 @@ class Resume(models.Model):
     )
     
     # Опыт работы
-    work_experience = models.TextField(verbose_name='Опыт работы')
+    work_experience = models.TextField(verbose_name='Опыт работы', validators=[validate_numeric_experience])  # Валидатор для чисел
+
+    # Навыки
     skills = models.ManyToManyField('TechStackTag', blank=True, verbose_name='Навыки')  # Связь с TechStackTag
 
     # Дополнительные разделы
@@ -176,3 +188,6 @@ class Resume(models.Model):
 
     def __str__(self):
         return f"{self.candidate_name} - {self.desired_position}"
+
+# Валидатор для work_experience, чтобы вводились только цифры
+    
