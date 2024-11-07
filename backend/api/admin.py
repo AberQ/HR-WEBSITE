@@ -30,7 +30,7 @@ class ResumeAdmin(admin.ModelAdmin):
     search_fields = ('candidate_name', 'email', 'desired_position')  # Поля, по которым будет осуществляться поиск
     list_filter = ('city',)  # Фильтры для списка
     ordering = ('-updated_at',)  # Сортировка по дате создания по убыванию
-    filter_horizontal = ('languages',)  # Оставляем только для tech_stack_tags
+    filter_horizontal = ('languages', 'skills')  # Оставляем только для tech_stack_tags
 
 admin.site.register(Resume, ResumeAdmin)  # Регистрация модели Resume с указанным админ-классом
 

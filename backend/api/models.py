@@ -136,7 +136,13 @@ class Language(models.Model):
         verbose_name = 'Язык'
         verbose_name_plural = 'Языки'
 class Resume(models.Model):
-
+    DEGREE_CHOICES = [
+        ('speciality', 'Специалитет'),
+        ('bachelor', 'Бакалавриат'),
+        ('unfinished_higher', 'Неоконченное высшее'),
+        ('vocational', 'СПО'),
+        ('unfinished_secondary', 'Неоконченное СПО'),
+    ]
 
     # Основная информация
     desired_position = models.CharField(max_length=255, verbose_name='Желаемая должность')
@@ -145,12 +151,13 @@ class Resume(models.Model):
     phone = models.CharField(max_length=20, verbose_name='Телефон')
     city = models.CharField(max_length=255, verbose_name='Город')
     
-
     # Образование
+    degree = models.CharField(
+        max_length=100,
+        choices=DEGREE_CHOICES,
+        verbose_name='Степень'
+    )
     
-    degree = models.CharField(max_length=100, verbose_name='Степень')
-    
-
     # Опыт работы
     work_experience = models.TextField(verbose_name='Опыт работы')
     skills = models.ManyToManyField('TechStackTag', blank=True, verbose_name='Навыки')  # Связь с TechStackTag
@@ -162,6 +169,7 @@ class Resume(models.Model):
     # Временные метки
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
     applicant = models.ForeignKey(Applicant, on_delete=models.CASCADE, related_name='applicant_resumes')
+
     class Meta:
         verbose_name = 'Резюме'
         verbose_name_plural = 'Резюме'
