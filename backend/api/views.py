@@ -198,3 +198,20 @@ class UserResumeCreateView(generics.CreateAPIView):
             serializer.save(applicant=applicant)
         except ObjectDoesNotExist:
             raise ValidationError("Только соискатели могут создавать резюме.")
+        
+
+class ResumeDeleteAPIView(generics.DestroyAPIView):
+    queryset = Resume.objects.all()
+    serializer_class = ResumeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_destroy(self, instance):
+        # Преобразуем request.user в объект Applicant, если это необходимо
+        applicant = instance.applicant
+
+        # Если email в запросе отличается от email в applicant, запрещаем удаление
+        if applicant.email != self.request.user.email:
+            raise PermissionDenied("Вы не можете удалить чужое резюме.")
+
+        # Удаляем резюме
+        instance.delete()

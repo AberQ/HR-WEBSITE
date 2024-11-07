@@ -34,4 +34,6 @@ urlpatterns = [
     path('api/applicant/resumes/<int:pk>/', UserResumeDetailView.as_view(), name='user-resume-detail'),
 
     path('api/applicant/resumes/create/', UserResumeCreateView.as_view(), name='user-resume-create'),
+
+    path('api/applicant/resumes/<int:pk>/delete/', ResumeDeleteAPIView.as_view(), name='resume-delete'),
 ]
