@@ -184,3 +184,17 @@ class UserResumeDetailView(generics.RetrieveAPIView):
         
         # Фильтруем резюме по текущему пользователю
         return Resume.objects.filter(applicant=user)
+    
+
+class UserResumeCreateView(generics.CreateAPIView):
+    serializer_class = ResumeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Проверяем, является ли пользователь аппликантом
+        user = self.request.user
+        if not hasattr(user, 'applicant'):
+            raise PermissionDenied("Только пользователи-аппликанты могут создавать резюме.")
+        
+        # Сохраняем резюме с назначением текущего пользователя как аппликанта
+        serializer.save(applicant=user.applicant)
