@@ -147,9 +147,9 @@ class Resume(models.Model):
     
 
     # Образование
-    education_institution = models.CharField(max_length=255, verbose_name='Учебное заведение')
+    
     degree = models.CharField(max_length=100, verbose_name='Степень')
-    graduation_year = models.PositiveIntegerField(verbose_name='Год выпуска')
+    
 
     # Опыт работы
     work_experience = models.TextField(verbose_name='Опыт работы')
@@ -160,7 +160,6 @@ class Resume(models.Model):
     portfolio_link = models.URLField(blank=True, verbose_name='Ссылка на портфолио')
 
     # Временные метки
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
     applicant = models.ForeignKey(Applicant, on_delete=models.CASCADE, related_name='applicant_resumes')
     class Meta:

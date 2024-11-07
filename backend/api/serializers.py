@@ -137,7 +137,6 @@ class ResumeSerializer(serializers.ModelSerializer):
             'languages',         # Указано после work_experience
             'skills',            # Указано после languages
             'portfolio_link',
-            'created_at',
             'updated_at',
 
         ]
