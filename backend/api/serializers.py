@@ -130,9 +130,7 @@ class ResumeSerializer(serializers.ModelSerializer):
             'email',
             'phone',
             'city',
-            'education_institution',
             'degree',
-            'graduation_year',
             'work_experience',
             'languages',         # Указано после work_experience
             'skills',            # Указано после languages

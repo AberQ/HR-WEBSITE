@@ -2,6 +2,7 @@ from rest_framework import generics
 from .models import Vacancy
 from .serializers import *
 from rest_framework import generics
+from rest_framework.generics import *
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Vacancy
@@ -215,3 +216,28 @@ class ResumeDeleteAPIView(generics.DestroyAPIView):
 
         # Удаляем резюме
         instance.delete()
+
+
+
+class ResumeUpdateAPIView(UpdateAPIView):
+    queryset = Resume.objects.all()
+    serializer_class = ResumeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        # Получаем резюме, которое принадлежит текущему пользователю
+        resume = super().get_object()
+        # Проверяем, является ли резюме принадлежащим текущему пользователю (или его аппликанту)
+        if resume.applicant.email != self.request.user.email:
+            raise PermissionDenied("Вы не можете редактировать чужое резюме.")
+        return resume
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)  # partial=True позволяет обновлять только часть полей
+
+        # Проверяем валидность данных
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
