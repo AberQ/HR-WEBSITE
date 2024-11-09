@@ -1,24 +1,27 @@
 version: '3'
-
 services:
-  db:
-    image: postgres:13
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: JobSite
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
-
   web:
     build: .
-    command: python manage.py runserver
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
       - "8000:8000"
+    environment:
+      - DEBUG=1
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1
+      - DATABASE_NAME=JobSite  # Название базы данных
+      - DATABASE_USER=postgres  # Имя пользователя
+      - DATABASE_PASSWORD=123  # Пароль
+      - DATABASE_HOST=db  # Хост базы данных, который указывает на сервис db
     depends_on:
       - db
 
-volumes:
-  postgres_data:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: JobSite  # Название базы данных
+      POSTGRES_USER: postgres  # Имя пользователя
+      POSTGRES_PASSWORD: 123  # Пароль
+    ports:
+      - "5432:5432"

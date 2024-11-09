@@ -83,13 +83,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'JobSite',  # Название базы данных
-        'USER': 'postgres',  # Пользователь базы данных
-        'PASSWORD': '123',  # Пароль для пользователя базы данных
-        'HOST': 'localhost',  # Адрес хоста (обычно localhost)
-        'PORT': '5432',  # Порт PostgreSQL (по умолчанию 5432)
+        'USER': 'postgres',  # Имя пользователя
+        'PASSWORD': '123',  # Пароль
+        'HOST': 'db',  # Хост базы данных, который указывает на сервис db в Docker
+        'PORT': '5432',  # Порт
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
