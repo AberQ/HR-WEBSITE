@@ -52,9 +52,7 @@ class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
 
 
 
-    #first_name = models.CharField(_("first name"), max_length=150)
-    #last_name = models.CharField(_("last name"), max_length=150)
-    #patronymic = models.CharField(_("Отчество"), max_length=150, blank=True)
+
     email = models.EmailField(_("email address"), blank=False, unique=True)
     is_staff = models.BooleanField(
         _("staff status"),
