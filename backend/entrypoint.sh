@@ -4,6 +4,8 @@
 echo "Applying migrations..."
 python manage.py migrate
 
+echo 'Creating SuperUser...'
+python create_superuser.py
 
 # Запускаем сервер
 echo "Starting the server..."
