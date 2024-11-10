@@ -1,8 +1,9 @@
 version: '3'
+
 services:
   web:
     build: .
-    command: ./entrypoint.sh  # Запускаем наш скрипт вместо python manage.py runserver
+    command: /bin/sh -c "while ! nc -z db 5432; do sleep 2; done; ./entrypoint.sh"  # Задержка перед запуском
     volumes:
       - .:/app
     ports:
@@ -14,11 +15,10 @@ services:
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=123
       - DATABASE_HOST=db
-      - DATABASE_PORT=5432  # Указываем порт базы данных, если он не указан
+      - DATABASE_PORT=5432
+      
     depends_on:
       - db
-    # Добавим задержку перед запуском контейнера web, чтобы убедиться, что db готова
-    entrypoint: /bin/sh -c "while ! nc -z db 5432; do sleep 2; done; ./entrypoint.sh" 
 
   db:
     image: postgres:13
@@ -27,4 +27,4 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
     ports:
-      - "5432:5432" 
+      - "5432:5432"

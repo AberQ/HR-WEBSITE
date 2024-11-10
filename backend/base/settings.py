@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-_o_tg$fj^s$&@rgxj9j@21awv#(#6aytn(t!q74q%(rno+5+gq
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://c036-178-46-104-102.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://7f84-45-133-251-232.ngrok-free.app']
 
 
 # Application definition
@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'JobSite',  # Название базы данных
         'USER': 'postgres',  # Имя пользователя
         'PASSWORD': '123',  # Пароль
-        'HOST': 'db',  # Хост базы данных, который указывает на сервис db в Docker
+        'HOST': 'localhost',  # Если хочешь взаимодействовать через Docker то надо ставить 'db', а если через тестовый сервер django, то 'localhost'
         'PORT': '5432',  # Порт
     }
 }
