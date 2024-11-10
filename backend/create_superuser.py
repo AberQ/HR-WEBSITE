@@ -1,3 +1,4 @@
+#Этот файл нужен для автоматического создания пользователей, вакансий и резюме для тестирования
 import os
 import django
 from django.core.exceptions import ImproperlyConfigured
@@ -9,22 +10,32 @@ from registration.models import Employer, Applicant
 # Получаем модель пользователя
 User = get_user_model()
 
+
+#Входные данные
+admin_email = 'admin@example.com'
+admin_password = 'Test555789'
+
+employer_email = 'employer@example.com'
+employer_password = 'Test555789'
+
+applicant_email = 'applicant@example.com'
+applicant_password = 'Test555789'
+
 try:
     # Проверяем, существует ли суперпользователь с заданным email
-    if not User.objects.filter(email='egor.master2017@gmail.com').exists():
+    if not User.objects.filter(email=admin_email).exists():
         User.objects.create_superuser(
-            email='egor.master2017@gmail.com',
-            password='1'
+            email=admin_email,
+            password=admin_password
         )
-        print("Superuser created!")
+        print(f"Superuser {admin_email} created!")
     else:
-        print("Superuser already exists.")
+        print(f"Superuser {admin_email} already exists.")
     
     # Проверяем, существует ли уже работодатель с таким email
-    if not Employer.objects.filter(email='employer12345@example.com').exists():
+    if not Employer.objects.filter(email=employer_email).exists():
         # Создаем работодателя (Employer)
-        employer_email = 'employer123456@example.com'
-        employer_password = 'Buch555789'
+        
         employer = Employer.objects.create(
             email=employer_email,
             password=employer_password,
@@ -32,15 +43,14 @@ try:
             company_info='Some information about the company'
         )
         employer.save()
-        print("Employer created!")
+        print(f"Employer {employer_email} created!")
     else:
-        print("Employer with this email already exists.")
+        print(f"Employer with {employer_email} already exists.")
     
     # Проверяем, существует ли уже соискатель с таким email
-    if not Applicant.objects.filter(email='applicant12345@example.com').exists():
+    if not Applicant.objects.filter(email=applicant_email).exists():
         # Создаем соискателя (Applicant)
-        applicant_email = 'applicant123456@example.com'
-        applicant_password = 'Buch555789'
+        
         applicant = Applicant.objects.create(
             email=applicant_email,
             password=applicant_password,
@@ -49,9 +59,9 @@ try:
             patronymic='Ivanovich'
         )
         applicant.save()
-        print("Applicant created!")
+        print(f"Applicant {applicant_email} created!")
     else:
-        print("Applicant with this email already exists.")
+        print(f"fApplicant with {applicant_email} already exists.")
     
 except ImproperlyConfigured:
     print("Не удалось найти модель пользователя. Проверьте AUTH_USER_MODEL в settings.py")
