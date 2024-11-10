@@ -109,7 +109,7 @@ class Applicant(CustomUser):
     first_name = models.CharField(_("first name"), max_length=150)
     last_name = models.CharField(_("last name"), max_length=150)
     patronymic = models.CharField(_("Отчество"), max_length=150, blank=True)
-    REQUIRED_FIELDS = ['first_name', "last_mame"]
+    REQUIRED_FIELDS = ['first_name', "last_name"]
     class Meta:
         verbose_name = _("Соискатель")
         verbose_name_plural = _("Соискатели")
