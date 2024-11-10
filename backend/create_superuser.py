@@ -1,24 +1,23 @@
 import os
 import django
-from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.contrib.auth import get_user_model
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'base.settings')
 django.setup()
 
-# Получаем модель пользователя из настроек
-try:
-    User = settings.AUTH_USER_MODEL
-    CustomUser = django.apps.apps.get_model(User)
-except ImproperlyConfigured:
-    raise ImproperlyConfigured("Не удалось найти модель пользователя. Проверьте AUTH_USER_MODEL в settings.py")
+# Получаем модель пользователя
+User = get_user_model()
 
-# Проверяем, существует ли суперпользователь с заданным email
-if not CustomUser.objects.filter(email='egor.master2017@gmail.com').exists():
-    CustomUser.objects.create_superuser(
-        email='egor.master2017@gmail.com',
-        password='1',
-    )
-    print("Superuser created!")
-else:
-    print("Superuser already exists.")
+try:
+    # Проверяем, существует ли суперпользователь с заданным email
+    if not User.objects.filter(email='egor.master2017@gmail.com').exists():
+        User.objects.create_superuser(
+            email='egor.master2017@gmail.com',
+            password='1'
+        )
+        print("Superuser created!")
+    else:
+        print("Superuser already exists.")
+except ImproperlyConfigured:
+    print("Не удалось найти модель пользователя. Проверьте AUTH_USER_MODEL в settings.py")
