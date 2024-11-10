@@ -1,15 +1,12 @@
 import os
 import django
-
-# Настроим Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'base.settings')
 django.setup()
-
-# Импортируем модели
+#Эта строчка ПРИНЦИПИАЛЬНО ДОЛЖНА БЫТЬ НИЖЕ django.setup()
 from registration.models import Employer, Applicant
 
 # Создаем пользователя Employer
-employer_email = 'employer1@example.com'
+employer_email = 'employer123@example.com'
 employer_password = 'Buch555789'  # Конкретный пароль для работодателя
 employer = Employer.objects.create(
     email=employer_email,
@@ -20,7 +17,7 @@ employer = Employer.objects.create(
 employer.save()
 
 # Создаем пользователя Applicant
-applicant_email = 'applicant1@example.com'
+applicant_email = 'applicant123@example.com'
 applicant_password = 'Buch555789'  # Конкретный пароль для соискателя
 applicant = Applicant.objects.create(
     email=applicant_email,
