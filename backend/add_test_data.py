@@ -74,6 +74,42 @@ try:
         else:
             print(f"Language '{language_name}' already exists.")
     
+    # Создаем Vacancy, ссылаясь на созданного работодателя
+    if employer:
+        if not Vacancy.objects.filter(title='Junior Python Developer', created_by=employer).exists():
+            vacancy = Vacancy(
+                title='Junior Python Developer',
+                created_by=employer,  # Замените employer на корректное поле, если оно отличается
+                min_salary=50000,
+                max_salary=70000,
+                currency='RUB',
+                experience='До 1 года',
+                number_of_openings = 1,
+                city='Москва',
+                description='Описание вакансии для теста.',
+                status='Published'
+            )
+            vacancy.save()
+            print(f"Vacancy 'Junior Python Developer' created!")
+    else:
+        print(f"Vacancy 'Junior Python Developer' already exists.")
+    
+    # Создаем Resume, ссылаясь на созданного соискателя
+    if applicant:
+        if not Resume.objects.filter(title='Python Developer', applicant=applicant).exists():
+            resume = Resume(
+                desired_position='Python Developer',
+                applicant=applicant,
+                experience='Мой опыт в разработке на Python.',
+                education='Высшее образование',
+                skills='Python, Django, SQL',
+                languages=[Language.objects.get(name='Русский'), Language.objects.get(name='Английский')]
+            )
+            resume.save()
+            print(f"Resume 'Python Developer Resume' created!")
+        else:
+            print(f"Resume 'Python Developer Resume' already exists.")
+    
 
 except ImproperlyConfigured:
     print("Не удалось найти модель пользователя. Проверьте AUTH_USER_MODEL в settings.py")
