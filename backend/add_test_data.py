@@ -95,8 +95,8 @@ try:
             tech_stack_tags = TechStackTag.objects.filter(name__in=['Python', 'Дружелюбность'])
             vacancy.tech_stack_tags.set(tech_stack_tags)
             print(f"Vacancy 'Junior Python Developer' created!")
-    else:
-        print(f"Vacancy 'Junior Python Developer' already exists.")
+        else:
+            print(f"Vacancy 'Junior Python Developer' already exists.")
     
     # Создаем Resume, ссылаясь на созданного соискателя
     if applicant:
