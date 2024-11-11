@@ -139,7 +139,7 @@ class Language(models.Model):
 
         
 class Resume(models.Model):
-
+# Валидатор для work_experience, чтобы вводились только цифры
     def validate_numeric_experience(value):
         if not value.isdigit():
             raise ValidationError(('Опыт работы должен содержать только цифры.'))
@@ -189,5 +189,5 @@ class Resume(models.Model):
     def __str__(self):
         return f"{self.candidate_name} - {self.desired_position}"
 
-# Валидатор для work_experience, чтобы вводились только цифры
+
     
