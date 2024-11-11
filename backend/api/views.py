@@ -151,8 +151,15 @@ class VacancyListAPIView(generics.ListAPIView):
             )
         ]
     )
+
+
+
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
+    
+
+
+    
 class VacancyDetailAPIView(generics.RetrieveAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializer
@@ -183,8 +190,12 @@ class VacancyDetailAPIView(generics.RetrieveAPIView):
             )
         ]
     )
+
+
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
+
+
 
 class VacancyListByEmployerAPIView(generics.ListAPIView):
     serializer_class = VacancySerializer
