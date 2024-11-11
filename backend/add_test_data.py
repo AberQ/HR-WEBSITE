@@ -107,12 +107,16 @@ try:
                 specialization='Программирование',
                 degree='bachelor',  # Пример степени
                 work_experience='1',  # Пример опыта в годах
-                #skills=set(["Python", "Дружелюбность",]),  # Пример пустого списка навыков
-                #languages=["Русский", "Английский",],  # Пример пустого списка языков
+                
                 portfolio_link='https://github.com/AberQ/HR-WEBSITE',  # Пример пустой ссылки на портфолио
                 applicant=applicant  # Ссылаемся на Applicant
             )
             resume.save()
+            #Присвоение тэгов и языков к резюме
+            tech_stack_tags = TechStackTag.objects.filter(name__in=['Python', 'Дружелюбность'])
+            languages = Language.objects.filter(name__in=['Русский', 'Английский'])
+            resume.skills.set(tech_stack_tags)
+            resume.languages.set(languages)
             print(f"Resume for {resume_candidate_name} created!")
         else:
             resume = Resume.objects.get(candidate_name=resume_candidate_name)
