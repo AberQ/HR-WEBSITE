@@ -86,10 +86,14 @@ try:
                 experience='До 1 года',
                 number_of_openings = 1,
                 city='Москва',
+                address='Улица фронтендеров, 69',
                 description='Описание вакансии для теста.',
                 status='Published'
             )
             vacancy.save()
+            # Присвоение навыков к вакансии
+            tech_stack_tags = TechStackTag.objects.filter(name__in=['Python', 'Дружелюбность'])
+            vacancy.tech_stack_tags.set(tech_stack_tags)
             print(f"Vacancy 'Junior Python Developer' created!")
     else:
         print(f"Vacancy 'Junior Python Developer' already exists.")
