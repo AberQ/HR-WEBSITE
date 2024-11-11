@@ -20,8 +20,8 @@ from rest_framework import permissions
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import Vacancy
-
-
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 def home(request):
     return render(request, 'home.html')
@@ -71,13 +71,120 @@ class VacancyListAPIView(generics.ListAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializer
     #permission_classes = [permissions.IsAuthenticated]
-
+    
+    @swagger_auto_schema(
+        operation_description="Получить список всех вакансий.",
+        responses={
+            status.HTTP_200_OK: openapi.Response(
+                description="Список всех вакансий",
+                examples={
+                    'application/json': [
+                        {
+  "id": 1,
+  "title": "Junior Python Developer",
+  "description": "Описание вакансии для теста.",
+  "work_conditions": {
+    "format": "onsite",
+    "employment_type": "full_time"
+  },
+  "salary": {
+    "min_salary": 50000,
+    "max_salary": 70000,
+    "currency": "RUB"
+  },
+  "location": {
+    "city": "Москва",
+    "address": "Улица фронтендеров, 69"
+  },
+  "number_of_openings": 1,
+  "skills": {
+    "experience": "До 1 года",
+    "tech_stack_tags": [
+      "Python",
+      "Дружелюбность"
+    ]
+  },
+  "publication_date": "2024-11-11T17:52:37.802532+03:00",
+  "status": "published",
+  "created_by": 2
+},
+{
+  "id": 2,
+  "title": "Frontend",
+  "description": "Описание вакансии для теста.",
+  "work_conditions": {
+    "format": "hybrid",
+    "employment_type": "part_time"
+  },
+  "salary": {
+    "min_salary": 50000,
+    "max_salary": 70000,
+    "currency": "RUB"
+  },
+  "location": {
+    "city": "Москва",
+    "address": "Улица фронтендеров, 69"
+  },
+  "number_of_openings": 1,
+  "skills": {
+    "experience": "До 1 года",
+    "tech_stack_tags": [
+      "Python",
+      "Дружелюбность"
+    ]
+  },
+  "publication_date": "2024-11-11T17:52:37.802532+03:00",
+  "status": "archived",
+  "created_by": 2
+}
+                    ]
+                }
+            ),
+            status.HTTP_400_BAD_REQUEST: 'Неверный запрос. Пожалуйста, проверьте параметры.',
+        },
+        parameters=[
+            openapi.Parameter(
+                'search', openapi.IN_QUERY, description="Поиск по заголовку вакансии", type=openapi.TYPE_STRING
+            ),
+            openapi.Parameter(
+                'city', openapi.IN_QUERY, description="Фильтрация по городу", type=openapi.TYPE_STRING
+            )
+        ]
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 class VacancyDetailAPIView(generics.RetrieveAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializer
     lookup_field = 'id'  # Используем 'id' для поиска вакансии по ID
-
-
+    @swagger_auto_schema(
+        operation_description="Получить детальную информацию о вакансии по ID.",
+        responses={
+            status.HTTP_200_OK: openapi.Response(
+                description="Детальная информация о вакансии",
+                examples={
+                    'application/json': {
+                        "id": 1,
+                        "title": "Разработчик Python",
+                        "min_salary": 50000,
+                        "max_salary": 70000,
+                        "currency": "RUB",
+                        "description": "Разработка web-приложений",
+                        "city": "Москва",
+                        "status": "Опубликована"
+                    }
+                }
+            ),
+            status.HTTP_404_NOT_FOUND: 'Вакансия с таким ID не найдена.',
+        },
+        parameters=[
+            openapi.Parameter(
+                'id', openapi.IN_PATH, description="ID вакансии", type=openapi.TYPE_INTEGER
+            )
+        ]
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
 class VacancyListByEmployerAPIView(generics.ListAPIView):
     serializer_class = VacancySerializer
