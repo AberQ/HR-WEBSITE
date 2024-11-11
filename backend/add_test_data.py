@@ -96,19 +96,27 @@ try:
     
     # Создаем Resume, ссылаясь на созданного соискателя
     if applicant:
-        if not Resume.objects.filter(title='Python Developer', applicant=applicant).exists():
+        resume_candidate_name = 'Тест Тестов'
+        if not Resume.objects.filter(candidate_name=resume_candidate_name).exists():
             resume = Resume(
-                desired_position='Python Developer',
-                applicant=applicant,
-                experience='Мой опыт в разработке на Python.',
-                education='Высшее образование',
-                skills='Python, Django, SQL',
-                languages=[Language.objects.get(name='Русский'), Language.objects.get(name='Английский')]
+                desired_position='Junior Python Developer',
+                candidate_name=resume_candidate_name,
+                email=applicant_email,
+                phone='+7 123 456 7890',
+                city='Москва',
+                specialization='Программирование',
+                degree='bachelor',  # Пример степени
+                work_experience='1',  # Пример опыта в годах
+                #skills=set(["Python", "Дружелюбность",]),  # Пример пустого списка навыков
+                #languages=["Русский", "Английский",],  # Пример пустого списка языков
+                portfolio_link='https://github.com/AberQ/HR-WEBSITE',  # Пример пустой ссылки на портфолио
+                applicant=applicant  # Ссылаемся на Applicant
             )
             resume.save()
-            print(f"Resume 'Python Developer Resume' created!")
+            print(f"Resume for {resume_candidate_name} created!")
         else:
-            print(f"Resume 'Python Developer Resume' already exists.")
+            resume = Resume.objects.get(candidate_name=resume_candidate_name)
+            print(f"Resume for {resume_candidate_name} already exists.")
     
 
 except ImproperlyConfigured:
