@@ -324,11 +324,81 @@ class VacancyCreateAPIView(generics.CreateAPIView):
     queryset = Vacancy.objects.all()
     serializer_class = VacancySerializerForCreateAPI
     permission_classes = [permissions.IsAuthenticated]
-    
+
+    @swagger_auto_schema(
+        operation_description="Создание новой вакансии. Требуется авторизация работодателем",
+        request_body=VacancySerializerForCreateAPI,
+        responses={
+            status.HTTP_201_CREATED: openapi.Response(
+                description="Вакансия успешно создана.",
+                examples={
+                    "application/json": {
+                        "id": 1,
+                        "title": "Junior Python Developer",
+                        "description": "Описание вакансии для теста.",
+                        "work_conditions": {
+                            "format": "onsite",
+                            "employment_type": "full_time"
+                        },
+                        "salary": {
+                            "min_salary": 50000,
+                            "max_salary": 70000,
+                            "currency": "RUB"
+                        },
+                        "location": {
+                            "city": "Москва",
+                            "address": "Улица фронтендеров, 69"
+                        },
+                        "number_of_openings": 1,
+                        "skills": {
+                            "experience": "До 1 года",
+                            "tech_stack_tags": [
+                                "Python",
+                                "Дружелюбность"
+                            ]
+                        },
+                        "publication_date": "2024-11-12T09:04:51.269465+03:00",
+                        "status": "Published"
+                        
+                    }
+                }
+            ),
+            status.HTTP_400_BAD_REQUEST: openapi.Response(
+                description="Некорректные данные для создания вакансии.",
+                examples={
+                    "application/json": {
+                        "error": "Некорректные данные для создания вакансии."
+                    }
+                }
+            ),
+            status.HTTP_401_UNAUTHORIZED: openapi.Response(
+                description="Неавторизованный доступ.",
+                examples={
+                    "application/json": {
+                        "detail": "Учетные данные не были предоставлены."
+                    }
+                }
+            ),
+            status.HTTP_403_FORBIDDEN: openapi.Response(
+                description="Доступ запрещен (не являетесь работодателем).",
+                examples={
+                    "application/json": {
+                        "detail": "Вы не являетесь работодателем и не можете создавать вакансии."
+                    }
+                }
+            )
+        }
+    )
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
     def perform_create(self, serializer):
-        # Убедитесь, что текущий пользователь является экземпляром Employer
+        # Проверка на роль пользователя
+        if not hasattr(self.request.user, 'employer'):
+            raise PermissionDenied("Вы не являетесь работодателем и не можете создавать вакансии.")
+        
         employer = Employer.objects.get(email=self.request.user.email)
-        serializer.save(created_by=employer)  # Устанавливаем создателя вакансии
+        serializer.save(created_by=employer)
 
 
 
