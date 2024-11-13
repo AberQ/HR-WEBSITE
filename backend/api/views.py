@@ -73,7 +73,7 @@ class VacancyListAPIView(generics.ListAPIView):
     #permission_classes = [permissions.IsAuthenticated]
     
     @swagger_auto_schema(
-        operation_description="Получить список всех вакансий.",
+        operation_description="Получить список всех вакансий. Авторизация не требуется",
         responses={
             status.HTTP_200_OK: openapi.Response(
                 description="Список всех вакансий",
@@ -165,7 +165,7 @@ class VacancyDetailAPIView(generics.RetrieveAPIView):
     serializer_class = VacancySerializer
     lookup_field = 'id'  # Используем 'id' для поиска вакансии по ID
     @swagger_auto_schema(
-        operation_description="Получить детальную информацию о вакансии по ID.",
+        operation_description="Получить детальную информацию о вакансии по ID. Авторизация не требуется",
         responses={
             status.HTTP_200_OK: openapi.Response(
                 description="Детальная информация о вакансии",
@@ -223,14 +223,99 @@ class VacancyListByEmployerAPIView(generics.ListAPIView):
         employer_id = self.kwargs['employer_id']
         return Vacancy.objects.filter(created_by__id=employer_id)
 
+    @swagger_auto_schema(
+        operation_description="Получить список вакансий для конкретного работодателя по его ID. Авторизация не требуется",
+        responses={
+            200: openapi.Response(
+                description="Список вакансий работодателя",
+                examples={
+                    "application/json": [
+                        {
+                            "id": 1,
+                            "title": "Junior Python Developer",
+                            "description": "Описание вакансии для теста.",
+                            "work_conditions": {
+                                "format": "onsite",
+                                "employment_type": "full_time"
+                            },
+                            "salary": {
+                                "min_salary": 50000,
+                                "max_salary": 70000,
+                                "currency": "RUB"
+                            },
+                            "location": {
+                                "city": "Москва",
+                                "address": "Улица фронтендеров, 69"
+                            },
+                            "number_of_openings": 1,
+                            "skills": {
+                                "experience": "До 1 года",
+                                "tech_stack_tags": [
+                                    "Python",
+                                    "Дружелюбность"
+                                ]
+                            },
+                            "publication_date": "2024-11-12T09:04:51.269465+03:00",
+                            "status": "Published",
+                            "created_by": 2
+                        },
+                        {
+                            "id": 2,
+                            "title": "Backend Developer",
+                            "description": "Нету ID",
+                            "work_conditions": {
+                                "format": "remote",
+                                "employment_type": "full_time"
+                            },
+                            "salary": {
+                                "min_salary": 60000,
+                                "max_salary": 120000,
+                                "currency": "RUB"
+                            },
+                            "location": {
+                                "city": "Санкт-Петербург",
+                                "address": "ул. Невский проспект, д. 15"
+                            },
+                            "number_of_openings": 3,
+                            "skills": {
+                                "experience": "1-3",
+                                "tech_stack_tags": []
+                            },
+                            "publication_date": "2024-11-13T16:49:03.977315+03:00",
+                            "status": "checking",
+                            "created_by": 2
+                        },
+                        # Добавьте сюда другие вакансии, если нужно
+                    ]
+                }
+            ),
+            404: openapi.Response(
+                description="Работодатель не найден.",
+                examples={
+                    "application/json": {"error": "Работодатель не найден."}
+                }
+            )
+        },
+        manual_parameters=[
+            openapi.Parameter(
+                'employer_id',
+                openapi.IN_PATH,
+                description="ID работодателя",
+                type=openapi.TYPE_INTEGER
+            )
+        ]
+    )
     def get(self, request, *args, **kwargs):
         employer_id = self.kwargs['employer_id']
-        try:
-            vacancies = self.get_queryset()
-            serializer = self.get_serializer(vacancies, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        except Employer.DoesNotExist:
+        
+        # Проверяем, существует ли работодатель с данным id
+        if not Employer.objects.filter(id=employer_id).exists():
             return Response({'error': 'Работодатель не найден.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Если работодатель найден, возвращаем вакансии
+        vacancies = self.get_queryset()
+        serializer = self.get_serializer(vacancies, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 
