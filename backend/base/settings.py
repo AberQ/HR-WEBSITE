@@ -149,6 +149,7 @@ SWAGGER_SETTINGS = {
             'type': 'apiKey',
             'in': 'header',
             'name': 'Authorization',  # Указываем, что токен будет передаваться в заголовке Authorization
+            'description': 'ВВОДИТЬ ТОКЕН МОЖНО ТОЛЬКО В ФОРМАТЕ: Bearer <твой токен>',
         }
     }
 }
