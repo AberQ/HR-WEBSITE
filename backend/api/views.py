@@ -171,15 +171,34 @@ class VacancyDetailAPIView(generics.RetrieveAPIView):
                 description="Детальная информация о вакансии",
                 examples={
                     'application/json': {
-                        "id": 1,
-                        "title": "Разработчик Python",
-                        "min_salary": 50000,
-                        "max_salary": 70000,
-                        "currency": "RUB",
-                        "description": "Разработка web-приложений",
-                        "city": "Москва",
-                        "status": "Опубликована"
-                    }
+  "id": 1,
+  "title": "Junior Python Developer",
+  "description": "Описание вакансии для теста.",
+  "work_conditions": {
+    "format": "onsite",
+    "employment_type": "full_time"
+  },
+  "salary": {
+    "min_salary": 50000,
+    "max_salary": 70000,
+    "currency": "RUB"
+  },
+  "location": {
+    "city": "Москва",
+    "address": "Улица фронтендеров, 69"
+  },
+  "number_of_openings": 1,
+  "skills": {
+    "experience": "До 1 года",
+    "tech_stack_tags": [
+      "Python",
+      "Дружелюбность"
+    ]
+  },
+  "publication_date": "2024-11-11T17:52:37.802532+03:00",
+  "status": "published",
+  "created_by": 2
+}
                 }
             ),
             status.HTTP_404_NOT_FOUND: 'Вакансия с таким ID не найдена.',
