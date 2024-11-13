@@ -65,7 +65,7 @@ try:
             print(f"TechStackTag '{tag_name}' already exists.")
     
     # Добавляем Languages
-    languages = ['Русский', 'Английский']
+    languages = ['Русский', 'Английский', "Арабский", "Китайский"]
     for language_name in languages:
         if not Language.objects.filter(name=language_name).exists():
             language = Language(name=language_name)
