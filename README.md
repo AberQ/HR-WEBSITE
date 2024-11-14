@@ -1,6 +1,6 @@
 Веб-сайт для размещения вакансий и откликов.
 
-Стек: Django, Django Rest Framework, React, PostgreSQL, Docker, Redis, RabbitMQ и Git.
+Стек: Django, Django Rest Framework, React, PostgreSQL, ![image](https://github.com/user-attachments/assets/8f70247f-a3af-4210-bd69-70c0d5f3dc66), Redis, RabbitMQ и Git.
 
 Статус выполнения плана проектирования:
 
