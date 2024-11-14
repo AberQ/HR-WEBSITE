@@ -172,7 +172,7 @@ class Resume(models.Model):
     work_experience = models.TextField(verbose_name='Опыт работы', validators=[validate_numeric_experience])  # Валидатор для чисел
 
     # Навыки
-    skills = models.ManyToManyField('TechStackTag', blank=True, verbose_name='Навыки')  # Связь с TechStackTag
+    tech_stack_tags = models.ManyToManyField('TechStackTag', blank=True, verbose_name='Навыки')  # Связь с TechStackTag
 
     # Дополнительные разделы
     languages = models.ManyToManyField(Language, blank=True, verbose_name='Языки')
