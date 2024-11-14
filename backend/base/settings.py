@@ -82,11 +82,11 @@ WSGI_APPLICATION = 'base.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'JobSite',  # Название базы данных
-        'USER': 'postgres',  # Имя пользователя
-        'PASSWORD': '123',  # Пароль
+        'NAME': 'JobSite',  
+        'USER': 'postgres',  
+        'PASSWORD': '123',  
         'HOST': 'db',  # Если хочешь взаимодействовать через Docker то надо ставить 'db', а если через тестовый сервер django, то 'localhost'
-        'PORT': '5432',  # Порт
+        'PORT': '5432',  
     }
 }
 

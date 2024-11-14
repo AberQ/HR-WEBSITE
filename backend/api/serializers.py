@@ -67,7 +67,7 @@ class VacancySerializer(serializers.ModelSerializer):
 
 
 class ResumeSerializer(serializers.ModelSerializer):
-    skills = serializers.SerializerMethodField()
+    tech_stack_tags = serializers.SerializerMethodField()
     languages = serializers.SerializerMethodField()
 
     class Meta:
@@ -81,15 +81,15 @@ class ResumeSerializer(serializers.ModelSerializer):
             'city',
             'degree',
             'work_experience',
-            'languages',         # Указано после work_experience
-            'skills',            # Указано после languages
+            'languages',         
+            'tech_stack_tags',            
             'portfolio_link',
             'updated_at',
 
         ]
 
-    def get_skills(self, obj):
-        return [skill.name for skill in obj.skills.all()]
+    def get_tech_stack_tags(self, obj):
+        return [skill.name for skill in obj.tech_stack_tags.all()]
 
     def get_languages(self, obj):
         return [language.name for language in obj.languages.all()]
