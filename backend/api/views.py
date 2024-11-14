@@ -333,34 +333,32 @@ class VacancyCreateAPIView(generics.CreateAPIView):
                 description="Вакансия успешно создана.",
                 examples={
                     "application/json": {
-                        "id": 1,
-                        "title": "Junior Python Developer",
-                        "description": "Описание вакансии для теста.",
-                        "work_conditions": {
-                            "format": "onsite",
-                            "employment_type": "full_time"
-                        },
-                        "salary": {
-                            "min_salary": 50000,
-                            "max_salary": 70000,
-                            "currency": "RUB"
-                        },
-                        "location": {
-                            "city": "Москва",
-                            "address": "Улица фронтендеров, 69"
-                        },
-                        "number_of_openings": 1,
-                        "skills": {
-                            "experience": "До 1 года",
-                            "tech_stack_tags": [
-                                "Python",
-                                "Дружелюбность"
-                            ]
-                        },
-                        "publication_date": "2024-11-12T09:04:51.269465+03:00",
-                        "status": "Published"
-                        
-                    }
+    "title": "Junior Python Developer",
+    "description": "Описание вакансии для теста.",
+    "work_conditions": {
+      "format": "onsite",
+      "employment_type": "full_time"
+    },
+    "salary": {
+      "min_salary": 50000,
+      "max_salary": 70000,
+      "currency": "RUB"
+    },
+    "location": {
+        "city": "Москва",
+        "address": "Улица фронтендеров, 69"
+    },
+    "number_of_openings": 1,
+    "skills": {
+      "experience": "0",
+      "tech_stack_tags": [
+        "Python",
+        "Дружелюбность"
+      ]
+    },
+    "publication_date": "2024-11-12T09:04:51.269465+03:00",
+    "status": "published"
+  }
                 }
             ),
             status.HTTP_400_BAD_REQUEST: openapi.Response(
