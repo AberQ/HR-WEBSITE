@@ -55,14 +55,55 @@ try:
         print(f"Applicant with {applicant_email} already exists.")
     
     # Добавляем TechStackTags
-    tech_stack_tags = ['Python', 'Дружелюбность']
-    for tag_name in tech_stack_tags:
+    tech_stack_tags_list = [
+    'JavaScript', 'HTML/CSS', 'React', 'Node.js', 'Angular', 'Vue.js', 'TypeScript', 
+    'Swift', 'Kotlin', 'C#', '.NET', 'Ruby on Rails', 'PHP', 'MySQL', 'PostgreSQL', 
+    'MongoDB', 'AWS', 'Azure', 'Google Cloud Platform', 'DevOps', 'Docker', 
+    'Kubernetes', 'Jenkins', 'Git', 'GitHub Actions', 'API Design', 'RESTful API', 
+    'GraphQL', 'Django', 'Flask', 'FastAPI', 'TensorFlow', 'PyTorch', 'Machine Learning', 
+    'Data Analysis', 'Big Data', 'Hadoop', 'Spark', 'Cybersecurity', 'Penetration Testing', 
+    'Ethical Hacking', 'Blockchain', 'Smart Contracts', 'IoT (Internet of Things)', 
+    'SQL Optimization', 'Web Scraping', 'UX/UI Design', 'Figma', 'Adobe XD', 'AR/VR Development', 
+    'Бариста', 'Официант', 'Горничная', 'Администратор гостиницы', 'Приготовление коктейлей', 
+    'Уборка помещений', 'Сервировка стола', 'Работа с клиентами', 'Консультация по меню', 
+    'Прием заказов', 'Работа с POS-терминалами', 'Знание санитарных норм', 
+    'Устранение конфликтных ситуаций', 'Организация мероприятий', 'Навыки хостес', 
+    'Проведение инвентаризации', 'Работа с кассой', 'Навыки ведения учета', 'Знание ассортимента', 
+    'Подготовка к банкетам', 'Ответственность', 'Трудолюбие', 'Пунктуальность', 'Эмпатия', 
+    'Коммуникабельность', 'Стрессоустойчивость', 'Умение работать в команде', 
+    'Лидерские качества', 'Самоорганизация', 'Гибкость', 'Креативность', 
+    'Навыки решения проблем', 'Дисциплина', 'Целеустремленность', 'Тайм-менеджмент', 
+    'Обучаемость', 'Внимательность к деталям', 'Презентабельность', 'Уверенность в себе', 
+    'Проактивность', 'Холодные звонки', 'Работа с возражениями', 'CRM-системы', 
+    'Проведение переговоров', 'Прямые продажи', 'Анализ рынка', 'Формирование КП', 
+    'Заключение сделок', 'Продажа услуг', 'Продажа B2B', 'Продажа B2C', 'Навыки презентации', 
+    'Составление скриптов продаж', 'Управление продажами', 'Планирование продаж', 
+    'Консультирование клиентов', 'Презентация товара', 'Мерчендайзинг', 'Поиск клиентов', 
+    'Ведение отчетности', 'Вождение автомобиля', 'Категория A', 'Категория B', 
+    'Категория C', 'Категория D', 'Управление спецтехникой', 'Логистика', 'Доставка грузов', 
+    'Упаковка грузов', 'Работа с GPS', 'Навыки механика', 'Обслуживание автомобилей', 
+    'Технический осмотр', 'Замена масел', 'Шиномонтаж', 'Работа с автопарком', 'Навигация', 
+    'Ведение маршрутов', 'Навыки грузоперевозок', 'Безопасное вождение', 'Управление проектами', 
+    'Организация встреч', 'Делопроизводство', 'Маркетинг', 'SEO', 'SMM', 'Работа с Google Analytics', 
+    'Копирайтинг', 'Редактирование текстов', 'Переводы', 'Бухгалтерия', 'Финансовый анализ', 
+    'Работа с Excel', 'Ведение переговоров', 'Обучение персонала', 'Работа с детьми', 
+    'Ремонт бытовой техники', 'Электромонтаж', 'Сантехника', 'Малярные работы', 
+    'Работа с чертежами', 'Навыки дизайна интерьеров', 'Организация логистики', 'Работа в 1С', 
+    'Разработка презентаций', 'Актерское мастерство', 'Навыки оратора', 'Фотография', 
+    'Видеомонтаж', 'Управление дроном', 'Наставничество', 'Навыки делового общения', 
+    'Умение вести дебаты', 'Навыки убеждения', 'Решение конфликтов', 'Этикет', 'Грамотность', 
+    'Умение мотивировать', 'Навыки дипломатии', 'Честность', 'Оптимизм', 'Самоконтроль', 
+    'Логическое мышление', 'Позитивное мышление', 'Харизма', 'Ориентация на результат', 
+    'Ориентация на клиента', 'Саморазвитие', 'Интуиция', 'Чувство юмора', 'Python', 'Дружелюбность',
+]
+    for tag_name in tech_stack_tags_list:
         if not TechStackTag.objects.filter(name=tag_name).exists():
             tag = TechStackTag(name=tag_name)
             tag.save()
-            print(f"TechStackTag '{tag_name}' created!")
-        else:
-            print(f"TechStackTag '{tag_name}' already exists.")
+            #print(f"TechStackTag '{tag_name}' created!")
+        #else:
+            #print(f"TechStackTag '{tag_name}' already exists.")
+    print("Навыки готовы")
     
     # Добавляем Languages
     languages = [
@@ -76,9 +117,10 @@ try:
         if not Language.objects.filter(name=language_name).exists():
             language = Language(name=language_name)
             language.save()
-            print(f"Language '{language_name}' created!")
-        else:
-            print(f"Language '{language_name}' already exists.")
+            #print(f"Language '{language_name}' created!")
+        #else:
+            #print(f"Language '{language_name}' already exists.")
+    print("Языки готовы")
     
     # Создаем Vacancy, ссылаясь на созданного работодателя
     if employer:
@@ -98,8 +140,8 @@ try:
             )
             vacancy.save()
             # Присвоение навыков к вакансии
-            tech_stack_tags = TechStackTag.objects.filter(name__in=['Python', 'Дружелюбность'])
-            vacancy.tech_stack_tags.set(tech_stack_tags)
+            tech_stack_tags_list = TechStackTag.objects.filter(name__in=['Python', 'Дружелюбность'])
+            vacancy.tech_stack_tags.set(tech_stack_tags_list)
             print(f"Vacancy 'Junior Python Developer' created!")
         else:
             print(f"Vacancy 'Junior Python Developer' already exists.")
@@ -123,9 +165,9 @@ try:
             )
             resume.save()
             #Присвоение тэгов и языков к резюме
-            tech_stack_tags = TechStackTag.objects.filter(name__in=['Python', 'Дружелюбность'])
+            tech_stack_tags_list = TechStackTag.objects.filter(name__in=['Python', 'Дружелюбность'])
             languages = Language.objects.filter(name__in=['Русский', 'Английский'])
-            resume.skills.set(tech_stack_tags)
+            resume.tech_stack_tags.set(tech_stack_tags_list)
             resume.languages.set(languages)
             print(f"Resume for {resume_candidate_name} created!")
         else:
