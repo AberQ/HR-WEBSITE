@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Применяем миграции
+echo "Checking migrations..."
+python manage.py makemigrations
 echo "Applying migrations..."
 python manage.py migrate
 
