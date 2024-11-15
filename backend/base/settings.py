@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -152,4 +152,10 @@ SWAGGER_SETTINGS = {
             'description': 'ВВОДИТЬ ТОКЕН МОЖНО ТОЛЬКО В ФОРМАТЕ: Bearer <твой токен>',
         }
     }
+}
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),  # Время жизни access токена (по умолчанию 5 минут)
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Время жизни refresh токена (по умолчанию 1 день)
+    'ROTATE_REFRESH_TOKENS': False,  # Если True, будет генерироваться новый refresh token при каждом обновлении
+    'BLACKLIST_AFTER_ROTATION': True,  # Если True, предыдущий refresh token будет помещен в черный список
 }
