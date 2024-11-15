@@ -10,8 +10,11 @@ User = get_user_model()
 from rest_framework import serializers
 from .models import Vacancy, TechStackTag, WorkConditionTag
 class SkillsSerializer(serializers.ModelSerializer):
-    # Добавляем метод для получения названий тегов
-    tech_stack_tags = serializers.SerializerMethodField()
+    tech_stack_tags = serializers.SlugRelatedField(
+        queryset=TechStackTag.objects.all(), 
+        many=True, 
+        slug_field='name'
+    )
 
     class Meta:
         model = Vacancy
