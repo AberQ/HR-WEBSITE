@@ -4,8 +4,11 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-# serializers.py
 
+class TechStackTagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TechStackTag
+        fields = ['id', 'name']  
     
 from rest_framework import serializers
 from .models import Vacancy, TechStackTag, WorkConditionTag

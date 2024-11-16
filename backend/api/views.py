@@ -447,6 +447,13 @@ class VacancyUpdateView(generics.UpdateAPIView):
 #API для резюме
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+
+class TechStackTagCreateView(CreateAPIView):
+    queryset = TechStackTag.objects.all()
+    serializer_class = TechStackTagSerializer
+
+
 class UserResumeListView(generics.ListAPIView):
     serializer_class = ResumeSerializer
     permission_classes = [permissions.IsAuthenticated]
