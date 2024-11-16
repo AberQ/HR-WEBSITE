@@ -501,6 +501,69 @@ class UserResumeListView(generics.ListAPIView):
     serializer_class = ResumeSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    @swagger_auto_schema(
+        operation_summary="Получить список резюме текущего пользователя",
+        operation_description=(
+            "Эндпоинт возвращает список резюме текущего пользователя, если он является аппликантом. "
+            "Пользователи с другим типом учетной записи получат ошибку доступа."
+        ),
+        responses={
+            status.HTTP_200_OK: openapi.Response(
+                description="Список резюме текущего пользователя",
+                examples={
+                    "application/json": [
+                        {
+                            "id": 1,
+                            "desired_position": "Junior Python Developer",
+                            "candidate_name": "Тест Тестов",
+                            "email": "applicant@example.com",
+                            "phone": "+7 123 456 7890",
+                            "city": "Москва",
+                            "degree": "bachelor",
+                            "work_experience": "1",
+                            "languages": ["Русский", "Английский"],
+                            "tech_stack_tags": ["Python", "Дружелюбность"],
+                            "portfolio_link": "https://github.com/AberQ/HR-WEBSITE",
+                            "updated_at": "2024-11-15T21:40:43.281945+03:00"
+                        }
+                    ]
+                }
+            ),
+            status.HTTP_403_FORBIDDEN: openapi.Response(
+                "Доступ запрещен",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "detail": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Сообщение об ошибке доступа",
+                            example="Только пользователи-аппликанты могут просматривать резюме."
+                        )
+                    }
+                )
+            ),
+            status.HTTP_401_UNAUTHORIZED: openapi.Response(
+                "Неавторизованный доступ",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "detail": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Сообщение об ошибке авторизации",
+                            example="Учетные данные не были предоставлены."
+                        )
+                    }
+                )
+            )
+        }
+    )
+    def get(self, request, *args, **kwargs):
+        """
+        Возвращает список резюме текущего пользователя.
+        """
+        return super().get(request, *args, **kwargs)
+    
+
     def get_queryset(self):
         # Получаем текущего пользователя из запроса
         user = self.request.user
