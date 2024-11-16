@@ -14,7 +14,7 @@ class WorkConditionTag(models.Model):
         return self.name
 
 class TechStackTag(models.Model):
-    name = models.CharField(max_length=100, unique=True, verbose_name='Навык')
+    name = models.CharField(max_length=100, unique=True, verbose_name="Название")
 
     class Meta:
         verbose_name = 'Навык'
