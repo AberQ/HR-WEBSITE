@@ -449,9 +449,52 @@ class VacancyUpdateView(generics.UpdateAPIView):
 
 
 
+from rest_framework import status
+
 class TechStackTagCreateView(CreateAPIView):
     queryset = TechStackTag.objects.all()
     serializer_class = TechStackTagSerializer
+
+    @swagger_auto_schema(
+        operation_summary="Создать новый тег технологического стека",
+        operation_description=(
+            "Эндпоинт для создания нового тега технологического стека. "
+            "Необходимо отправить данные в формате JSON, указав название тега.Авторизация не нужна"
+        ),
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "name": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description="Название тега (например, 'Python', 'Django')",
+                    example="Django"
+                ),
+            },
+            required=["name"]
+        ),
+        responses={
+            status.HTTP_201_CREATED: openapi.Response(
+                "Тег успешно создан",
+                TechStackTagSerializer
+            ),
+            status.HTTP_400_BAD_REQUEST: openapi.Response(
+                "Ошибка валидации данных",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "error": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Описание ошибки",
+                            example="Поле 'name' не может быть пустым."
+                        )
+                    }
+                )
+            )
+        }
+    )
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
 
 
 class UserResumeListView(generics.ListAPIView):
