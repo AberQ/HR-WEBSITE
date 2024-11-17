@@ -934,7 +934,6 @@ class ResumeUpdateAPIView(UpdateAPIView):
                 examples={
                     "application/json": 
                     {
-                        "id": 11,
                         "desired_position": "Говновоз",
                         "candidate_name": "Егорик",
                         "email": "egor.master2018@gmail.com",
@@ -942,15 +941,10 @@ class ResumeUpdateAPIView(UpdateAPIView):
                         "city": "упккпкпке",
                         "degree": "speciality",
                         "work_experience": "2",
-                        "languages": [
-                            "Русский"
-                        ],
-                        "tech_stack_tags": [
-                            "Django"
-                        ],
-                        "portfolio_link": "https://chatgpt.com/c/672ca8da-dc0c-8011-85a9-218f304bc81a",
-                        "updated_at": "2024-11-17T23:56:32.532357+03:00",
-                        "applicant": 3
+                        "languages": ["Русский"],
+                        "tech_stack_tags": ["Django"],
+                        "content": "geg",
+                        "portfolio_link": "https://chatgpt.com/c/672ca8da-dc0c-8011-85a9-218f304bc81a"
                     }
                 }
             ),
@@ -986,6 +980,7 @@ class ResumeUpdateAPIView(UpdateAPIView):
             "candidate_name",
             "email",
             "phone",
+            'content',
             "city",
             "degree",
             'languages',         

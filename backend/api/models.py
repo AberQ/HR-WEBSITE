@@ -157,7 +157,7 @@ class Resume(models.Model):
     email = models.EmailField(verbose_name='Email')
     phone = models.CharField(max_length=20, verbose_name='Телефон')
     city = models.CharField(max_length=255, verbose_name='Город')
-    
+    content = models.CharField(max_length=255, verbose_name='Описание резюме')
     # Специальность
     specialization = models.CharField(max_length=255, verbose_name='Специальность')  # Новое поле перед степенью
 
