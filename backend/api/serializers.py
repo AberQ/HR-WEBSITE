@@ -79,7 +79,7 @@ class ResumeSerializer(serializers.ModelSerializer):
     languages = serializers.SlugRelatedField(
         many=True, queryset=Language.objects.all(), slug_field='name'
     )
-
+    applicant = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Resume
         fields = [
