@@ -104,8 +104,8 @@ class ResumeSerializer(serializers.ModelSerializer):
 
 
 class ResumeSerializerForCreateAPI(serializers.ModelSerializer):
-    tech_stack_tags = serializers.SerializerMethodField()
-    languages = serializers.SerializerMethodField()
+    tech_stack_tags = serializers.ListField(child=serializers.CharField(), write_only=True)
+    languages = serializers.ListField(child=serializers.CharField(), write_only=True)
 
     class Meta:
         model = Resume
@@ -122,9 +122,27 @@ class ResumeSerializerForCreateAPI(serializers.ModelSerializer):
             'tech_stack_tags',            
             'portfolio_link',
             'updated_at',
-            
-
         ]
+
+    def create(self, validated_data):
+        # Извлекаем списки для languages и tech_stack_tags
+        languages_data = validated_data.pop('languages', [])
+        tech_stack_tags_data = validated_data.pop('tech_stack_tags', [])
+
+        # Создаем экземпляр резюме
+        resume = Resume.objects.create(**validated_data)
+
+        # Создаем и связываем языки с резюме
+        for language_name in languages_data:
+            language, created = Language.objects.get_or_create(name=language_name)
+            resume.languages.add(language)
+
+        # Создаем и связываем теги навыков с резюме
+        for tech_stack_tag_name in tech_stack_tags_data:
+            tech_stack_tag, created = TechStackTag.objects.get_or_create(name=tech_stack_tag_name)
+            resume.tech_stack_tags.add(tech_stack_tag)
+
+        return resume
 
     def get_tech_stack_tags(self, obj):
         return [skill.name for skill in obj.tech_stack_tags.all()]
