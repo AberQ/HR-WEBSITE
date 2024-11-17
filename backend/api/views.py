@@ -690,7 +690,26 @@ class UserResumeCreateView(generics.CreateAPIView):
         try:
             # Проверка, что пользователь является экземпляром Applicant
             applicant = Applicant.objects.get(email=self.request.user.email)
-            serializer.save(applicant=applicant)
+            
+            # Сохраняем резюме с данными пользователя
+            resume = serializer.save(applicant=applicant)
+
+            # Обрабатываем ManyToMany поля вручную
+            # Для languages
+            if 'languages' in self.request.data:
+                languages = self.request.data.get('languages', [])
+                for language_name in languages:
+                    language, created = Language.objects.get_or_create(name=language_name)
+                    resume.languages.add(language)
+
+            # Для tech_stack_tags
+            if 'tech_stack_tags' in self.request.data:
+                tech_stack_tags = self.request.data.get('tech_stack_tags', [])
+                for tag_name in tech_stack_tags:
+                    tech_stack_tag, created = TechStackTag.objects.get_or_create(name=tag_name)
+                    resume.tech_stack_tags.add(tech_stack_tag)
+
+            resume.save()
         except ObjectDoesNotExist:
             raise ValidationError("Только соискатели могут создавать резюме.")
         
