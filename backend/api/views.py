@@ -686,6 +686,153 @@ class UserResumeCreateView(generics.CreateAPIView):
     serializer_class = ResumeSerializerForCreateAPI
     permission_classes = [permissions.IsAuthenticated]
 
+
+    @swagger_auto_schema(
+        operation_summary="Создать новое резюме для текущего пользователя",
+        operation_description=(
+            "Эндпоинт позволяет зарегистрированному пользователю создать резюме, "
+            "если он является соискателем. Другие типы учетных записей получат ошибку."
+        ),
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=["desired_position", "email", "phone", "city"],
+            properties={
+                "desired_position": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description="Желаемая должность",
+                    example="Test"
+                ),
+                "candidate_name": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description="Имя кандидата",
+                    example="Егорик"
+                ),
+                "email": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    format=openapi.FORMAT_EMAIL,
+                    description="Email соискателя",
+                    example="applicant@example.com"
+                ),
+                "phone": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description="Телефон соискателя",
+                    example="+7 123 456 7890"
+                ),
+                "city": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description="Город проживания",
+                    example="Москва"
+                ),
+                "degree": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description="Уровень образования",
+                    example="bachelor"
+                ),
+                "work_experience": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description="Опыт работы в годах",
+                    example="2"
+                ),
+                "languages": openapi.Schema(
+                    type=openapi.TYPE_ARRAY,
+                    items=openapi.Items(type=openapi.TYPE_STRING),
+                    description="Языки, которыми владеет соискатель",
+                    example=["Русский", "Английский"]
+                ),
+                "tech_stack_tags": openapi.Schema(
+                    type=openapi.TYPE_ARRAY,
+                    items=openapi.Items(type=openapi.TYPE_STRING),
+                    description="Навыки из технического стека",
+                    example=["Python", "Django"]
+                ),
+                "portfolio_link": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    format=openapi.FORMAT_URI,
+                    description="Ссылка на портфолио",
+                    example="https://github.com/AberQ/HR-WEBSITE"
+                ),
+            }
+        ),
+        responses={
+            status.HTTP_201_CREATED: openapi.Response(
+                description="Резюме успешно создано",
+                examples={
+                    "application/json": 
+                    {
+                    "id": 25,
+                    "desired_position": "Test",
+                    "candidate_name": "Егорик",
+                    "email": "egor.master2018@gmail.com",
+                    "phone": "+79001882129",
+                    "city": "уеуе",
+                    "degree": "speciality",
+                    "work_experience": "1",
+                    "languages": [
+                        "Русский",
+                        "Английский"
+                    ],
+                    "tech_stack_tags": [
+                        "Python",
+                        "Q&A",
+                        "Мойка полов",
+                        "Доброжелательность"
+                    ],
+                    "portfolio_link": "https://chatgpt.com/c/672ca8da-dc0c-8011-85a9-218f304bc81a",
+                    "updated_at": "2024-11-17T13:31:59.781674+03:00"
+                }
+
+                }
+            ),
+            status.HTTP_400_BAD_REQUEST: openapi.Response(
+                description="Ошибка валидации",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "detail": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Сообщение об ошибке",
+                            example="Только соискатели могут создавать резюме."
+                        )
+                    }
+                )
+            ),
+            status.HTTP_401_UNAUTHORIZED: openapi.Response(
+                description="Неавторизованный доступ",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "detail": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Сообщение об ошибке авторизации",
+                            example="Учетные данные не были предоставлены."
+                        )
+                    }
+                )
+            ),
+            status.HTTP_403_FORBIDDEN: openapi.Response(
+                description="Запрещено",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "detail": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Сообщение об ошибке",
+                            example="Только соискатели могут создавать резюме."
+                        )
+                    }
+                )
+            )
+        }
+    )
+        
+    def post(self, request, *args, **kwargs):
+        """
+        Обработчик POST-запроса для создания резюме.
+        """
+        return super().post(request, *args, **kwargs)
+
+
+
     def perform_create(self, serializer):
         try:
             # Проверка, что пользователь является экземпляром Applicant
