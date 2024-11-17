@@ -931,11 +931,21 @@ class ResumeUpdateAPIView(UpdateAPIView):
             status.HTTP_200_OK: openapi.Response(
                 description="Резюме успешно обновлено.",
                 examples={
-                    "application/json": {
-                        "id": 1,
-                        "title": "Новый заголовок",
-                        "content": "Обновленное содержание",
-                        "applicant": 2
+                    "application/json": 
+                    {
+                        "id": 4,
+                        "desired_position": "Test",
+                        "candidate_name": "Егорик",
+                        "email": "egor.master2018@gmail.com",
+                        "phone": "+79001882129",
+                        "city": "уерке",
+                        "degree": "speciality",
+                        "work_experience": "1",
+                        "languages": [],
+                        "tech_stack_tags": [],
+                        "portfolio_link": "https://chatgpt.com/c/672ca8da-dc0c-8011-85a9-218f304bc81a",
+                        "updated_at": "2024-11-17T21:16:14.316416+03:00",
+                        "applicant": 3
                     }
                 }
             ),
