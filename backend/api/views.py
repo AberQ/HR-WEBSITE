@@ -73,6 +73,7 @@ class VacancyListAPIView(generics.ListAPIView):
     #permission_classes = [permissions.IsAuthenticated]
     
     @swagger_auto_schema(
+        operation_summary="Получить список всех вакансий на сайте",
         operation_description="Получить список всех вакансий. Авторизация не требуется",
         responses={
             status.HTTP_200_OK: openapi.Response(
@@ -165,6 +166,7 @@ class VacancyDetailAPIView(generics.RetrieveAPIView):
     serializer_class = VacancySerializer
     lookup_field = 'id'  # Используем 'id' для поиска вакансии по ID
     @swagger_auto_schema(
+        operation_summary="Получить детальную информацию о вакансии",
         operation_description="Получить детальную информацию о вакансии по ID. Авторизация не требуется",
         responses={
             status.HTTP_200_OK: openapi.Response(
@@ -224,6 +226,7 @@ class VacancyListByEmployerAPIView(generics.ListAPIView):
         return Vacancy.objects.filter(created_by__id=employer_id)
 
     @swagger_auto_schema(
+        operation_summary="Получить список вакансий работодателя",
         operation_description="Получить список вакансий для конкретного работодателя по его ID. Авторизация не требуется",
         responses={
             200: openapi.Response(
@@ -326,7 +329,8 @@ class VacancyCreateAPIView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     @swagger_auto_schema(
-        operation_description="Создание новой вакансии. Требуется авторизация работодателем",
+        operation_summary="Создать вакансию",
+        operation_description="Создание новой вакансии. Требуется авторизация работодателем. Автор вакансии определяется автоматически по JWT-токену",
         request_body=VacancySerializerForCreateAPI,
         responses={
             status.HTTP_201_CREATED: openapi.Response(
