@@ -923,7 +923,55 @@ class ResumeUpdateAPIView(UpdateAPIView):
     serializer_class = ResumeSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-
+    @swagger_auto_schema(
+        operation_summary="Обновление резюме со всеми полями",
+        operation_description="Позволяет авторизованному пользователю обновить свое резюме. Попытка обновить чужое резюме вызовет ошибку."
+                               "Указывать нужно ВСЕ поля. ",
+        request_body=ResumeSerializer,
+        responses={
+            status.HTTP_200_OK: openapi.Response(
+                description="Резюме успешно обновлено.",
+                examples={
+                    "application/json": 
+                    {
+                        "id": 11,
+                        "desired_position": "Говновоз",
+                        "candidate_name": "Егорик",
+                        "email": "egor.master2018@gmail.com",
+                        "phone": "+79001882129",
+                        "city": "упккпкпке",
+                        "degree": "speciality",
+                        "work_experience": "2",
+                        "languages": [
+                            "Русский"
+                        ],
+                        "tech_stack_tags": [
+                            "Django"
+                        ],
+                        "portfolio_link": "https://chatgpt.com/c/672ca8da-dc0c-8011-85a9-218f304bc81a",
+                        "updated_at": "2024-11-17T23:56:32.532357+03:00",
+                        "applicant": 3
+                    }
+                }
+            ),
+            status.HTTP_400_BAD_REQUEST: openapi.Response(
+                description="Ошибка в данных запроса.",
+                examples={
+                    "application/json": {
+                        "title": ["Это поле не может быть пустым."]
+                    }
+                }
+            ),
+            status.HTTP_401_UNAUTHORIZED: openapi.Response(
+                description="Ошибка авторизации. Пользователь не авторизован.",
+                examples={"application/json": {"detail": "Учетные данные не были предоставлены."}},
+            ),
+            status.HTTP_403_FORBIDDEN: openapi.Response(
+                description="Запрещено. Попытка обновить чужое резюме.",
+                examples={"application/json": {"detail": "Вы не можете редактировать чужое резюме."}},
+            ),
+        },
+    )
 
 
 
