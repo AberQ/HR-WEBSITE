@@ -530,7 +530,8 @@ class UserResumeListView(generics.ListAPIView):
             "Дружелюбность"
         ],
         "portfolio_link": "https://github.com/AberQ/HR-WEBSITE",
-        "updated_at": "2024-11-15T21:40:43.281945+03:00"
+        "updated_at": "2024-11-15T21:40:43.281945+03:00",
+        "applicant": 3
     },
     {
         "id": 2,
@@ -544,7 +545,8 @@ class UserResumeListView(generics.ListAPIView):
         "languages": [],
         "tech_stack_tags": [],
         "portfolio_link": "https://github.com/AberQ/HR-WEBSITE",
-        "updated_at": "2024-11-17T11:54:39.818647+03:00"
+        "updated_at": "2024-11-17T11:54:39.818647+03:00",
+        "applicant": 3
     }
 ]
                 }
