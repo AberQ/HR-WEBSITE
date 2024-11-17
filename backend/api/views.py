@@ -512,21 +512,41 @@ class UserResumeListView(generics.ListAPIView):
                 description="Список резюме текущего пользователя",
                 examples={
                     "application/json": [
-                        {
-                            "id": 1,
-                            "desired_position": "Junior Python Developer",
-                            "candidate_name": "Тест Тестов",
-                            "email": "applicant@example.com",
-                            "phone": "+7 123 456 7890",
-                            "city": "Москва",
-                            "degree": "bachelor",
-                            "work_experience": "1",
-                            "languages": ["Русский", "Английский"],
-                            "tech_stack_tags": ["Python", "Дружелюбность"],
-                            "portfolio_link": "https://github.com/AberQ/HR-WEBSITE",
-                            "updated_at": "2024-11-15T21:40:43.281945+03:00"
-                        }
-                    ]
+    {
+        "id": 1,
+        "desired_position": "Junior Python Developer",
+        "candidate_name": "Тест Тестов",
+        "email": "applicant@example.com",
+        "phone": "+7 123 456 7890",
+        "city": "Москва",
+        "degree": "bachelor",
+        "work_experience": "1",
+        "languages": [
+            "Русский",
+            "Английский"
+        ],
+        "tech_stack_tags": [
+            "Python",
+            "Дружелюбность"
+        ],
+        "portfolio_link": "https://github.com/AberQ/HR-WEBSITE",
+        "updated_at": "2024-11-15T21:40:43.281945+03:00"
+    },
+    {
+        "id": 2,
+        "desired_position": "Test",
+        "candidate_name": "Егорик",
+        "email": "egor.master2018@gmail.com",
+        "phone": "+79001882129",
+        "city": "уеуе",
+        "degree": "speciality",
+        "work_experience": "1",
+        "languages": [],
+        "tech_stack_tags": [],
+        "portfolio_link": "https://github.com/AberQ/HR-WEBSITE",
+        "updated_at": "2024-11-17T11:54:39.818647+03:00"
+    }
+]
                 }
             ),
             status.HTTP_403_FORBIDDEN: openapi.Response(
