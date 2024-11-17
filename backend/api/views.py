@@ -1006,6 +1006,46 @@ class ResumeUpdateAPIView(UpdateAPIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+
+
+    @swagger_auto_schema(
+        operation_summary="Обновление части полей в резюме",
+        operation_description="Позволяет авторизованному пользователю обновить свое резюме. Попытка обновить чужое резюме вызовет ошибку."
+                               "Можно указывать только желаемые поля. ",
+        request_body=ResumeSerializer,
+        responses={
+            status.HTTP_200_OK: openapi.Response(
+                description="Резюме успешно обновлено.",
+                examples={
+                    "application/json": {
+                        "id": 1,
+                        "title": "Новый заголовок",
+                        "content": "Обновленное содержание",
+                        "applicant": 2
+                    }
+                }
+            ),
+            status.HTTP_400_BAD_REQUEST: openapi.Response(
+                description="Ошибка в данных запроса.",
+                examples={
+                    "application/json": {
+                        "title": ["Это поле не может быть пустым."]
+                    }
+                }
+            ),
+            status.HTTP_401_UNAUTHORIZED: openapi.Response(
+                description="Ошибка авторизации. Пользователь не авторизован.",
+                examples={"application/json": {"detail": "Учетные данные не были предоставлены."}},
+            ),
+            status.HTTP_403_FORBIDDEN: openapi.Response(
+                description="Запрещено. Попытка обновить чужое резюме.",
+                examples={"application/json": {"detail": "Вы не можете редактировать чужое резюме."}},
+            ),
+        },
+    )
 
     def patch(self, request, *args, **kwargs):
         """
