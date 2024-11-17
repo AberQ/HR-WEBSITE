@@ -154,7 +154,7 @@ SWAGGER_SETTINGS = {
     }
 }
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),  # Время жизни access токена 
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Время жизни access токена 
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Время жизни refresh токена 
     'ROTATE_REFRESH_TOKENS': False,  # Если True, будет генерироваться новый refresh token при каждом обновлении
     'BLACKLIST_AFTER_ROTATION': True,  # Если True, предыдущий refresh token будет помещен в черный список

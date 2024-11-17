@@ -73,8 +73,12 @@ class VacancySerializer(serializers.ModelSerializer):
 
 
 class ResumeSerializer(serializers.ModelSerializer):
-    tech_stack_tags = serializers.SerializerMethodField()
-    languages = serializers.SerializerMethodField()
+    tech_stack_tags = serializers.SlugRelatedField(
+        many=True, queryset=TechStackTag.objects.all(), slug_field='name'
+    )
+    languages = serializers.SlugRelatedField(
+        many=True, queryset=Language.objects.all(), slug_field='name'
+    )
 
     class Meta:
         model = Resume
@@ -92,7 +96,6 @@ class ResumeSerializer(serializers.ModelSerializer):
             'portfolio_link',
             'updated_at',
             'applicant',
-
         ]
 
     def get_tech_stack_tags(self, obj):
