@@ -100,6 +100,38 @@ class ResumeSerializer(serializers.ModelSerializer):
 
     def get_languages(self, obj):
         return [language.name for language in obj.languages.all()]
+    
+
+
+class ResumeSerializerForCreateAPI(serializers.ModelSerializer):
+    tech_stack_tags = serializers.SerializerMethodField()
+    languages = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Resume
+        fields = [
+            'id',
+            'desired_position',
+            'candidate_name',
+            'email',
+            'phone',
+            'city',
+            'degree',
+            'work_experience',
+            'languages',         
+            'tech_stack_tags',            
+            'portfolio_link',
+            'updated_at',
+            
+
+        ]
+
+    def get_tech_stack_tags(self, obj):
+        return [skill.name for skill in obj.tech_stack_tags.all()]
+
+    def get_languages(self, obj):
+        return [language.name for language in obj.languages.all()]
+
 
 
 class VacancySerializerForCreateAPI(serializers.ModelSerializer):

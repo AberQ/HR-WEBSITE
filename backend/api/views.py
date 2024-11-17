@@ -634,7 +634,7 @@ class UserResumeDetailView(generics.RetrieveAPIView):
 
 class UserResumeCreateView(generics.CreateAPIView):
     queryset = Resume.objects.all()
-    serializer_class = ResumeSerializer
+    serializer_class = ResumeSerializerForCreateAPI
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
