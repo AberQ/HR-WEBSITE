@@ -870,6 +870,40 @@ class ResumeDeleteAPIView(generics.DestroyAPIView):
     serializer_class = ResumeSerializer
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(
+        operation_summary="Удаление резюме",
+        operation_description="Позволяет авторизованному пользователю удалить свое резюме. "
+                               "Попытка удалить чужое резюме вызовет ошибку.",
+        responses={
+            status.HTTP_204_NO_CONTENT: openapi.Response(
+                description="Резюме успешно удалено.",
+            ),
+            status.HTTP_401_UNAUTHORIZED: openapi.Response(
+                description="Ошибка авторизации. Пользователь не авторизован.",
+                examples={"application/json": {"detail": "Учетные данные не были предоставлены."}},
+            ),
+            status.HTTP_403_FORBIDDEN: openapi.Response(
+                description="Запрещено. Попытка удалить чужое резюме.",
+                examples={"application/json": {"detail": "Вы не можете удалить чужое резюме."}},
+            ),
+        },
+    )
+    def delete(self, request, *args, **kwargs):
+        # Получаем объект, который нужно удалить
+        instance = self.get_object()
+
+        # Преобразуем request.user в объект Applicant, если это необходимо
+        applicant = instance.applicant
+
+        # Если email в запросе отличается от email в applicant, запрещаем удаление
+        if applicant.email != request.user.email:
+            raise PermissionDenied("Вы не можете удалить чужое резюме.")
+
+        # Удаляем резюме
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
     def perform_destroy(self, instance):
         # Преобразуем request.user в объект Applicant, если это необходимо
         applicant = instance.applicant
