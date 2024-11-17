@@ -599,6 +599,28 @@ class UserResumeDetailView(generics.RetrieveAPIView):
     serializer_class = ResumeSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    @swagger_auto_schema(
+        operation_summary="Получить резюме текущего пользователя",
+        operation_description=(
+            "Возвращает информацию о резюме текущего пользователя, "
+            "если пользователь является аппликантом."
+        ),
+        responses={
+            status.HTTP_200_OK: ResumeSerializer,  # Успешный ответ
+            status.HTTP_403_FORBIDDEN: openapi.Response(
+                description="Доступ запрещен. Только пользователи-аппликанты могут просматривать резюме."
+            ),
+            status.HTTP_401_UNAUTHORIZED: openapi.Response(
+                description="Необходима авторизация."
+            ),
+        },
+    )
+    def get(self, request, *args, **kwargs):
+        """
+        Обработчик GET-запроса для получения резюме.
+        """
+        return super().get(request, *args, **kwargs)
+    
     def get_queryset(self):
         # Получаем текущего пользователя
         user = self.request.user

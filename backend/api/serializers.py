@@ -91,6 +91,7 @@ class ResumeSerializer(serializers.ModelSerializer):
             'tech_stack_tags',            
             'portfolio_link',
             'updated_at',
+            'applicant',
 
         ]
 
