@@ -245,63 +245,73 @@ class VacancyListByEmployerAPIView(generics.ListAPIView):
                 description="Список вакансий работодателя",
                 examples={
                     "application/json": [
-                        {
-                            "id": 1,
-                            "title": "Junior Python Developer",
-                            "description": "Описание вакансии для теста.",
-                            "work_conditions": {
-                                "format": "onsite",
-                                "employment_type": "full_time"
-                            },
-                            "salary": {
-                                "min_salary": 50000,
-                                "max_salary": 70000,
-                                "currency": "RUB"
-                            },
-                            "location": {
-                                "city": "Москва",
-                                "address": "Улица фронтендеров, 69"
-                            },
-                            "number_of_openings": 1,
-                            "skills": {
-                                "experience": "До 1 года",
-                                "tech_stack_tags": [
-                                    "Python",
-                                    "Дружелюбность"
-                                ]
-                            },
-                            "publication_date": "2024-11-12T09:04:51.269465+03:00",
-                            "status": "Published",
-                            "created_by": 2
-                        },
-                        {
-                            "id": 2,
-                            "title": "Backend Developer",
-                            "description": "Нету ID",
-                            "work_conditions": {
-                                "format": "remote",
-                                "employment_type": "full_time"
-                            },
-                            "salary": {
-                                "min_salary": 60000,
-                                "max_salary": 120000,
-                                "currency": "RUB"
-                            },
-                            "location": {
-                                "city": "Санкт-Петербург",
-                                "address": "ул. Невский проспект, д. 15"
-                            },
-                            "number_of_openings": 3,
-                            "skills": {
-                                "experience": "1-3",
-                                "tech_stack_tags": []
-                            },
-                            "publication_date": "2024-11-13T16:49:03.977315+03:00",
-                            "status": "checking",
-                            "created_by": 2
-                        },
-                        # Добавьте сюда другие вакансии, если нужно
-                    ]
+    {
+        "id": 1,
+        "title": "Junior Python Developer",
+        "description": "Описание вакансии для теста.",
+        "work_conditions": {
+            "format": "onsite",
+            "employment_type": "full_time"
+        },
+        "salary": {
+            "min_salary": 50000,
+            "max_salary": 70000,
+            "currency": "RUB"
+        },
+        "location": {
+            "city": "Москва",
+            "address": "Улица фронтендеров, 69"
+        },
+        "number_of_openings": 1,
+        "skills": {
+            "experience": "До 1 года",
+            "tech_stack_tags": [
+                "Python",
+                "Дружелюбность"
+            ],
+            "languages": [
+                "Русский",
+                "Английский"
+            ]
+        },
+        "publication_date": "2024-11-19T21:06:28.901506+03:00",
+        "status": "Published",
+        "created_by": 2
+    },
+    {
+        "id": 2,
+        "title": "Junior Python Developer",
+        "description": "Описание вакансии для теста.",
+        "work_conditions": {
+            "format": "onsite",
+            "employment_type": "full_time"
+        },
+        "salary": {
+            "min_salary": 50000,
+            "max_salary": 70000,
+            "currency": "RUB"
+        },
+        "location": {
+            "city": "Москва",
+            "address": "Улица фронтендеров, 69"
+        },
+        "number_of_openings": 1,
+        "skills": {
+            "experience": "0",
+            "tech_stack_tags": [
+                "Python",
+                "Дружелюбность"
+            ],
+            "languages": [
+                "Русский",
+                "Английский"
+            ]
+        },
+        "publication_date": "2024-11-19T22:36:10.027244+03:00",
+        "status": "published",
+        "created_by": 2
+    }
+]
                 }
             ),
             404: openapi.Response(
