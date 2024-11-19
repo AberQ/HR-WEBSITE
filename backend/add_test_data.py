@@ -156,6 +156,7 @@ try:
                 desired_position='Junior Python Developer',
                 candidate_name=resume_candidate_name,
                 email=applicant_email,
+                content = "Контент",
                 phone='+7 123 456 7890',
                 city='Москва',
                 experience='До 1 года',

@@ -48,6 +48,10 @@ class SalarySerializer(serializers.ModelSerializer):
         model = Vacancy
         fields = ['min_salary', 'max_salary', 'currency']
 
+class ResumeContacts(serializers.ModelSerializer):
+    class Meta:
+        model = Resume
+        fields = ['email', "phone"]
 class VacancySerializer(serializers.ModelSerializer):
     skills = SkillsSerializer(source='*')
     work_conditions = WorkConditionsSerializer(source='*')
@@ -83,15 +87,15 @@ class ResumeSerializer(serializers.ModelSerializer):
     skills = SkillsSerializer(source='*')
     applicant = serializers.PrimaryKeyRelatedField(read_only=True)
     location = LocationSerializerForResume(source="*")
+    contacts = ResumeContacts(source="*")
     class Meta:
         model = Resume
         fields = [
             'id',
             'desired_position',
             'candidate_name',
-            'email',
-            'phone',
             'content',
+            'contacts',
             'location',
             'degree',
             'skills',           
@@ -111,15 +115,15 @@ class ResumeSerializer(serializers.ModelSerializer):
 class ResumeSerializerForCreateAPI(serializers.ModelSerializer):
     skills = SkillsSerializer(source='*')
     location = LocationSerializerForResume(source="*")
+    contacts = ResumeContacts(source="*")
     class Meta:
         model = Resume
         fields = [
             'id',
             'desired_position',
             'candidate_name',
-            'email',
-            'phone',
             'content',
+            'contacts',
             'location',
             'degree',
             'skills',    
