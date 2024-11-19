@@ -80,65 +80,73 @@ class VacancyListAPIView(generics.ListAPIView):
                 description="Список всех вакансий",
                 examples={
                     'application/json': [
-                        {
-  "id": 1,
-  "title": "Junior Python Developer",
-  "description": "Описание вакансии для теста.",
-  "work_conditions": {
-    "format": "onsite",
-    "employment_type": "full_time"
-  },
-  "salary": {
-    "min_salary": 50000,
-    "max_salary": 70000,
-    "currency": "RUB"
-  },
-  "location": {
-    "city": "Москва",
-    "address": "Улица фронтендеров, 69"
-  },
-  "number_of_openings": 1,
-  "skills": {
-    "experience": "До 1 года",
-    "tech_stack_tags": [
-      "Python",
-      "Дружелюбность"
-    ]
-  },
-  "publication_date": "2024-11-11T17:52:37.802532+03:00",
-  "status": "published",
-  "created_by": 2
-},
-{
-  "id": 2,
-  "title": "Frontend",
-  "description": "Описание вакансии для теста.",
-  "work_conditions": {
-    "format": "hybrid",
-    "employment_type": "part_time"
-  },
-  "salary": {
-    "min_salary": 50000,
-    "max_salary": 70000,
-    "currency": "RUB"
-  },
-  "location": {
-    "city": "Москва",
-    "address": "Улица фронтендеров, 69"
-  },
-  "number_of_openings": 1,
-  "skills": {
-    "experience": "До 1 года",
-    "tech_stack_tags": [
-      "Python",
-      "Дружелюбность"
-    ]
-  },
-  "publication_date": "2024-11-11T17:52:37.802532+03:00",
-  "status": "archived",
-  "created_by": 2
-}
-                    ]
+    {
+        "id": 1,
+        "title": "Junior Python Developer",
+        "description": "Описание вакансии для теста.",
+        "work_conditions": {
+            "format": "onsite",
+            "employment_type": "full_time"
+        },
+        "salary": {
+            "min_salary": 50000,
+            "max_salary": 70000,
+            "currency": "RUB"
+        },
+        "location": {
+            "city": "Москва",
+            "address": "Улица фронтендеров, 69"
+        },
+        "number_of_openings": 1,
+        "skills": {
+            "experience": "До 1 года",
+            "tech_stack_tags": [
+                "Python",
+                "Дружелюбность"
+            ],
+            "languages": [
+                "Русский",
+                "Английский"
+            ]
+        },
+        "publication_date": "2024-11-19T21:06:28.901506+03:00",
+        "status": "Published",
+        "created_by": 2
+    },
+    {
+        "id": 2,
+        "title": "Junior Python Developer",
+        "description": "Описание вакансии для теста.",
+        "work_conditions": {
+            "format": "onsite",
+            "employment_type": "full_time"
+        },
+        "salary": {
+            "min_salary": 50000,
+            "max_salary": 70000,
+            "currency": "RUB"
+        },
+        "location": {
+            "city": "Москва",
+            "address": "Улица фронтендеров, 69"
+        },
+        "number_of_openings": 1,
+        "skills": {
+            "experience": "0",
+            "tech_stack_tags": [
+                "Python",
+                "Дружелюбность"
+            ],
+            "languages": [
+                "Русский",
+                "Английский"
+            ]
+        },
+        "publication_date": "2024-11-19T22:36:10.027244+03:00",
+        "status": "published",
+        "created_by": 2
+    }
+]
                 }
             ),
             status.HTTP_400_BAD_REQUEST: 'Неверный запрос. Пожалуйста, проверьте параметры.',
@@ -173,33 +181,37 @@ class VacancyDetailAPIView(generics.RetrieveAPIView):
                 description="Детальная информация о вакансии",
                 examples={
                     'application/json': {
-  "id": 1,
-  "title": "Junior Python Developer",
-  "description": "Описание вакансии для теста.",
-  "work_conditions": {
-    "format": "onsite",
-    "employment_type": "full_time"
-  },
-  "salary": {
-    "min_salary": 50000,
-    "max_salary": 70000,
-    "currency": "RUB"
-  },
-  "location": {
-    "city": "Москва",
-    "address": "Улица фронтендеров, 69"
-  },
-  "number_of_openings": 1,
-  "skills": {
-    "experience": "До 1 года",
-    "tech_stack_tags": [
-      "Python",
-      "Дружелюбность"
-    ]
-  },
-  "publication_date": "2024-11-11T17:52:37.802532+03:00",
-  "status": "published",
-  "created_by": 2
+    "id": 1,
+    "title": "Junior Python Developer",
+    "description": "Описание вакансии для теста.",
+    "work_conditions": {
+        "format": "onsite",
+        "employment_type": "full_time"
+    },
+    "salary": {
+        "min_salary": 50000,
+        "max_salary": 70000,
+        "currency": "RUB"
+    },
+    "location": {
+        "city": "Москва",
+        "address": "Улица фронтендеров, 69"
+    },
+    "number_of_openings": 1,
+    "skills": {
+        "experience": "До 1 года",
+        "tech_stack_tags": [
+            "Python",
+            "Дружелюбность"
+        ],
+        "languages": [
+            "Русский",
+            "Английский"
+        ]
+    },
+    "publication_date": "2024-11-19T21:06:28.901506+03:00",
+    "status": "Published",
+    "created_by": 2
 }
                 }
             ),
