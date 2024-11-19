@@ -142,6 +142,8 @@ try:
             # Присвоение навыков к вакансии
             tech_stack_tags_list = TechStackTag.objects.filter(name__in=['Python', 'Дружелюбность'])
             vacancy.tech_stack_tags.set(tech_stack_tags_list)
+            languages = Language.objects.filter(name__in=['Русский', 'Английский'])
+            vacancy.languages.set(languages)
             print(f"Vacancy 'Junior Python Developer' created!")
         else:
             print(f"Vacancy 'Junior Python Developer' already exists.")
@@ -156,9 +158,10 @@ try:
                 email=applicant_email,
                 phone='+7 123 456 7890',
                 city='Москва',
+                experience='До 1 года',
                 specialization='Программирование',
                 degree='bachelor',  # Пример степени
-                work_experience='1',  # Пример опыта в годах
+                
                 
                 portfolio_link='https://github.com/AberQ/HR-WEBSITE',  # Пример пустой ссылки на портфолио
                 applicant=applicant  # Ссылаемся на Applicant
