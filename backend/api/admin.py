@@ -7,7 +7,7 @@ class VacancyAdmin(admin.ModelAdmin):
     list_display = ('title', 'city', 'min_salary', 'max_salary', 'currency', 'experience', 'number_of_openings', 'publication_date', 'status', 'format', 'employment_type')
     search_fields = ('title', 'city', 'description')
     list_filter = ('currency', 'city', 'experience', 'publication_date', 'status', 'format', 'employment_type')
-    filter_horizontal = ('tech_stack_tags',)  # Оставляем только для tech_stack_tags
+    filter_horizontal = ('tech_stack_tags', 'languages')  # Оставляем только для tech_stack_tags
 
     # Добавление пользовательского сообщения при ошибке валидации
     def save_model(self, request, obj, form, change):

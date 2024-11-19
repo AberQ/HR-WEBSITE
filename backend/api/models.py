@@ -3,6 +3,15 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from registration.models import *
+class Language(models.Model):
+    name = models.CharField(max_length=50, verbose_name='Язык')
+
+    def __str__(self):
+        return self.name
+    class Meta:
+        verbose_name = 'Язык'
+        verbose_name_plural = 'Языки'
+
 class WorkConditionTag(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name='Условие работы')
 
@@ -85,6 +94,7 @@ class Vacancy(models.Model):
     number_of_openings = models.PositiveIntegerField(verbose_name='Количество вакантных мест')
     description = models.TextField(verbose_name='Описание')
     tech_stack_tags = models.ManyToManyField('TechStackTag', blank=True, verbose_name='Навыки')
+    languages = models.ManyToManyField(Language, blank=True, verbose_name='Языки')
     employment_type = models.CharField(
         max_length=20, 
         choices=WORK_CONDITION_CHOICES, 
@@ -127,14 +137,6 @@ class Vacancy(models.Model):
         return f"{self.title} - {self.created_by.company_name}"  # Отображаем название вакансии и название компании
 
 
-class Language(models.Model):
-    name = models.CharField(max_length=50, verbose_name='Язык')
-
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name = 'Язык'
-        verbose_name_plural = 'Языки'
 
 
         
