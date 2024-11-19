@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from .models import *
 from django.contrib.auth import get_user_model
-
+from rest_framework import serializers
+from .models import Vacancy, TechStackTag, WorkConditionTag
 User = get_user_model()
 
 
@@ -10,18 +11,19 @@ class TechStackTagSerializer(serializers.ModelSerializer):
         model = TechStackTag
         fields = ['id', 'name']  
     
-from rest_framework import serializers
-from .models import Vacancy, TechStackTag, WorkConditionTag
+
 class SkillsSerializer(serializers.ModelSerializer):
     tech_stack_tags = serializers.SlugRelatedField(
         queryset=TechStackTag.objects.all(), 
         many=True, 
         slug_field='name'
     )
-
+    languages = serializers.SlugRelatedField(
+        many=True, queryset=Language.objects.all(), slug_field='name'
+    )
     class Meta:
         model = Vacancy
-        fields = ['experience', 'tech_stack_tags']
+        fields = ['experience', 'tech_stack_tags', 'languages']
 
     def get_tech_stack_tags(self, obj):
         # Получаем все теги и возвращаем их названия
@@ -184,12 +186,13 @@ class VacancySerializerForCreateAPI(serializers.ModelSerializer):
         # Валидация и создание новой вакансии
         tech_stack_tags = validated_data.pop('tech_stack_tags', [])
         employment_type = validated_data.pop('employment_type', [])
-
+        languages = validated_data.pop('languages', [])
         vacancy = Vacancy.objects.create(**validated_data)
 
         # Устанавливаем многие ко многим (если необходимо)
         vacancy.tech_stack_tags.set(tech_stack_tags)
         vacancy.employment_type = employment_type  # Установите правильное поле для условий работы
+        vacancy.languages.set(languages)
         vacancy.save()
 
         return vacancy
