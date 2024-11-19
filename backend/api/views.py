@@ -753,7 +753,7 @@ class UserResumeCreateView(generics.CreateAPIView):
         ),
         request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
-        required=["desired_position", "contacts", "location"],
+        required=["desired_position", "contacts", "location", "content", 'degree', 'skills', 'candidate_name'],
         properties={
             "desired_position": openapi.Schema(
                 type=openapi.TYPE_STRING,
@@ -772,6 +772,7 @@ class UserResumeCreateView(generics.CreateAPIView):
             ),
             "contacts": openapi.Schema(
                 type=openapi.TYPE_OBJECT,
+                required=["email", "phone"],
                 properties={
                     "email": openapi.Schema(
                         type=openapi.TYPE_STRING,
@@ -789,6 +790,7 @@ class UserResumeCreateView(generics.CreateAPIView):
             ),
             "location": openapi.Schema(
                 type=openapi.TYPE_OBJECT,
+                required=["city"],
                 properties={
                     "city": openapi.Schema(
                         type=openapi.TYPE_STRING,
