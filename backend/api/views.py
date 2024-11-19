@@ -752,65 +752,88 @@ class UserResumeCreateView(generics.CreateAPIView):
             "если он является соискателем. Другие типы учетных записей получат ошибку."
         ),
         request_body=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            required=["desired_position", "email", "phone", "city"],
-            properties={
-                "desired_position": openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    description="Желаемая должность",
-                    example="Test"
-                ),
-                "candidate_name": openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    description="Имя кандидата",
-                    example="Егорик"
-                ),
-                "email": openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    format=openapi.FORMAT_EMAIL,
-                    description="Email соискателя",
-                    example="applicant@example.com"
-                ),
-                "phone": openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    description="Телефон соискателя",
-                    example="+7 123 456 7890"
-                ),
-                "city": openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    description="Город проживания",
-                    example="Москва"
-                ),
-                "degree": openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    description="Уровень образования",
-                    example="bachelor"
-                ),
-                "work_experience": openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    description="Опыт работы в годах",
-                    example="2"
-                ),
-                "languages": openapi.Schema(
-                    type=openapi.TYPE_ARRAY,
-                    items=openapi.Items(type=openapi.TYPE_STRING),
-                    description="Языки, которыми владеет соискатель",
-                    example=["Русский", "Английский"]
-                ),
-                "tech_stack_tags": openapi.Schema(
-                    type=openapi.TYPE_ARRAY,
-                    items=openapi.Items(type=openapi.TYPE_STRING),
-                    description="Навыки из технического стека",
-                    example=["Python", "Django"]
-                ),
-                "portfolio_link": openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    format=openapi.FORMAT_URI,
-                    description="Ссылка на портфолио",
-                    example="https://github.com/AberQ/HR-WEBSITE"
-                ),
-            }
-        ),
+        type=openapi.TYPE_OBJECT,
+        required=["desired_position", "contacts", "location"],
+        properties={
+            "desired_position": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Желаемая должность",
+                example="Junior Python Developer"
+            ),
+            "candidate_name": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Имя кандидата",
+                example="Тест Тестов"
+            ),
+            "content": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Описание кандидата или сопроводительный текст",
+                example="Меня зовут Тест, я увлекаюсь Python и создаю проекты на Django."
+            ),
+            "contacts": openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    "email": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        format=openapi.FORMAT_EMAIL,
+                        description="Email соискателя",
+                        example="applicant@example.com"
+                    ),
+                    "phone": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        description="Телефон соискателя",
+                        example="+7 123 456 7890"
+                    )
+                },
+                description="Контактная информация"
+            ),
+            "location": openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    "city": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        description="Город проживания",
+                        example="Москва"
+                    )
+                },
+                description="Информация о местоположении"
+            ),
+            "degree": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Уровень образования",
+                example="bachelor"
+            ),
+            "skills": openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    "experience": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        description="Опыт работы в годах",
+                        example="1"
+                    ),
+                    "tech_stack_tags": openapi.Schema(
+                        type=openapi.TYPE_ARRAY,
+                        items=openapi.Items(type=openapi.TYPE_STRING),
+                        description="Навыки из технического стека",
+                        example=["Python", "Дружелюбность"]
+                    ),
+                    "languages": openapi.Schema(
+                        type=openapi.TYPE_ARRAY,
+                        items=openapi.Items(type=openapi.TYPE_STRING),
+                        description="Языки, которыми владеет соискатель",
+                        example=["Русский", "Английский"]
+                    )
+                },
+                description="Навыки кандидата"
+            ),
+            "portfolio_link": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                format=openapi.FORMAT_URI,
+                description="Ссылка на портфолио",
+                example="https://github.com/AberQ/HR-WEBSITE"
+            )
+        }
+    ),
         responses={
             status.HTTP_201_CREATED: openapi.Response(
                 description="Резюме успешно создано",
@@ -920,8 +943,9 @@ class UserResumeCreateView(generics.CreateAPIView):
                     resume.tech_stack_tags.add(tech_stack_tag)
 
             resume.save()
-        except ObjectDoesNotExist:
-            raise ValidationError("Только соискатели могут создавать резюме.")
+        except Applicant.DoesNotExist:
+        # Выбрасываем исключение с кодом 403
+            raise PermissionDenied("Только соискатели могут создавать резюме.")
         
 
 class ResumeDeleteAPIView(generics.DestroyAPIView):
