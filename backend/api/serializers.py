@@ -33,10 +33,15 @@ class WorkConditionsSerializer(serializers.ModelSerializer):
         model = Vacancy 
         fields = ['format', 'employment_type']
 
-class LocationSerializer(serializers.ModelSerializer):
+class LocationSerializerForVacancy(serializers.ModelSerializer):
     class Meta:
         model = Vacancy
         fields = ['city', 'address']
+
+class LocationSerializerForResume(serializers.ModelSerializer):
+    class Meta:
+        model = Resume
+        fields = ['city']
 
 class SalarySerializer(serializers.ModelSerializer):
     class Meta:
@@ -46,7 +51,7 @@ class SalarySerializer(serializers.ModelSerializer):
 class VacancySerializer(serializers.ModelSerializer):
     skills = SkillsSerializer(source='*')
     work_conditions = WorkConditionsSerializer(source='*')
-    location = LocationSerializer(source='*')
+    location = LocationSerializerForVacancy(source='*')
     salary = SalarySerializer(source='*')
 
     class Meta:
@@ -77,6 +82,7 @@ class VacancySerializer(serializers.ModelSerializer):
 class ResumeSerializer(serializers.ModelSerializer):
     skills = SkillsSerializer(source='*')
     applicant = serializers.PrimaryKeyRelatedField(read_only=True)
+    location = LocationSerializerForResume(source="*")
     class Meta:
         model = Resume
         fields = [
@@ -86,7 +92,7 @@ class ResumeSerializer(serializers.ModelSerializer):
             'email',
             'phone',
             'content',
-            'city',
+            'location',
             'degree',
             'skills',           
             'portfolio_link',
@@ -104,7 +110,7 @@ class ResumeSerializer(serializers.ModelSerializer):
 
 class ResumeSerializerForCreateAPI(serializers.ModelSerializer):
     skills = SkillsSerializer(source='*')
-
+    location = LocationSerializerForResume(source="*")
     class Meta:
         model = Resume
         fields = [
@@ -114,7 +120,7 @@ class ResumeSerializerForCreateAPI(serializers.ModelSerializer):
             'email',
             'phone',
             'content',
-            'city',
+            'location',
             'degree',
             'skills',    
             'portfolio_link',
@@ -147,7 +153,7 @@ class ResumeSerializerForCreateAPI(serializers.ModelSerializer):
 class VacancySerializerForCreateAPI(serializers.ModelSerializer):
     skills = SkillsSerializer(source='*')
     work_conditions = WorkConditionsSerializer(source='*')
-    location = LocationSerializer(source='*')
+    location = LocationSerializerForVacancy(source='*')
     salary = SalarySerializer(source='*')
 
     class Meta:
