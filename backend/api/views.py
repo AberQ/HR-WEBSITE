@@ -817,27 +817,32 @@ class UserResumeCreateView(generics.CreateAPIView):
                 examples={
                     "application/json": 
                     {
-                    "id": 25,
-                    "desired_position": "Test",
-                    "candidate_name": "Егорик",
-                    "email": "egor.master2018@gmail.com",
-                    "phone": "+79001882129",
-                    "city": "уеуе",
-                    "degree": "speciality",
-                    "work_experience": "1",
-                    "languages": [
-                        "Русский",
-                        "Английский"
-                    ],
-                    "tech_stack_tags": [
-                        "Python",
-                        "Q&A",
-                        "Мойка полов",
-                        "Доброжелательность"
-                    ],
-                    "portfolio_link": "https://chatgpt.com/c/672ca8da-dc0c-8011-85a9-218f304bc81a",
-                    "updated_at": "2024-11-17T13:31:59.781674+03:00"
-                }
+                        "id": 2,
+                        "desired_position": "Junior Python Developer",
+                        "candidate_name": "Тест Тестов",
+                        "content": "rgrg",
+                        "contacts": {
+                            "email": "applicant@example.com",
+                            "phone": "+7 123 456 7890"
+                        },
+                        "location": {
+                            "city": "Москва"
+                        },
+                        "degree": "bachelor",
+                        "skills": {
+                            "experience": "1",
+                            "tech_stack_tags": [
+                                "Python",
+                                "Дружелюбность"
+                            ],
+                            "languages": [
+                                "Русский",
+                                "Английский"
+                            ]
+                        },
+                        "portfolio_link": "https://github.com/AberQ/HR-WEBSITE",
+                        "updated_at": "2024-11-19T22:51:06.319919+03:00"
+                    }
 
                 }
             ),
