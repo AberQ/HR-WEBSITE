@@ -75,12 +75,7 @@ class VacancySerializer(serializers.ModelSerializer):
 
 
 class ResumeSerializer(serializers.ModelSerializer):
-    tech_stack_tags = serializers.SlugRelatedField(
-        many=True, queryset=TechStackTag.objects.all(), slug_field='name'
-    )
-    languages = serializers.SlugRelatedField(
-        many=True, queryset=Language.objects.all(), slug_field='name'
-    )
+    skills = SkillsSerializer(source='*')
     applicant = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = Resume
@@ -93,9 +88,7 @@ class ResumeSerializer(serializers.ModelSerializer):
             'content',
             'city',
             'degree',
-            'work_experience',
-            'languages',         
-            'tech_stack_tags',            
+            'skills',           
             'portfolio_link',
             'updated_at',
             'applicant',
@@ -110,8 +103,7 @@ class ResumeSerializer(serializers.ModelSerializer):
 
 
 class ResumeSerializerForCreateAPI(serializers.ModelSerializer):
-    tech_stack_tags = serializers.SerializerMethodField()
-    languages = serializers.SerializerMethodField()
+    skills = SkillsSerializer(source='*')
 
     class Meta:
         model = Resume
@@ -124,9 +116,7 @@ class ResumeSerializerForCreateAPI(serializers.ModelSerializer):
             'content',
             'city',
             'degree',
-            'work_experience',
-            'languages',         
-            'tech_stack_tags',            
+            'skills',    
             'portfolio_link',
             'updated_at',
         ]
@@ -141,21 +131,14 @@ class ResumeSerializerForCreateAPI(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # Извлекаем списки для languages и tech_stack_tags
-        languages_data = validated_data.pop('languages', [])
-        tech_stack_tags_data = validated_data.pop('tech_stack_tags', [])
-
-        # Создаем экземпляр резюме
+        tech_stack_tags = validated_data.pop('tech_stack_tags', [])
+        languages = validated_data.pop('languages', [])
         resume = Resume.objects.create(**validated_data)
 
-        # Создаем и связываем языки с резюме
-        for language_name in languages_data:
-            language, created = Language.objects.get_or_create(name=language_name)
-            resume.languages.add(language)
-
-        # Создаем и связываем теги навыков с резюме
-        for tech_stack_tag_name in tech_stack_tags_data:
-            tech_stack_tag, created = TechStackTag.objects.get_or_create(name=tech_stack_tag_name)
-            resume.tech_stack_tags.add(tech_stack_tag)
+        # Устанавливаем многие ко многим (если необходимо)
+        resume.tech_stack_tags.set(tech_stack_tags)
+        resume.languages.set(languages)
+        resume.save()
 
         return resume
 

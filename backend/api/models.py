@@ -3,6 +3,13 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from registration.models import *
+EXPERIENCE_CHOICES = [
+        ('0', 'Без опыта'),
+        ('1', 'До 1 года'),
+        ('1-3', 'от 1 до 3 лет'),
+        ('3-6', 'от 3 до 6 лет'),
+        ('6', 'более 6 лет'),
+    ]
 class Language(models.Model):
     name = models.CharField(max_length=50, verbose_name='Язык')
 
@@ -54,13 +61,6 @@ class Vacancy(models.Model):
         ('EUR', 'EUR'),
     ]
 
-    EXPERIENCE_CHOICES = [
-        ('0', 'Без опыта'),
-        ('1', 'До 1 года'),
-        ('1-3', 'от 1 до 3 лет'),
-        ('3-6', 'от 3 до 6 лет'),
-        ('6', 'более 6 лет'),
-    ]
 
     STATUS_CHOICES = [
         ('published', 'Опубликована'),
@@ -171,7 +171,12 @@ class Resume(models.Model):
     )
     
     # Опыт работы
-    work_experience = models.TextField(verbose_name='Опыт работы', validators=[validate_numeric_experience])  # Валидатор для чисел
+    experience = models.CharField(
+        max_length=10, 
+        choices=EXPERIENCE_CHOICES, 
+        default='0',
+        verbose_name='Опыт работы'
+    )
 
     # Навыки
     tech_stack_tags = models.ManyToManyField('TechStackTag', blank=True, verbose_name='Навыки')  # Связь с TechStackTag
