@@ -359,16 +359,17 @@ class VacancyCreateAPIView(generics.CreateAPIView):
                 description="Вакансия успешно создана.",
                 examples={
                     "application/json": {
+    "id": 2,
     "title": "Junior Python Developer",
     "description": "Описание вакансии для теста.",
     "work_conditions": {
-      "format": "onsite",
-      "employment_type": "full_time"
+        "format": "onsite",
+        "employment_type": "full_time"
     },
     "salary": {
-      "min_salary": 50000,
-      "max_salary": 70000,
-      "currency": "RUB"
+        "min_salary": 50000,
+        "max_salary": 70000,
+        "currency": "RUB"
     },
     "location": {
         "city": "Москва",
@@ -376,15 +377,19 @@ class VacancyCreateAPIView(generics.CreateAPIView):
     },
     "number_of_openings": 1,
     "skills": {
-      "experience": "0",
-      "tech_stack_tags": [
-        "Python",
-        "Дружелюбность"
-      ]
+        "experience": "0",
+        "tech_stack_tags": [
+            "Python",
+            "Дружелюбность"
+        ],
+        "languages": [
+            "Русский",
+            "Английский"
+        ]
     },
-    "publication_date": "2024-11-12T09:04:51.269465+03:00",
+    "publication_date": "2024-11-19T22:36:10.027244+03:00",
     "status": "published"
-  }
+}
                 }
             ),
             status.HTTP_400_BAD_REQUEST: openapi.Response(
@@ -542,36 +547,56 @@ class UserResumeListView(generics.ListAPIView):
         "id": 1,
         "desired_position": "Junior Python Developer",
         "candidate_name": "Тест Тестов",
-        "email": "applicant@example.com",
-        "phone": "+7 123 456 7890",
-        "city": "Москва",
+        "content": "Контент",
+        "contacts": {
+            "email": "applicant@example.com",
+            "phone": "+7 123 456 7890"
+        },
+        "location": {
+            "city": "Москва"
+        },
         "degree": "bachelor",
-        "work_experience": "1",
-        "languages": [
-            "Русский",
-            "Английский"
-        ],
-        "tech_stack_tags": [
-            "Python",
-            "Дружелюбность"
-        ],
+        "skills": {
+            "experience": "До 1 года",
+            "tech_stack_tags": [
+                "Python",
+                "Дружелюбность"
+            ],
+            "languages": [
+                "Русский",
+                "Английский"
+            ]
+        },
         "portfolio_link": "https://github.com/AberQ/HR-WEBSITE",
-        "updated_at": "2024-11-15T21:40:43.281945+03:00",
+        "updated_at": "2024-11-19T21:06:28.912052+03:00",
         "applicant": 3
     },
     {
         "id": 2,
-        "desired_position": "Test",
-        "candidate_name": "Егорик",
-        "email": "egor.master2018@gmail.com",
-        "phone": "+79001882129",
-        "city": "уеуе",
-        "degree": "speciality",
-        "work_experience": "1",
-        "languages": [],
-        "tech_stack_tags": [],
+        "desired_position": "Junior Python Developer",
+        "candidate_name": "Тест Тестов",
+        "content": "rgrg",
+        "contacts": {
+            "email": "applicant@example.com",
+            "phone": "+7 123 456 7890"
+        },
+        "location": {
+            "city": "Москва"
+        },
+        "degree": "bachelor",
+        "skills": {
+            "experience": "1",
+            "tech_stack_tags": [
+                "Python",
+                "Дружелюбность"
+            ],
+            "languages": [
+                "Русский",
+                "Английский"
+            ]
+        },
         "portfolio_link": "https://github.com/AberQ/HR-WEBSITE",
-        "updated_at": "2024-11-17T11:54:39.818647+03:00",
+        "updated_at": "2024-11-19T22:51:06.319919+03:00",
         "applicant": 3
     }
 ]
@@ -639,26 +664,33 @@ class UserResumeDetailView(generics.RetrieveAPIView):
                 examples={
                     "application/json": [
     {
-        "id": 1,
-        "desired_position": "Junior Python Developer",
-        "candidate_name": "Тест Тестов",
+    "id": 1,
+    "desired_position": "Junior Python Developer",
+    "candidate_name": "Тест Тестов",
+    "content": "Контент",
+    "contacts": {
         "email": "applicant@example.com",
-        "phone": "+7 123 456 7890",
-        "city": "Москва",
-        "degree": "bachelor",
-        "work_experience": "1",
-        "languages": [
-            "Русский",
-            "Английский"
-        ],
+        "phone": "+7 123 456 7890"
+    },
+    "location": {
+        "city": "Москва"
+    },
+    "degree": "bachelor",
+    "skills": {
+        "experience": "До 1 года",
         "tech_stack_tags": [
             "Python",
             "Дружелюбность"
         ],
-        "portfolio_link": "https://github.com/AberQ/HR-WEBSITE",
-        "updated_at": "2024-11-15T21:40:43.281945+03:00",
-        "applicant": 3
-    }
+        "languages": [
+            "Русский",
+            "Английский"
+        ]
+    },
+    "portfolio_link": "https://github.com/AberQ/HR-WEBSITE",
+    "updated_at": "2024-11-19T21:06:28.912052+03:00",
+    "applicant": 3
+}
 ]
                 }
             ),
