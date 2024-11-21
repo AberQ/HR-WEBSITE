@@ -1063,14 +1063,11 @@ class ResumeUpdateAPIView(UpdateAPIView):
         required_fields = {
             "desired_position",
             "candidate_name",
-            "email",
-            "phone",
+            "contacts",
             'content',
-            "city",
+            "location",
             "degree",
-            'languages',         
-            'tech_stack_tags',
-            "work_experience",
+            'skills',
             "portfolio_link"
         }
 
