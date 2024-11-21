@@ -1009,16 +1009,98 @@ class ResumeUpdateAPIView(UpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     @swagger_auto_schema(
-        operation_summary="Обновление резюме со всеми полями",
-        operation_description="Позволяет авторизованному пользователю обновить свое резюме. Попытка обновить чужое резюме вызовет ошибку."
-                               "Указывать нужно ВСЕ поля. ",
-        request_body=ResumeSerializer,
-        responses={
-            status.HTTP_200_OK: openapi.Response(
-                description="Резюме успешно обновлено.",
-                examples={
-                    "application/json": 
-                {
+    operation_summary="Обновление резюме со всеми полями",
+    operation_description="Позволяет авторизованному пользователю обновить свое резюме. Попытка обновить чужое резюме вызовет ошибку. Указывать нужно ВСЕ поля.",
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            "desired_position": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Желаемая должность кандидата",
+                example="Junior Python Developer"
+            ),
+            "candidate_name": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="ФИО кандидата",
+                example="Тест Тестов"
+            ),
+            "content": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Описание кандидата или сопроводительный текст",
+                example="Меня зовут Тест, я увлекаюсь Python и создаю проекты на Django."
+            ),
+            "contacts": openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                required=["email", "phone"],
+                properties={
+                    "email": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        format=openapi.FORMAT_EMAIL,
+                        description="Email кандидата",
+                        example="applicant@example.com"
+                    ),
+                    "phone": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        description="Телефон кандидата",
+                        example="+7 123 456 7890"
+                    )
+                },
+                description="Контактная информация кандидата"
+            ),
+            "location": openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                required=["city"],
+                properties={
+                    "city": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        description="Город проживания кандидата",
+                        example="Москва"
+                    )
+                },
+                description="Местоположение кандидата"
+            ),
+            "degree": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Уровень образования кандидата",
+                example="bachelor"
+            ),
+            "skills": openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    "experience": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        description="Количество лет опыта работы",
+                        example="1"
+                    ),
+                    "tech_stack_tags": openapi.Schema(
+                        type=openapi.TYPE_ARRAY,
+                        items=openapi.Items(type=openapi.TYPE_STRING),
+                        description="Технические навыки кандидата",
+                        example=["Python", "Дружелюбность"]
+                    ),
+                    "languages": openapi.Schema(
+                        type=openapi.TYPE_ARRAY,
+                        items=openapi.Items(type=openapi.TYPE_STRING),
+                        description="Языки, которыми владеет кандидат",
+                        example=["Русский", "Английский"]
+                    )
+                },
+                description="Навыки кандидата"
+            ),
+            "portfolio_link": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                format=openapi.FORMAT_URI,
+                description="Ссылка на портфолио кандидата",
+                example="https://github.com/AberQ/HR-WEBSITE"
+            ),
+        },
+        required=["desired_position", "candidate_name", "contacts", "location", "degree", "skills", "portfolio_link"],
+    ),
+    responses={
+        status.HTTP_200_OK: openapi.Response(
+            description="Резюме успешно обновлено.",
+            examples={
+                "application/json": {
                     "id": 1,
                     "desired_position": "Junior Python Developer",
                     "candidate_name": "Тест Тестов",
@@ -1033,39 +1115,33 @@ class ResumeUpdateAPIView(UpdateAPIView):
                     "degree": "bachelor",
                     "skills": {
                         "experience": "1",
-                        "tech_stack_tags": [
-                            "Python",
-                            "Дружелюбность"
-                        ],
-                        "languages": [
-                            "Русский",
-                            "Английский"
-                        ]
+                        "tech_stack_tags": ["Python", "Дружелюбность"],
+                        "languages": ["Русский", "Английский"]
                     },
                     "portfolio_link": "https://github.com/AberQ/HR-WEBSITE",
                     "updated_at": "2024-11-21T21:46:10.723536+03:00",
                     "applicant": 3
                 }
+            }
+        ),
+        status.HTTP_400_BAD_REQUEST: openapi.Response(
+            description="Ошибка в данных запроса.",
+            examples={
+                "application/json": {
+                    "title": ["Это поле не может быть пустым."]
                 }
-            ),
-            status.HTTP_400_BAD_REQUEST: openapi.Response(
-                description="Ошибка в данных запроса.",
-                examples={
-                    "application/json": {
-                        "title": ["Это поле не может быть пустым."]
-                    }
-                }
-            ),
-            status.HTTP_401_UNAUTHORIZED: openapi.Response(
-                description="Ошибка авторизации. Пользователь не авторизован.",
-                examples={"application/json": {"detail": "Учетные данные не были предоставлены."}},
-            ),
-            status.HTTP_403_FORBIDDEN: openapi.Response(
-                description="Запрещено. Попытка обновить чужое резюме.",
-                examples={"application/json": {"detail": "Вы не можете редактировать чужое резюме."}},
-            ),
-        },
-    )
+            }
+        ),
+        status.HTTP_401_UNAUTHORIZED: openapi.Response(
+            description="Ошибка авторизации. Пользователь не авторизован.",
+            examples={"application/json": {"detail": "Учетные данные не были предоставлены."}},
+        ),
+        status.HTTP_403_FORBIDDEN: openapi.Response(
+            description="Запрещено. Попытка обновить чужое резюме.",
+            examples={"application/json": {"detail": "Вы не можете редактировать чужое резюме."}},
+        ),
+    },
+)
 
 
 
