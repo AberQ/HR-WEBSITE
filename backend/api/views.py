@@ -103,6 +103,118 @@ properties_for_resume={
                 example="https://github.com/AberQ/HR-WEBSITE"
             ),
         }
+
+
+properties_for_vacancies = {
+            "title": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Название вакансии. Например, 'Junior Python Developer'.",
+                example="Junior Python Developer",
+            ),
+            "description": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Описание вакансии.",
+                example="Описание вакансии для теста.",
+            ),
+            "work_conditions": openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                description="Условия работы.",
+                properties={
+                    "format": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        enum=["onsite", "remote", "hybrid"],
+                        description="Формат работы: на месте, удалённо или гибридный.",
+                        example="onsite",
+                    ),
+                    "employment_type": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        enum=[ "full_time", "part_time", "internship", "volunteering", "one_time", "project" ],
+                        description="Тип занятости: полная ставка, частичная, стажировка и т.д.",
+                        example="full_time",
+                    ),
+                },
+            ),
+            "salary": openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                description="Информация о зарплате.",
+                properties={
+                    "min_salary": openapi.Schema(
+                        type=openapi.TYPE_INTEGER,
+                        description="Минимальная зарплата.",
+                        example=50000,
+                    ),
+                    "max_salary": openapi.Schema(
+                        type=openapi.TYPE_INTEGER,
+                        description="Максимальная зарплата.",
+                        example=70000,
+                    ),
+                    "currency": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        enum=["RUB", "USD", 'EUR'],
+                        description="Валюта зарплаты, например, 'RUB'.",
+                        example="RUB",
+                    ),
+                },
+            ),
+            "location": openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                description="Информация о месте работы.",
+                properties={
+                    "city": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        description="Город, где находится работа.",
+                        example="Москва",
+                    ),
+                    "address": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        description="Адрес работы.",
+                        example="Улица фронтендеров, 69",
+                    ),
+                },
+            ),
+            "number_of_openings": openapi.Schema(
+                type=openapi.TYPE_INTEGER,
+                description="Количество открытых позиций.",
+                example=1,
+            ),
+            "skills": openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                description="Навыки и требования для кандидата.",
+                properties={
+                    "experience": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        enum=["0", "1", "1-3", "3-6", '6'],
+                        description="""
+                        Опыт работы кандидата
+                        0 = Без опыта
+                        1 = До 1 года
+                        1-3 = от 1 до 3 лет
+                        3-6 = от 3 до 6 лет
+                        6 = более 6 лет
+                        """,
+                        example="1",
+                    ),
+                    "tech_stack_tags": openapi.Schema(
+                        type=openapi.TYPE_ARRAY,
+                        items=openapi.Items(type=openapi.TYPE_STRING),
+                        description="Технический стек, требуемый для вакансии. Берутся из базы данных",
+                        example=["Python", "Дружелюбность"],
+                    ),
+                    "languages": openapi.Schema(
+                        type=openapi.TYPE_ARRAY,
+                        items=openapi.Items(type=openapi.TYPE_STRING),
+                        description="Языки, которыми должен владеть кандидат. Берутся из базы данных",
+                        example=["Русский", "Английский"],
+                    ),
+                },
+            ),
+            "status": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                enum=["published", "archived", 'checking'],
+                description="Статус вакансии: опубликована или архивирована или на проверке.",
+                example="published",
+            ),
+        }
 def home(request):
     return render(request, 'home.html')
 
@@ -436,109 +548,7 @@ class VacancyCreateAPIView(generics.CreateAPIView):
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
             required=["title", "description", "work_conditions", "salary", "location", "number_of_openings", "skills", "status"],
-            properties={
-            "title": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                description="Название вакансии. Например, 'Junior Python Developer'.",
-                example="Junior Python Developer",
-            ),
-            "description": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                description="Описание вакансии.",
-                example="Описание вакансии для теста.",
-            ),
-            "work_conditions": openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                description="Условия работы.",
-                properties={
-                    "format": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        enum=["onsite", "remote", "hybrid"],
-                        description="Формат работы: на месте, удалённо или гибридный.",
-                        example="onsite",
-                    ),
-                    "employment_type": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        enum=[ "full_time", "part_time", "internship", "volunteering", "one_time", "project" ],
-                        description="Тип занятости: полная ставка, частичная, стажировка и т.д.",
-                        example="full_time",
-                    ),
-                },
-            ),
-            "salary": openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                description="Информация о зарплате.",
-                properties={
-                    "min_salary": openapi.Schema(
-                        type=openapi.TYPE_INTEGER,
-                        description="Минимальная зарплата.",
-                        example=50000,
-                    ),
-                    "max_salary": openapi.Schema(
-                        type=openapi.TYPE_INTEGER,
-                        description="Максимальная зарплата.",
-                        example=70000,
-                    ),
-                    "currency": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        enum=["RUB", "USD", 'EUR'],
-                        description="Валюта зарплаты, например, 'RUB'.",
-                        example="RUB",
-                    ),
-                },
-            ),
-            "location": openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                description="Информация о месте работы.",
-                properties={
-                    "city": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        description="Город, где находится работа.",
-                        example="Москва",
-                    ),
-                    "address": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        description="Адрес работы.",
-                        example="Улица фронтендеров, 69",
-                    ),
-                },
-            ),
-            "number_of_openings": openapi.Schema(
-                type=openapi.TYPE_INTEGER,
-                description="Количество открытых позиций.",
-                example=1,
-            ),
-            "skills": openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                description="Навыки и требования для кандидата.",
-                properties={
-                    "experience": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        enum=["0", "1", "1-3", "3-6", '6'],
-                        description="Опыт работы кандидата.",
-                        example="1",
-                    ),
-                    "tech_stack_tags": openapi.Schema(
-                        type=openapi.TYPE_ARRAY,
-                        items=openapi.Items(type=openapi.TYPE_STRING),
-                        description="Технический стек, требуемый для вакансии.",
-                        example=["Python", "Дружелюбность"],
-                    ),
-                    "languages": openapi.Schema(
-                        type=openapi.TYPE_ARRAY,
-                        items=openapi.Items(type=openapi.TYPE_STRING),
-                        description="Языки, которыми должен владеть кандидат.",
-                        example=["Русский", "Английский"],
-                    ),
-                },
-            ),
-            "status": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                enum=["published", "archived", 'checking'],
-                description="Статус вакансии: опубликована или архивирована.",
-                example="published",
-            ),
-        },
+            properties=properties_for_vacancies
     ),
         responses={
             status.HTTP_201_CREATED: openapi.Response(
