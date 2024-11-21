@@ -1266,7 +1266,7 @@ class ResumeUpdateAPIView(UpdateAPIView):
                 example="https://github.com/AberQ/HR-WEBSITE"
             ),
         },
-        required=["desired_position", "candidate_name", "contacts", "location", "degree", "skills", "portfolio_link"],
+        
     ),
         responses={
             status.HTTP_200_OK: openapi.Response(
