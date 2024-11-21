@@ -1018,19 +1018,34 @@ class ResumeUpdateAPIView(UpdateAPIView):
                 description="Резюме успешно обновлено.",
                 examples={
                     "application/json": 
-                    {
-                        "desired_position": "Говновоз",
-                        "candidate_name": "Егорик",
-                        "email": "egor.master2018@gmail.com",
-                        "phone": "+79001882129",
-                        "city": "упккпкпке",
-                        "degree": "speciality",
-                        "work_experience": "2",
-                        "languages": ["Русский"],
-                        "tech_stack_tags": ["Django"],
-                        "content": "geg",
-                        "portfolio_link": "https://chatgpt.com/c/672ca8da-dc0c-8011-85a9-218f304bc81a"
-                    }
+                {
+                    "id": 1,
+                    "desired_position": "Junior Python Developer",
+                    "candidate_name": "Тест Тестов",
+                    "content": "Контент",
+                    "contacts": {
+                        "email": "applicant@example.com",
+                        "phone": "+7 123 456 7890"
+                    },
+                    "location": {
+                        "city": "Москва"
+                    },
+                    "degree": "bachelor",
+                    "skills": {
+                        "experience": "1",
+                        "tech_stack_tags": [
+                            "Python",
+                            "Дружелюбность"
+                        ],
+                        "languages": [
+                            "Русский",
+                            "Английский"
+                        ]
+                    },
+                    "portfolio_link": "https://github.com/AberQ/HR-WEBSITE",
+                    "updated_at": "2024-11-21T21:46:10.723536+03:00",
+                    "applicant": 3
+                }
                 }
             ),
             status.HTTP_400_BAD_REQUEST: openapi.Response(
