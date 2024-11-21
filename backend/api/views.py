@@ -22,7 +22,87 @@ from django.shortcuts import render, redirect
 from .models import Vacancy
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-
+properties_for_resume={
+            "desired_position": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Желаемая должность кандидата",
+                example="Junior Python Developer"
+            ),
+            "candidate_name": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="ФИО кандидата",
+                example="Тест Тестов"
+            ),
+            "content": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Описание кандидата или сопроводительный текст",
+                example="Меня зовут Тест, я увлекаюсь Python и создаю проекты на Django."
+            ),
+            "contacts": openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                required=["email", "phone"],
+                properties={
+                    "email": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        format=openapi.FORMAT_EMAIL,
+                        description="Email кандидата",
+                        example="applicant@example.com"
+                    ),
+                    "phone": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        description="Телефон кандидата",
+                        example="+7 123 456 7890"
+                    )
+                },
+                description="Контактная информация кандидата"
+            ),
+            "location": openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                required=["city"],
+                properties={
+                    "city": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        description="Город проживания кандидата",
+                        example="Москва"
+                    )
+                },
+                description="Местоположение кандидата"
+            ),
+            "degree": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Уровень образования кандидата",
+                example="bachelor"
+            ),
+            "skills": openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    "experience": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        description="Количество лет опыта работы",
+                        example="1"
+                    ),
+                    "tech_stack_tags": openapi.Schema(
+                        type=openapi.TYPE_ARRAY,
+                        items=openapi.Items(type=openapi.TYPE_STRING),
+                        description="Технические навыки кандидата",
+                        example=["Python", "Дружелюбность"]
+                    ),
+                    "languages": openapi.Schema(
+                        type=openapi.TYPE_ARRAY,
+                        items=openapi.Items(type=openapi.TYPE_STRING),
+                        description="Языки, которыми владеет кандидат",
+                        example=["Русский", "Английский"]
+                    )
+                },
+                description="Навыки кандидата"
+            ),
+            "portfolio_link": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                format=openapi.FORMAT_URI,
+                description="Ссылка на портфолио кандидата",
+                example="https://github.com/AberQ/HR-WEBSITE"
+            ),
+        }
 def home(request):
     return render(request, 'home.html')
 
@@ -754,87 +834,7 @@ class UserResumeCreateView(generics.CreateAPIView):
         request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
         required=["desired_position", "contacts", "location", "content", 'degree', 'skills', 'candidate_name'],
-        properties={
-            "desired_position": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                description="Желаемая должность",
-                example="Junior Python Developer"
-            ),
-            "candidate_name": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                description="Имя кандидата",
-                example="Тест Тестов"
-            ),
-            "content": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                description="Описание кандидата или сопроводительный текст",
-                example="Меня зовут Тест, я увлекаюсь Python и создаю проекты на Django."
-            ),
-            "contacts": openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                required=["email", "phone"],
-                properties={
-                    "email": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        format=openapi.FORMAT_EMAIL,
-                        description="Email соискателя",
-                        example="applicant@example.com"
-                    ),
-                    "phone": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        description="Телефон соискателя",
-                        example="+7 123 456 7890"
-                    )
-                },
-                description="Контактная информация"
-            ),
-            "location": openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                required=["city"],
-                properties={
-                    "city": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        description="Город проживания",
-                        example="Москва"
-                    )
-                },
-                description="Информация о местоположении"
-            ),
-            "degree": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                description="Уровень образования",
-                example="bachelor"
-            ),
-            "skills": openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    "experience": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        description="Опыт работы в годах",
-                        example="1"
-                    ),
-                    "tech_stack_tags": openapi.Schema(
-                        type=openapi.TYPE_ARRAY,
-                        items=openapi.Items(type=openapi.TYPE_STRING),
-                        description="Навыки из технического стека",
-                        example=["Python", "Дружелюбность"]
-                    ),
-                    "languages": openapi.Schema(
-                        type=openapi.TYPE_ARRAY,
-                        items=openapi.Items(type=openapi.TYPE_STRING),
-                        description="Языки, которыми владеет соискатель",
-                        example=["Русский", "Английский"]
-                    )
-                },
-                description="Навыки кандидата"
-            ),
-            "portfolio_link": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                format=openapi.FORMAT_URI,
-                description="Ссылка на портфолио",
-                example="https://github.com/AberQ/HR-WEBSITE"
-            )
-        }
+        properties=properties_for_resume
     ),
         responses={
             status.HTTP_201_CREATED: openapi.Response(
@@ -1013,87 +1013,7 @@ class ResumeUpdateAPIView(UpdateAPIView):
     operation_description="Позволяет авторизованному пользователю обновить свое резюме. Попытка обновить чужое резюме вызовет ошибку. Указывать нужно ВСЕ поля.",
     request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
-        properties={
-            "desired_position": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                description="Желаемая должность кандидата",
-                example="Junior Python Developer"
-            ),
-            "candidate_name": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                description="ФИО кандидата",
-                example="Тест Тестов"
-            ),
-            "content": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                description="Описание кандидата или сопроводительный текст",
-                example="Меня зовут Тест, я увлекаюсь Python и создаю проекты на Django."
-            ),
-            "contacts": openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                required=["email", "phone"],
-                properties={
-                    "email": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        format=openapi.FORMAT_EMAIL,
-                        description="Email кандидата",
-                        example="applicant@example.com"
-                    ),
-                    "phone": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        description="Телефон кандидата",
-                        example="+7 123 456 7890"
-                    )
-                },
-                description="Контактная информация кандидата"
-            ),
-            "location": openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                required=["city"],
-                properties={
-                    "city": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        description="Город проживания кандидата",
-                        example="Москва"
-                    )
-                },
-                description="Местоположение кандидата"
-            ),
-            "degree": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                description="Уровень образования кандидата",
-                example="bachelor"
-            ),
-            "skills": openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    "experience": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        description="Количество лет опыта работы",
-                        example="1"
-                    ),
-                    "tech_stack_tags": openapi.Schema(
-                        type=openapi.TYPE_ARRAY,
-                        items=openapi.Items(type=openapi.TYPE_STRING),
-                        description="Технические навыки кандидата",
-                        example=["Python", "Дружелюбность"]
-                    ),
-                    "languages": openapi.Schema(
-                        type=openapi.TYPE_ARRAY,
-                        items=openapi.Items(type=openapi.TYPE_STRING),
-                        description="Языки, которыми владеет кандидат",
-                        example=["Русский", "Английский"]
-                    )
-                },
-                description="Навыки кандидата"
-            ),
-            "portfolio_link": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                format=openapi.FORMAT_URI,
-                description="Ссылка на портфолио кандидата",
-                example="https://github.com/AberQ/HR-WEBSITE"
-            ),
-        },
+        properties=properties_for_resume,
         required=["desired_position", "candidate_name", "contacts", "location", "degree", "skills", "portfolio_link"],
     ),
     responses={
@@ -1185,87 +1105,7 @@ class ResumeUpdateAPIView(UpdateAPIView):
                                "Можно указывать только желаемые поля. ",
         request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
-        properties={
-            "desired_position": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                description="Желаемая должность кандидата",
-                example="Junior Python Developer"
-            ),
-            "candidate_name": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                description="ФИО кандидата",
-                example="Тест Тестов"
-            ),
-            "content": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                description="Описание кандидата или сопроводительный текст",
-                example="Меня зовут Тест, я увлекаюсь Python и создаю проекты на Django."
-            ),
-            "contacts": openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                required=["email", "phone"],
-                properties={
-                    "email": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        format=openapi.FORMAT_EMAIL,
-                        description="Email кандидата",
-                        example="applicant@example.com"
-                    ),
-                    "phone": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        description="Телефон кандидата",
-                        example="+7 123 456 7890"
-                    )
-                },
-                description="Контактная информация кандидата"
-            ),
-            "location": openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                required=["city"],
-                properties={
-                    "city": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        description="Город проживания кандидата",
-                        example="Москва"
-                    )
-                },
-                description="Местоположение кандидата"
-            ),
-            "degree": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                description="Уровень образования кандидата",
-                example="bachelor"
-            ),
-            "skills": openapi.Schema(
-                type=openapi.TYPE_OBJECT,
-                properties={
-                    "experience": openapi.Schema(
-                        type=openapi.TYPE_STRING,
-                        description="Количество лет опыта работы",
-                        example="1"
-                    ),
-                    "tech_stack_tags": openapi.Schema(
-                        type=openapi.TYPE_ARRAY,
-                        items=openapi.Items(type=openapi.TYPE_STRING),
-                        description="Технические навыки кандидата",
-                        example=["Python", "Дружелюбность"]
-                    ),
-                    "languages": openapi.Schema(
-                        type=openapi.TYPE_ARRAY,
-                        items=openapi.Items(type=openapi.TYPE_STRING),
-                        description="Языки, которыми владеет кандидат",
-                        example=["Русский", "Английский"]
-                    )
-                },
-                description="Навыки кандидата"
-            ),
-            "portfolio_link": openapi.Schema(
-                type=openapi.TYPE_STRING,
-                format=openapi.FORMAT_URI,
-                description="Ссылка на портфолио кандидата",
-                example="https://github.com/AberQ/HR-WEBSITE"
-            ),
-        },
+        properties=properties_for_resume,
         
     ),
         responses={
