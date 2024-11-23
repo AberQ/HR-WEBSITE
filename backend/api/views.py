@@ -673,17 +673,38 @@ class VacancyUpdateView(generics.UpdateAPIView):
                 description="Вакансия успешно обновлена.",
                 examples={
                     "application/json": {
-                        "id": 1,
-                        "title": "Junior Python Developer",
-                        "description": "Описание вакансии",
-                        "work_conditions": "Полная ставка",
-                        "salary": 60000,
-                        "location": {"city": "Москва", "address": "ул. Ленина, 1"},
-                        "number_of_openings": 2,
-                        "skills": ["Python", "Django", "REST API"],
-                        "status": "Опубликована",
-                        "updated_at": "2024-11-21T21:46:10.723536+03:00",
-                    }
+    "id": 1,
+    "title": "Тест",
+    "description": "Описание вакансии для теста.",
+    "work_conditions": {
+        "format": "onsite",
+        "employment_type": "full_time"
+    },
+    "salary": {
+        "min_salary": 50000,
+        "max_salary": 70000,
+        "currency": "RUB"
+    },
+    "location": {
+        "city": "Москва",
+        "address": "Улица фронтендеров, 69"
+    },
+    "number_of_openings": 1,
+    "skills": {
+        "experience": "1",
+        "tech_stack_tags": [
+            "Python",
+            "Дружелюбность"
+        ],
+        "languages": [
+            "Русский",
+            "Английский"
+        ]
+    },
+    "publication_date": "2024-11-23T14:09:54.830327+03:00",
+    "status": "published",
+    "created_by": 2
+}
                 }
             ),
             status.HTTP_400_BAD_REQUEST: openapi.Response(
