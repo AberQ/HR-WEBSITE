@@ -637,15 +637,35 @@ class VacancyDeleteAPIView(generics.DestroyAPIView):
     def get_queryset(self):
         # Ограничиваем выборку вакансиями, созданными текущим пользователем
         return super().get_queryset().filter(created_by=self.request.user)
-
-    def perform_destroy(self, instance):
-        #print("Автор вакансии:", instance.created_by)
-        #print("Текущий пользователь:", self.request.user)
-        # Проверка, что текущий пользователь — автор вакансии
-        if instance.created_by.id != self.request.user.id:
-            raise PermissionDenied("Вы не имеете права удалять эту вакансию.")
-        
-        super().perform_destroy(instance)
+    @swagger_auto_schema(
+    operation_summary="Удаление вакансии",
+    operation_description=(
+        "Позволяет авторизованному пользователю удалить вакансию. "
+        "Удалять можно только те вакансии, которые создал текущий пользователь. "
+        "Попытка удалить чужую вакансию вызовет ошибку."
+    ),
+    responses={
+        status.HTTP_204_NO_CONTENT: openapi.Response(
+            description="Вакансия успешно удалена."
+        ),
+        status.HTTP_404_NOT_FOUND: openapi.Response(
+            description="Попытка удаления чужой вакансии или ее отсутствие",
+            examples={
+                "application/json": {"detail": "Вы не имеете права удалять эту вакансию."}
+            },
+        ),
+        status.HTTP_401_UNAUTHORIZED: openapi.Response(
+            description="Ошибка авторизации. Пользователь не авторизован.",
+            examples={
+                "application/json": {
+                    "detail": "Учетные данные не были предоставлены."
+                }
+            },
+        ),
+    },
+)
+    def delete(self, request, *args, **kwargs):
+        return super().delete(request, *args, **kwargs)
 
 
     
