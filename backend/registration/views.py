@@ -15,8 +15,11 @@ from rest_framework.views import APIView
 from .serializers import *
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
-
-
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from drf_yasg import openapi
 def applicant_registration(request):
     if request.method == 'POST':
         form = ApplicantSignUpForm(request.POST)
@@ -103,7 +106,46 @@ class RegisterEmployerView(generics.CreateAPIView):
 
 class UserProfileView(APIView):
     permission_classes = [IsAuthenticated]
-
+    @swagger_auto_schema(
+        operation_summary="Получить профиль текущего пользователя",
+        operation_description="Отдает данные об текущем аккаунте в сессии",
+        
+        responses={
+            status.HTTP_200_OK: openapi.Response(
+                description="Данные профиля пользователя",
+                examples={
+                    
+                    "application/json": {
+                        "Комментарий_1": "Это ответ для работодателя",
+                        "Данные JSON_1": {
+                            "id": 4,
+                            "email": "egor.master2017@gmail.com",
+                            "password": "pbkdf2_sha256$870000$q7DMV9gwjew5Xr82Cnewyz$gQK11gcSWIrjIOZSc/O5ZXc5rWsst/hUbE7Y2/u5tNI=",
+                            "company_name": "Arapov-Indasrize",
+                            "company_info": ""
+                        },
+                        "Комментарий_2": "Это ответ для соискателя",                                            
+                        "Данные JSON_2": {
+                                "id": 3,
+                                "email": "applicant@example.com",
+                                "password": "pbkdf2_sha256$870000$oOVbHvCpEEyoRUDVbBPRE8$3hiQeqz3FCc5q68p99XNyG3IUSfnk0S00/J4l/f3EB0=",
+                                "first_name": "John",
+                                "last_name": "Doe",
+                                "patronymic": "Ivanovich"
+                                },
+                    }
+                }
+            ),
+            status.HTTP_401_UNAUTHORIZED: openapi.Response(
+                description="Профиль пользователя не найден",
+                examples={
+                    "application/json": {
+                        "error": "Учетные данные не были предоставлены."
+                    }
+                }
+            ),
+        }
+    )
     def get(self, request):
         user = request.user
 
