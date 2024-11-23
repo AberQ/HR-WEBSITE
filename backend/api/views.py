@@ -660,15 +660,54 @@ class VacancyUpdateView(generics.UpdateAPIView):
             raise PermissionDenied("Вы не имеете права редактировать эту вакансию.")
         return obj
 
-    def perform_update(self, serializer):
-        """Переопределяем perform_update, чтобы автоматически установить created_by"""
-        # Устанавливаем created_by на основе текущего пользователя
-        employer = Employer.objects.get(email=self.request.user.email)
-        serializer.save(created_by=employer)  # Устанавливаем создателя вакансии
-
     def put(self, request, *args, **kwargs):
-        """Используем встроенную логику put"""
-        return super().put(request, *args, **kwargs)
+        """
+        Обрабатывает полный запрос обновления (PUT).
+        """
+        instance = self.get_object()
+        # Проверяем, содержит ли запрос все обязательные поля
+        required_fields = {
+            "title",
+            "description",
+            "work_conditions",
+            "salary",
+            "location",
+            "number_of_openings",
+            "skills",
+            "status",
+        }
+
+        missing_fields = required_fields - set(request.data.keys())
+        if missing_fields:
+            return Response(
+                {"detail": f"Отсутствуют обязательные поля: {', '.join(missing_fields)}"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        serializer = self.get_serializer(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+
+
+    
+
+    def patch(self, request, *args, **kwargs):
+        """
+        Обрабатывает частичный запрос обновления (PATCH).
+        """
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
     
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #API для резюме
