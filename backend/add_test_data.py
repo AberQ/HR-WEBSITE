@@ -175,7 +175,7 @@ try:
             resume.languages.set(languages)
             print(f"Resume for {resume_candidate_name} created!")
         else:
-            resume = Resume.objects.get(candidate_name=resume_candidate_name)
+            resume = Resume.objects.filter(candidate_name=resume_candidate_name)
             print(f"Resume for {resume_candidate_name} already exists.")
     
 
