@@ -641,17 +641,17 @@ class VacancyDeleteAPIView(generics.DestroyAPIView):
     def perform_destroy(self, instance):
         #print("Автор вакансии:", instance.created_by)
         #print("Текущий пользователь:", self.request.user)
-        # Проверяем, что текущий пользователь — автор вакансии
+        # Проверка, что текущий пользователь — автор вакансии
         if instance.created_by.id != self.request.user.id:
             raise PermissionDenied("Вы не имеете права удалять эту вакансию.")
-        # Вызываем метод удаления, если проверка пройдена
+        
         super().perform_destroy(instance)
 
 
     
 class VacancyUpdateView(generics.UpdateAPIView):
-    queryset = Vacancy.objects.all()  # Должен быть указан queryset для поиска объекта
-    serializer_class = VacancySerializer  # Сериализатор, который будет использоваться для обновления
+    queryset = Vacancy.objects.all()  
+    serializer_class = VacancySerializer  
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
@@ -730,7 +730,7 @@ class VacancyUpdateView(generics.UpdateAPIView):
         Обрабатывает полный запрос обновления (PUT).
         """
         instance = self.get_object()
-        # Проверяем, содержит ли запрос все обязательные поля
+        
         required_fields = {
             "title",
             "description",
@@ -755,7 +755,70 @@ class VacancyUpdateView(generics.UpdateAPIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-
+    @swagger_auto_schema(
+    operation_summary="Частичное обновление вакансии",
+    operation_description="Позволяет авторизованному пользователю частично обновить вакансию. Можно передавать только те поля, которые необходимо изменить. Попытка обновить вакансию, не принадлежащую пользователю, вызовет ошибку.",
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties=properties_for_vacancies,  
+    ),
+    responses={
+        status.HTTP_200_OK: openapi.Response(
+            description="Вакансия успешно обновлена.",
+            examples={
+                "application/json": {
+                    "id": 1,
+                    "title": "Тест",
+                    "description": "Обновленное описание вакансии.",
+                    "work_conditions": {
+                        "format": "onsite",
+                        "employment_type": "full_time"
+                    },
+                    "salary": {
+                        "min_salary": 50000,
+                        "max_salary": 70000,
+                        "currency": "RUB"
+                    },
+                    "location": {
+                        "city": "Москва",
+                        "address": "Улица фронтендеров, 69"
+                    },
+                    "number_of_openings": 1,
+                    "skills": {
+                        "experience": "1",
+                        "tech_stack_tags": [
+                            "Python",
+                            "Дружелюбность"
+                        ],
+                        "languages": [
+                            "Русский",
+                            "Английский"
+                        ]
+                    },
+                    "publication_date": "2024-11-23T14:09:54.830327+03:00",
+                    "status": "published",
+                    "created_by": 2
+                }
+            }
+        ),
+        status.HTTP_400_BAD_REQUEST: openapi.Response(
+            description="Ошибка в данных запроса.",
+            examples={
+                "application/json": {
+                    "detail": ""
+                }
+            }
+        ),
+        status.HTTP_401_UNAUTHORIZED: openapi.Response(
+            description="Ошибка авторизации. Пользователь не авторизован.",
+            examples={"application/json": {"detail": "Учетные данные не были предоставлены."}},
+        ),
+        status.HTTP_403_FORBIDDEN: openapi.Response(
+            description="Запрещено. Попытка обновить чужую вакансию.",
+            examples={"application/json": {"detail": "Вы не можете редактировать чужую вакансию."}},
+        ),
+    },
+)
     def patch(self, request, *args, **kwargs):
         """
         Обрабатывает частичный запрос обновления (PATCH).
@@ -933,14 +996,14 @@ class UserResumeListView(generics.ListAPIView):
     
 
     def get_queryset(self):
-        # Получаем текущего пользователя из запроса
+        
         user = self.request.user
         print("Текущий пользователь:", self.request.user)
-        # Проверяем, является ли пользователь экземпляром `Applicant`
+        
         if not hasattr(user, 'applicant'):
             raise PermissionDenied("Только пользователи-аппликанты могут просматривать резюме.")
         
-        # Фильтруем резюме по текущему пользователю
+        
         return Resume.objects.filter(applicant=user)
     
 class UserResumeDetailView(generics.RetrieveAPIView):
@@ -1024,9 +1087,9 @@ class UserResumeDetailView(generics.RetrieveAPIView):
         return super().get(request, *args, **kwargs)
     
     def get_queryset(self):
-        # Получаем текущего пользователя
+        
         user = self.request.user
-        # Проверяем, является ли пользователь аппликантом
+       
         if not hasattr(user, 'applicant'):
             raise PermissionDenied("Только пользователи-аппликанты могут просматривать резюме.")
         
