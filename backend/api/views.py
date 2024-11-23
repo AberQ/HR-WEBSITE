@@ -102,6 +102,7 @@ properties_for_resume={
                 description="Ссылка на портфолио кандидата",
                 example="https://github.com/AberQ/HR-WEBSITE"
             ),
+            
         }
 
 
@@ -659,7 +660,50 @@ class VacancyUpdateView(generics.UpdateAPIView):
         if obj.created_by.id != self.request.user.id:
             raise PermissionDenied("Вы не имеете права редактировать эту вакансию.")
         return obj
-
+    @swagger_auto_schema(
+        operation_summary="Обновление вакансии со всеми полями",
+        operation_description="Позволяет авторизованному пользователю обновить вакансию. Необходимо указать все обязательные поля. Попытка обновить вакансию, не принадлежащую пользователю, вызовет ошибку.",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties=properties_for_vacancies,
+            required=["title", "description", "work_conditions", "salary", "location", "number_of_openings", "skills", "status"],
+        ),
+        responses={
+            status.HTTP_200_OK: openapi.Response(
+                description="Вакансия успешно обновлена.",
+                examples={
+                    "application/json": {
+                        "id": 1,
+                        "title": "Junior Python Developer",
+                        "description": "Описание вакансии",
+                        "work_conditions": "Полная ставка",
+                        "salary": 60000,
+                        "location": {"city": "Москва", "address": "ул. Ленина, 1"},
+                        "number_of_openings": 2,
+                        "skills": ["Python", "Django", "REST API"],
+                        "status": "Опубликована",
+                        "updated_at": "2024-11-21T21:46:10.723536+03:00",
+                    }
+                }
+            ),
+            status.HTTP_400_BAD_REQUEST: openapi.Response(
+                description="Ошибка в данных запроса.",
+                examples={
+                    "application/json": {
+                        "title": ["Это поле не может быть пустым."]
+                    }
+                }
+            ),
+            status.HTTP_401_UNAUTHORIZED: openapi.Response(
+                description="Ошибка авторизации. Пользователь не авторизован.",
+                examples={"application/json": {"detail": "Учетные данные не были предоставлены."}},
+            ),
+            status.HTTP_403_FORBIDDEN: openapi.Response(
+                description="Запрещено. Попытка обновить чужую вакансию.",
+                examples={"application/json": {"detail": "Вы не можете редактировать чужую вакансию."}},
+            ),
+        },
+    )
     def put(self, request, *args, **kwargs):
         """
         Обрабатывает полный запрос обновления (PUT).
@@ -689,11 +733,6 @@ class VacancyUpdateView(generics.UpdateAPIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-
-
-
-
     
 
     def patch(self, request, *args, **kwargs):
