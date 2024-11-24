@@ -23,7 +23,9 @@ from ..models import Vacancy
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .swagger_properties import *
-
+class TagListAPIView(generics.ListAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
 
 class TagCreateView(CreateAPIView):
     queryset = Tag.objects.all()
