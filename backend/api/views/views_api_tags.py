@@ -7,6 +7,9 @@ from registration.views import *
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .swagger_properties import *
+from django.contrib.auth.models import *
+from django.contrib.auth.validators import *
+
 class TagListAPIView(generics.ListAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
