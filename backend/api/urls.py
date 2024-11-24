@@ -15,6 +15,7 @@ urlpatterns = [
 
 
     path('api/tags/', TagListAPIView.as_view(), name='tag_list'),
+    path('api/tags/<int:id>/', TagDetailAPIView.as_view(), name='tag-detail'),
     path('api/tags/create/', TagCreateView.as_view(), name='create_tag'),
 
     path('api/applicant/vacancies/', VacancyListAPIView.as_view(), name='vacancy_list'),
