@@ -20,7 +20,34 @@ class TagDetailAPIView(generics.RetrieveAPIView):
     serializer_class = TagSerializer
     lookup_field = 'id'
 
-    
+
+    @swagger_auto_schema(
+        operation_summary="Получить тег по ID",
+        operation_description="Возвращает данные тега с указанным ID.",
+        responses={
+            200: openapi.Response(
+                description="Успешный запрос",
+                examples={
+                    "application/json": {
+                        "id": 1,
+                        "name": "JavaScript"
+                    }
+                },
+                schema=TagSerializer
+            ),
+            404: openapi.Response(
+                description="Тег не найден",
+                examples={
+                    "application/json": {
+                        "detail": "No Tag matches the given query."
+                    }
+                }
+            )
+        }
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
 class TagCreateView(CreateAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
