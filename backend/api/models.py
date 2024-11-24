@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-from django.conf import settings
 from registration.models import *
 EXPERIENCE_CHOICES = [
         ('0', 'Без опыта'),

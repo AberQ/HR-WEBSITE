@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import *
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Vacancy, Tag, WorkConditionTag
+from .models import Vacancy, Tag
 User = get_user_model()
 
 

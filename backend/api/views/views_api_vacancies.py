@@ -6,19 +6,9 @@ from rest_framework.generics import *
 from rest_framework.response import Response
 from rest_framework import status
 from ..models import Vacancy
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render
 from registration.views import *
-from django.contrib.auth.decorators import login_required
-from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import render, redirect
-from registration.forms import VacancyForm
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
 from ..models import Vacancy
 from rest_framework import permissions
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
 from ..models import Vacancy
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
