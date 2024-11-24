@@ -15,6 +15,32 @@ class TagListAPIView(generics.ListAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
+    @swagger_auto_schema(
+        operation_summary="Получить список тегов",
+        operation_description="Возвращает список всех доступных тегов.",
+        responses={
+            200: openapi.Response(
+                description="Успешный запрос",
+                examples={
+                    "application/json": [
+                        {
+                            "id": 1,
+                            "name": "Programming",
+                            
+                        },
+                        {
+                            "id": 2,
+                            "name": "Design",
+                            
+                        }
+                    ]
+                },
+                schema=TagSerializer(many=True)
+            )
+        }
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 class TagDetailAPIView(generics.RetrieveAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
