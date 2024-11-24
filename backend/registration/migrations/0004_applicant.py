@@ -8,21 +8,39 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('registration', '0003_employer_alter_customuser_options'),
+        ("registration", "0003_employer_alter_customuser_options"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Applicant',
+            name="Applicant",
             fields=[
-                ('customuser_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
-                ('company_name', models.CharField(blank=True, max_length=255, verbose_name='Имя компании')),
-                ('company_info', models.TextField(blank=True, verbose_name='Информация о компании')),
+                (
+                    "customuser_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "company_name",
+                    models.CharField(
+                        blank=True, max_length=255, verbose_name="Имя компании"
+                    ),
+                ),
+                (
+                    "company_info",
+                    models.TextField(blank=True, verbose_name="Информация о компании"),
+                ),
             ],
             options={
-                'verbose_name': 'Работодатель',
-                'verbose_name_plural': 'Работодатели',
+                "verbose_name": "Работодатель",
+                "verbose_name_plural": "Работодатели",
             },
-            bases=('registration.customuser',),
+            bases=("registration.customuser",),
         ),
     ]

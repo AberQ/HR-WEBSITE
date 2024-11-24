@@ -6,13 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0012_alter_resume_degree'),
+        ("api", "0012_alter_resume_degree"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='resume',
-            name='degree',
-            field=models.CharField(choices=[('speciality', 'Специалитет'), ('bachelor', 'Бакалавриат'), ('unfinished_higher', 'Неоконченное высшее'), ('vocational', 'СПО'), ('unfinished_secondary', 'Неоконченное СПО')], max_length=100, verbose_name='Степень'),
+            model_name="resume",
+            name="degree",
+            field=models.CharField(
+                choices=[
+                    ("speciality", "Специалитет"),
+                    ("bachelor", "Бакалавриат"),
+                    ("unfinished_higher", "Неоконченное высшее"),
+                    ("vocational", "СПО"),
+                    ("unfinished_secondary", "Неоконченное СПО"),
+                ],
+                max_length=100,
+                verbose_name="Степень",
+            ),
         ),
     ]

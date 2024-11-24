@@ -8,24 +8,39 @@ import api.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0013_alter_resume_degree'),
+        ("api", "0013_alter_resume_degree"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='resume',
-            name='specialization',
-            field=models.CharField(default=1, max_length=255, verbose_name='Специальность'),
+            model_name="resume",
+            name="specialization",
+            field=models.CharField(
+                default=1, max_length=255, verbose_name="Специальность"
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='resume',
-            name='degree',
-            field=models.CharField(choices=[('speciality', 'Специалитет'), ('bachelor', 'Бакалавриат'), ('unfinished_higher', 'Неоконченное высшее'), ('vocational', 'СПО'), ('unfinished_secondary', 'Неоконченное среднее')], max_length=100, verbose_name='Степень'),
+            model_name="resume",
+            name="degree",
+            field=models.CharField(
+                choices=[
+                    ("speciality", "Специалитет"),
+                    ("bachelor", "Бакалавриат"),
+                    ("unfinished_higher", "Неоконченное высшее"),
+                    ("vocational", "СПО"),
+                    ("unfinished_secondary", "Неоконченное среднее"),
+                ],
+                max_length=100,
+                verbose_name="Степень",
+            ),
         ),
         migrations.AlterField(
-            model_name='resume',
-            name='work_experience',
-            field=models.TextField(validators=[api.models.Resume.validate_numeric_experience], verbose_name='Опыт работы'),
+            model_name="resume",
+            name="work_experience",
+            field=models.TextField(
+                validators=[api.models.Resume.validate_numeric_experience],
+                verbose_name="Опыт работы",
+            ),
         ),
     ]

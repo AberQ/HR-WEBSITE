@@ -6,18 +6,18 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0014_resume_specialization_alter_resume_degree_and_more'),
+        ("api", "0014_resume_specialization_alter_resume_degree_and_more"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='vacancy',
-            old_name='work_condition_tags',
-            new_name='employment_type',
+            model_name="vacancy",
+            old_name="work_condition_tags",
+            new_name="employment_type",
         ),
         migrations.RenameField(
-            model_name='vacancy',
-            old_name='work_format',
-            new_name='format',
+            model_name="vacancy",
+            old_name="work_format",
+            new_name="format",
         ),
     ]

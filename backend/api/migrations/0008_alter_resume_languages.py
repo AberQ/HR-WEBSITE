@@ -6,13 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0007_remove_resume_title'),
+        ("api", "0007_remove_resume_title"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='resume',
-            name='languages',
-            field=models.CharField(blank=True, choices=[('english', 'Английский'), ('russian', 'Русский'), ('spanish', 'Испанский')], max_length=20, verbose_name='Языки'),
+            model_name="resume",
+            name="languages",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("english", "Английский"),
+                    ("russian", "Русский"),
+                    ("spanish", "Испанский"),
+                ],
+                max_length=20,
+                verbose_name="Языки",
+            ),
         ),
     ]

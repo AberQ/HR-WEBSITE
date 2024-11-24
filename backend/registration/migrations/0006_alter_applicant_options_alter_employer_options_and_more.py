@@ -6,61 +6,70 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('registration', '0005_alter_applicant_company_name'),
+        ("registration", "0005_alter_applicant_company_name"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='applicant',
-            options={'verbose_name': 'Соискатель', 'verbose_name_plural': 'Соискатели'},
+            name="applicant",
+            options={"verbose_name": "Соискатель", "verbose_name_plural": "Соискатели"},
         ),
         migrations.AlterModelOptions(
-            name='employer',
-            options={'verbose_name': 'Работодатель', 'verbose_name_plural': 'Работодатели'},
+            name="employer",
+            options={
+                "verbose_name": "Работодатель",
+                "verbose_name_plural": "Работодатели",
+            },
         ),
         migrations.RemoveField(
-            model_name='applicant',
-            name='company_info',
+            model_name="applicant",
+            name="company_info",
         ),
         migrations.RemoveField(
-            model_name='applicant',
-            name='company_name',
+            model_name="applicant",
+            name="company_name",
         ),
         migrations.RemoveField(
-            model_name='employer',
-            name='first_name',
+            model_name="employer",
+            name="first_name",
         ),
         migrations.RemoveField(
-            model_name='employer',
-            name='last_name',
+            model_name="employer",
+            name="last_name",
         ),
         migrations.RemoveField(
-            model_name='employer',
-            name='patronymic',
+            model_name="employer",
+            name="patronymic",
         ),
         migrations.AddField(
-            model_name='applicant',
-            name='first_name',
-            field=models.CharField(blank=True, max_length=150, verbose_name='first name'),
+            model_name="applicant",
+            name="first_name",
+            field=models.CharField(
+                blank=True, max_length=150, verbose_name="first name"
+            ),
         ),
         migrations.AddField(
-            model_name='applicant',
-            name='last_name',
-            field=models.CharField(blank=True, max_length=150, verbose_name='last name'),
+            model_name="applicant",
+            name="last_name",
+            field=models.CharField(
+                blank=True, max_length=150, verbose_name="last name"
+            ),
         ),
         migrations.AddField(
-            model_name='applicant',
-            name='patronymic',
-            field=models.CharField(blank=True, max_length=150, verbose_name='Отчество'),
+            model_name="applicant",
+            name="patronymic",
+            field=models.CharField(blank=True, max_length=150, verbose_name="Отчество"),
         ),
         migrations.AddField(
-            model_name='employer',
-            name='company_info',
-            field=models.TextField(blank=True, verbose_name='Информация о компании'),
+            model_name="employer",
+            name="company_info",
+            field=models.TextField(blank=True, verbose_name="Информация о компании"),
         ),
         migrations.AddField(
-            model_name='employer',
-            name='company_name',
-            field=models.CharField(blank=True, max_length=255, verbose_name='Имя компании'),
+            model_name="employer",
+            name="company_name",
+            field=models.CharField(
+                blank=True, max_length=255, verbose_name="Имя компании"
+            ),
         ),
     ]

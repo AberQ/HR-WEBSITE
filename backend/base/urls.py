@@ -10,7 +10,7 @@ from registration.views import *
 schema_view = get_schema_view(
     openapi.Info(
         title="Job Vacancy API",
-        default_version='v1',
+        default_version="v1",
         description="API documentation for job vacancies",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="egor.master2017@gmail.com"),
@@ -21,11 +21,14 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path("admin/", admin.site.urls),
+    path(
+        "swagger/",
+        schema_view.with_ui("swagger", cache_timeout=0),
+        name="schema-swagger-ui",
+    ),
     path("select2/", include("django_select2.urls")),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('', include('api.urls')),  # Подключаем urls из приложения api
-    path('', include('registration.urls')),  # Подключаем urls из приложения api
-
+    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+    path("", include("api.urls")),  # Подключаем urls из приложения api
+    path("", include("registration.urls")),  # Подключаем urls из приложения api
 ]

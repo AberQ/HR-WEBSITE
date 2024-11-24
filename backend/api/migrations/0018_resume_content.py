@@ -6,14 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0017_alter_techstacktag_name'),
+        ("api", "0017_alter_techstacktag_name"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='resume',
-            name='content',
-            field=models.CharField(default='Test', max_length=255, verbose_name='Описание резюме'),
+            model_name="resume",
+            name="content",
+            field=models.CharField(
+                default="Test", max_length=255, verbose_name="Описание резюме"
+            ),
             preserve_default=False,
         ),
     ]

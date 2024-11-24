@@ -6,18 +6,21 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('registration', '0006_alter_applicant_options_alter_employer_options_and_more'),
+        (
+            "registration",
+            "0006_alter_applicant_options_alter_employer_options_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='applicant',
-            name='first_name',
-            field=models.CharField(max_length=150, verbose_name='first name'),
+            model_name="applicant",
+            name="first_name",
+            field=models.CharField(max_length=150, verbose_name="first name"),
         ),
         migrations.AlterField(
-            model_name='applicant',
-            name='last_name',
-            field=models.CharField(max_length=150, verbose_name='last name'),
+            model_name="applicant",
+            name="last_name",
+            field=models.CharField(max_length=150, verbose_name="last name"),
         ),
     ]

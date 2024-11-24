@@ -6,24 +6,24 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0009_language_remove_resume_languages_resume_languages'),
+        ("api", "0009_language_remove_resume_languages_resume_languages"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='language',
-            options={'verbose_name': 'Язык', 'verbose_name_plural': 'Языки'},
+            name="language",
+            options={"verbose_name": "Язык", "verbose_name_plural": "Языки"},
         ),
         migrations.RemoveField(
-            model_name='resume',
-            name='created_at',
+            model_name="resume",
+            name="created_at",
         ),
         migrations.RemoveField(
-            model_name='resume',
-            name='education_institution',
+            model_name="resume",
+            name="education_institution",
         ),
         migrations.RemoveField(
-            model_name='resume',
-            name='graduation_year',
+            model_name="resume",
+            name="graduation_year",
         ),
     ]

@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0005_resume_applicant_resume_title'),
+        ("api", "0005_resume_applicant_resume_title"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='resume',
-            name='title',
-            field=models.CharField(max_length=255, verbose_name='Заголовок резюме'),
+            model_name="resume",
+            name="title",
+            field=models.CharField(max_length=255, verbose_name="Заголовок резюме"),
         ),
     ]

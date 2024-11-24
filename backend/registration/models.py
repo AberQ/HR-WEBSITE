@@ -11,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
-            raise ValueError('Пользователь должен указать адрес электронной почты.')
+            raise ValueError("Пользователь должен указать адрес электронной почты.")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -19,20 +19,21 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Суперпользователь должен иметь is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Суперпользователь должен иметь is_superuser=True.')
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Суперпользователь должен иметь is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Суперпользователь должен иметь is_superuser=True.")
 
         # Установите значение username по умолчанию
-        
+
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
+
 
 class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
     """
@@ -41,10 +42,6 @@ class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
 
     Username and password are required. Other fields are optional.
     """
-
-
-
-
 
     email = models.EmailField(_("email address"), blank=False, unique=True)
     is_staff = models.BooleanField(
@@ -63,7 +60,7 @@ class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
 
     objects = CustomUserManager()
-    USERNAME_FIELD = 'email'  # или 'username' в зависимости от настроек
+    USERNAME_FIELD = "email"  # или 'username' в зависимости от настроек
     REQUIRED_FIELDS = []
 
     class Meta:
@@ -71,13 +68,9 @@ class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = _("Авторизационники")
         abstract = True
 
-    
-
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
-
-
 
 
 class CustomUser(CustomAbstractUser):
@@ -100,7 +93,8 @@ class Applicant(CustomUser):
     first_name = models.CharField(_("first name"), max_length=150)
     last_name = models.CharField(_("last name"), max_length=150)
     patronymic = models.CharField(_("Отчество"), max_length=150, blank=True)
-    REQUIRED_FIELDS = ['first_name', "last_name"]
+    REQUIRED_FIELDS = ["first_name", "last_name"]
+
     class Meta:
         verbose_name = _("Соискатель")
         verbose_name_plural = _("Соискатели")
@@ -119,18 +113,19 @@ class Applicant(CustomUser):
     def get_short_name(self):
         """Return the short name for the user."""
         return self.first_name
-    
-
 
 
 class Employer(CustomUser):
     """
     Модель для соискателей, которая наследует от модели пользователя.
     """
-    
+
     company_name = models.CharField(_("Имя компании"), max_length=255)
     company_info = models.TextField(_("Информация о компании"), blank=True)
-    REQUIRED_FIELDS = ['company_name',]
+    REQUIRED_FIELDS = [
+        "company_name",
+    ]
+
     class Meta:
         verbose_name = _("Работодатель")
         verbose_name_plural = _("Работодатели")

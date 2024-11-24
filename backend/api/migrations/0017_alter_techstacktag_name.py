@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0016_rename_skills_resume_tech_stack_tags'),
+        ("api", "0016_rename_skills_resume_tech_stack_tags"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='techstacktag',
-            name='name',
-            field=models.CharField(max_length=100, unique=True, verbose_name='Название'),
+            model_name="techstacktag",
+            name="name",
+            field=models.CharField(
+                max_length=100, unique=True, verbose_name="Название"
+            ),
         ),
     ]

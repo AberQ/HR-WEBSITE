@@ -15,6 +15,7 @@ class TagListAPIView(generics.ListAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
+
 class TagCreateView(CreateAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
@@ -31,15 +32,14 @@ class TagCreateView(CreateAPIView):
                 "name": openapi.Schema(
                     type=openapi.TYPE_STRING,
                     description="Название тега (например, 'Python', 'Django')",
-                    example="Django"
+                    example="Django",
                 ),
             },
-            required=["name"]
+            required=["name"],
         ),
         responses={
             status.HTTP_201_CREATED: openapi.Response(
-                "Тег успешно создан",
-                TagSerializer
+                "Тег успешно создан", TagSerializer
             ),
             status.HTTP_400_BAD_REQUEST: openapi.Response(
                 "Ошибка валидации данных",
@@ -49,12 +49,12 @@ class TagCreateView(CreateAPIView):
                         "error": openapi.Schema(
                             type=openapi.TYPE_STRING,
                             description="Описание ошибки",
-                            example="Поле 'name' не может быть пустым."
+                            example="Поле 'name' не может быть пустым.",
                         )
-                    }
-                )
-            )
-        }
+                    },
+                ),
+            ),
+        },
     )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
