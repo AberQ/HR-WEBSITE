@@ -1411,11 +1411,27 @@ class ResumeUpdateAPIView(UpdateAPIView):
                 description="Резюме успешно обновлено.",
                 examples={
                     "application/json": {
-                        "id": 1,
-                        "title": "Новый заголовок",
-                        "content": "Обновленное содержание",
-                        "applicant": 2
-                    }
+                    "id": 1,
+                    "desired_position": "Junior Python Developer",
+                    "candidate_name": "Тест Тестов",
+                    "content": "Контент",
+                    "contacts": {
+                        "email": "applicant@example.com",
+                        "phone": "+7 123 456 7890"
+                    },
+                    "location": {
+                        "city": "Москва"
+                    },
+                    "degree": "bachelor",
+                    "skills": {
+                        "experience": "1",
+                        "tags": ["Python", "Дружелюбность"],
+                        "languages": ["Русский", "Английский"]
+                    },
+                    "portfolio_link": "https://github.com/AberQ/HR-WEBSITE",
+                    "updated_at": "2024-11-21T21:46:10.723536+03:00",
+                    "applicant": 3
+                }
                 }
             ),
             status.HTTP_400_BAD_REQUEST: openapi.Response(
