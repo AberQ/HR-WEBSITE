@@ -4,6 +4,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from api.views.views_api_vacancies import *
 from api.views.views_api_resumes import *
+from api.views.views_test import *
 from django.contrib import admin
 from django.urls import path, include
 from registration.views import *
