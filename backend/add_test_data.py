@@ -7,7 +7,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'base.settings')
 django.setup()
 
 from registration.models import Employer, Applicant
-from api.models import TechStackTag, Language, Vacancy, Resume
+from api.models import Tag, Language, Vacancy, Resume
 
 # Получаем модель пользователя
 User = get_user_model()
@@ -55,7 +55,7 @@ try:
         print(f"Applicant with {applicant_email} already exists.")
     
     # Добавляем TechStackTags
-    tech_stack_tags_list = [
+    tags_list = [
     'JavaScript', 'HTML/CSS', 'React', 'Node.js', 'Angular', 'Vue.js', 'TypeScript', 
     'Swift', 'Kotlin', 'C#', '.NET', 'Ruby on Rails', 'PHP', 'MySQL', 'PostgreSQL', 
     'MongoDB', 'AWS', 'Azure', 'Google Cloud Platform', 'DevOps', 'Docker', 
@@ -96,13 +96,13 @@ try:
     'Логическое мышление', 'Позитивное мышление', 'Харизма', 'Ориентация на результат', 
     'Ориентация на клиента', 'Саморазвитие', 'Интуиция', 'Чувство юмора', 'Python', 'Дружелюбность',
 ]
-    for tag_name in tech_stack_tags_list:
-        if not TechStackTag.objects.filter(name=tag_name).exists():
-            tag = TechStackTag(name=tag_name)
+    for tag_name in tags_list:
+        if not Tag.objects.filter(name=tag_name).exists():
+            tag = Tag(name=tag_name)
             tag.save()
-            #print(f"TechStackTag '{tag_name}' created!")
+            #print(f"Tag '{tag_name}' created!")
         #else:
-            #print(f"TechStackTag '{tag_name}' already exists.")
+            #print(f"Tag '{tag_name}' already exists.")
     print("Навыки готовы")
     
     # Добавляем Languages
@@ -140,8 +140,8 @@ try:
             )
             vacancy.save()
             # Присвоение навыков к вакансии
-            tech_stack_tags_list = TechStackTag.objects.filter(name__in=['Python', 'Дружелюбность'])
-            vacancy.tech_stack_tags.set(tech_stack_tags_list)
+            tags_list = Tag.objects.filter(name__in=['Python', 'Дружелюбность'])
+            vacancy.tags.set(tags_list)
             languages = Language.objects.filter(name__in=['Русский', 'Английский'])
             vacancy.languages.set(languages)
             print(f"Vacancy 'Junior Python Developer' created!")
@@ -169,9 +169,9 @@ try:
             )
             resume.save()
             #Присвоение тэгов и языков к резюме
-            tech_stack_tags_list = TechStackTag.objects.filter(name__in=['Python', 'Дружелюбность'])
+            tags_list = Tag.objects.filter(name__in=['Python', 'Дружелюбность'])
             languages = Language.objects.filter(name__in=['Русский', 'Английский'])
-            resume.tech_stack_tags.set(tech_stack_tags_list)
+            resume.tags.set(tags_list)
             resume.languages.set(languages)
             print(f"Resume for {resume_candidate_name} created!")
         else:

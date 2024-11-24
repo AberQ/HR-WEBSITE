@@ -29,7 +29,7 @@ class WorkConditionTag(models.Model):
     def __str__(self):
         return self.name
 
-class TechStackTag(models.Model):
+class Tag(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="Название")
 
     class Meta:
@@ -93,7 +93,7 @@ class Vacancy(models.Model):
     address = models.CharField(max_length=255, verbose_name='Адрес')
     number_of_openings = models.PositiveIntegerField(verbose_name='Количество вакантных мест')
     description = models.TextField(verbose_name='Описание')
-    tech_stack_tags = models.ManyToManyField('TechStackTag', blank=True, verbose_name='Навыки')
+    tags = models.ManyToManyField('Tag', blank=True, verbose_name='Навыки')
     languages = models.ManyToManyField(Language, blank=True, verbose_name='Языки')
     employment_type = models.CharField(
         max_length=20, 
@@ -179,7 +179,7 @@ class Resume(models.Model):
     )
 
     # Навыки
-    tech_stack_tags = models.ManyToManyField('TechStackTag', blank=True, verbose_name='Навыки')  # Связь с TechStackTag
+    tags = models.ManyToManyField('Tag', blank=True, verbose_name='Навыки')  # Связь с Tag
 
     # Дополнительные разделы
     languages = models.ManyToManyField(Language, blank=True, verbose_name='Языки')

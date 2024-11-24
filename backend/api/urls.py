@@ -13,7 +13,7 @@ urlpatterns = [
     path('test/vacancies/', vacancy_list, name='vacancy_list'),
     path('test/add/', add_vacancy, name='add_vacancy'),
 
-    path('api/tags/create/', TechStackTagCreateView.as_view(), name='create_tag'),
+    path('api/tags/create/', TagCreateView.as_view(), name='create_tag'),
 
     path('api/applicant/vacancies/', VacancyListAPIView.as_view(), name='vacancy-list'),
     path('api/applicant/vacancies/<int:id>/', VacancyDetailAPIView.as_view(), name='vacancy-detail'),

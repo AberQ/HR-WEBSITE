@@ -81,7 +81,7 @@ properties_for_resume={
                         description="Количество лет опыта работы",
                         example="1"
                     ),
-                    "tech_stack_tags": openapi.Schema(
+                    "tags": openapi.Schema(
                         type=openapi.TYPE_ARRAY,
                         items=openapi.Items(type=openapi.TYPE_STRING),
                         description="Технические навыки кандидата",
@@ -195,7 +195,7 @@ properties_for_vacancies = {
                         """,
                         example="1",
                     ),
-                    "tech_stack_tags": openapi.Schema(
+                    "tags": openapi.Schema(
                         type=openapi.TYPE_ARRAY,
                         items=openapi.Items(type=openapi.TYPE_STRING),
                         description="Технический стек, требуемый для вакансии. Берутся из базы данных",
@@ -293,7 +293,7 @@ class VacancyListAPIView(generics.ListAPIView):
         "number_of_openings": 1,
         "skills": {
             "experience": "До 1 года",
-            "tech_stack_tags": [
+            "tags": [
                 "Python",
                 "Дружелюбность"
             ],
@@ -326,7 +326,7 @@ class VacancyListAPIView(generics.ListAPIView):
         "number_of_openings": 1,
         "skills": {
             "experience": "0",
-            "tech_stack_tags": [
+            "tags": [
                 "Python",
                 "Дружелюбность"
             ],
@@ -393,7 +393,7 @@ class VacancyDetailAPIView(generics.RetrieveAPIView):
     "number_of_openings": 1,
     "skills": {
         "experience": "До 1 года",
-        "tech_stack_tags": [
+        "tags": [
             "Python",
             "Дружелюбность"
         ],
@@ -458,7 +458,7 @@ class VacancyListByEmployerAPIView(generics.ListAPIView):
         "number_of_openings": 1,
         "skills": {
             "experience": "До 1 года",
-            "tech_stack_tags": [
+            "tags": [
                 "Python",
                 "Дружелюбность"
             ],
@@ -491,7 +491,7 @@ class VacancyListByEmployerAPIView(generics.ListAPIView):
         "number_of_openings": 1,
         "skills": {
             "experience": "0",
-            "tech_stack_tags": [
+            "tags": [
                 "Python",
                 "Дружелюбность"
             ],
@@ -575,7 +575,7 @@ class VacancyCreateAPIView(generics.CreateAPIView):
     "number_of_openings": 1,
     "skills": {
         "experience": "0",
-        "tech_stack_tags": [
+        "tags": [
             "Python",
             "Дружелюбность"
         ],
@@ -712,7 +712,7 @@ class VacancyUpdateView(generics.UpdateAPIView):
     "number_of_openings": 1,
     "skills": {
         "experience": "1",
-        "tech_stack_tags": [
+        "tags": [
             "Python",
             "Дружелюбность"
         ],
@@ -806,7 +806,7 @@ class VacancyUpdateView(generics.UpdateAPIView):
                     "number_of_openings": 1,
                     "skills": {
                         "experience": "1",
-                        "tech_stack_tags": [
+                        "tags": [
                             "Python",
                             "Дружелюбность"
                         ],
@@ -860,9 +860,9 @@ class VacancyUpdateView(generics.UpdateAPIView):
 
 from rest_framework import status
 
-class TechStackTagCreateView(CreateAPIView):
-    queryset = TechStackTag.objects.all()
-    serializer_class = TechStackTagSerializer
+class TagCreateView(CreateAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
 
     @swagger_auto_schema(
         operation_summary="Создать новый тег технологического стека",
@@ -884,7 +884,7 @@ class TechStackTagCreateView(CreateAPIView):
         responses={
             status.HTTP_201_CREATED: openapi.Response(
                 "Тег успешно создан",
-                TechStackTagSerializer
+                TagSerializer
             ),
             status.HTTP_400_BAD_REQUEST: openapi.Response(
                 "Ошибка валидации данных",
@@ -936,7 +936,7 @@ class UserResumeListView(generics.ListAPIView):
         "degree": "bachelor",
         "skills": {
             "experience": "До 1 года",
-            "tech_stack_tags": [
+            "tags": [
                 "Python",
                 "Дружелюбность"
             ],
@@ -964,7 +964,7 @@ class UserResumeListView(generics.ListAPIView):
         "degree": "bachelor",
         "skills": {
             "experience": "1",
-            "tech_stack_tags": [
+            "tags": [
                 "Python",
                 "Дружелюбность"
             ],
@@ -1056,7 +1056,7 @@ class UserResumeDetailView(generics.RetrieveAPIView):
     "degree": "bachelor",
     "skills": {
         "experience": "До 1 года",
-        "tech_stack_tags": [
+        "tags": [
             "Python",
             "Дружелюбность"
         ],
@@ -1154,7 +1154,7 @@ class UserResumeCreateView(generics.CreateAPIView):
                         "degree": "bachelor",
                         "skills": {
                             "experience": "1",
-                            "tech_stack_tags": [
+                            "tags": [
                                 "Python",
                                 "Дружелюбность"
                             ],
@@ -1235,12 +1235,12 @@ class UserResumeCreateView(generics.CreateAPIView):
                     language, created = Language.objects.get_or_create(name=language_name)
                     resume.languages.add(language)
 
-            # Для tech_stack_tags
-            if 'tech_stack_tags' in self.request.data:
-                tech_stack_tags = self.request.data.get('tech_stack_tags', [])
-                for tag_name in tech_stack_tags:
-                    tech_stack_tag, created = TechStackTag.objects.get_or_create(name=tag_name)
-                    resume.tech_stack_tags.add(tech_stack_tag)
+            # Для tags
+            if 'tags' in self.request.data:
+                tags = self.request.data.get('tags', [])
+                for tag_name in tags:
+                    tech_stack_tag, created = Tag.objects.get_or_create(name=tag_name)
+                    resume.tags.add(tech_stack_tag)
 
             resume.save()
         except Applicant.DoesNotExist:
@@ -1333,7 +1333,7 @@ class ResumeUpdateAPIView(UpdateAPIView):
                     "degree": "bachelor",
                     "skills": {
                         "experience": "1",
-                        "tech_stack_tags": ["Python", "Дружелюбность"],
+                        "tags": ["Python", "Дружелюбность"],
                         "languages": ["Русский", "Английский"]
                     },
                     "portfolio_link": "https://github.com/AberQ/HR-WEBSITE",

@@ -65,9 +65,9 @@ class VacancyForm(forms.ModelForm):
             'address',
             'number_of_openings',
             'description',
-            'tech_stack_tags',
+            'tags',
             'employment_type',
         ]
         widgets = {
-            'tech_stack_tags': Select2MultipleWidget,  # Подключаем Select2 для tech_stack_tags
+            'tags': Select2MultipleWidget,  # Подключаем Select2 для tags
         }
