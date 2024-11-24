@@ -79,40 +79,55 @@ class TagCreateView(CreateAPIView):
     serializer_class = TagSerializer
 
     @swagger_auto_schema(
-        operation_summary="Создать новый тег технологического стека",
-        operation_description=(
-            "Эндпоинт для создания нового тега технологического стека. "
-            "Необходимо отправить данные в формате JSON, указав название тега.Авторизация не нужна"
-        ),
-        request_body=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            properties={
-                "name": openapi.Schema(
-                    type=openapi.TYPE_STRING,
-                    description="Название тега (например, 'Python', 'Django')",
-                    example="Django",
-                ),
-            },
-            required=["name"],
-        ),
-        responses={
-            status.HTTP_201_CREATED: openapi.Response(
-                "Тег успешно создан", TagSerializer
-            ),
-            status.HTTP_400_BAD_REQUEST: openapi.Response(
-                "Ошибка валидации данных",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        "error": openapi.Schema(
-                            type=openapi.TYPE_STRING,
-                            description="Описание ошибки",
-                            example="Поле 'name' не может быть пустым.",
-                        )
-                    },
-                ),
+    operation_summary="Создать новый тег технологического стека",
+    operation_description=(
+        "Эндпоинт для создания нового тега технологического стека. "
+        "Необходимо отправить данные в формате JSON, указав название тега. Авторизация не нужна."
+    ),
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            "name": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Название тега (например, 'Python', 'Django')",
+                example="Django",
             ),
         },
-    )
+        required=["name"],
+        example={
+            "name": "Django"
+        },
+    ),
+    responses={
+        status.HTTP_201_CREATED: openapi.Response(
+            "Тег успешно создан",
+            schema=TagSerializer,
+            examples={
+                "application/json": {
+                    "id": 1,
+                    "name": "Django"
+                }
+            }
+        ),
+        status.HTTP_400_BAD_REQUEST: openapi.Response(
+            "Ошибка валидации данных",
+            schema=openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    "error": openapi.Schema(
+                        type=openapi.TYPE_STRING,
+                        description="Описание ошибки",
+                        example="Поле 'name' не может быть пустым.",
+                    )
+                },
+            ),
+            examples={
+                "application/json": {
+                    "error": "Поле 'name' не может быть пустым."
+                }
+            }
+        ),
+    },
+)
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
