@@ -1,13 +1,14 @@
 import os
+
 import django
-from django.core.exceptions import ImproperlyConfigured
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ImproperlyConfigured
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'base.settings')
 django.setup()
 
-from registration.models import Employer, Applicant
-from api.models import Tag, Language, Vacancy, Resume
+from api.models import Language, Resume, Tag, Vacancy
+from registration.models import Applicant, Employer
 
 # Получаем модель пользователя
 User = get_user_model()

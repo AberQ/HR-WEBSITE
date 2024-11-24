@@ -1,8 +1,9 @@
-from rest_framework import serializers
-from .models import *
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Vacancy, Tag
+
+from .models import *
+from .models import Tag, Vacancy
+
 User = get_user_model()
 
 

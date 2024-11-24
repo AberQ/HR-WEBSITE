@@ -1,18 +1,13 @@
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
+from rest_framework.generics import *
+
+from registration.forms import VacancyForm
+from registration.views import *
+
 from ..models import Vacancy
 from ..serializers import *
-from rest_framework.generics import *
-from ..models import Vacancy
-from django.shortcuts import render
-from registration.views import *
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from registration.forms import VacancyForm
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from ..models import Vacancy
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from ..models import Vacancy
+
 
 def home(request):
     return render(request, 'home.html')

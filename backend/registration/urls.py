@@ -1,8 +1,8 @@
 from django.urls import path
-from api.views.views_api_vacancies import *
-from django.urls import path
-from registration.views import *
 from rest_framework_simplejwt.views import TokenRefreshView
+
+from api.views.views_api_vacancies import *
+from registration.views import *
 
 urlpatterns = [
     path('choice_registration/', choice_registration, name='choice_registration'),

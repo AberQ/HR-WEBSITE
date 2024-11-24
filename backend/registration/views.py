@@ -1,24 +1,18 @@
-from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect
-from .forms import *
-from .models import *
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from .forms import CustomAuthenticationForm
-from django.contrib.auth import logout
-from django.shortcuts import redirect
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.views import APIView
-from .serializers import *
-from django.contrib.auth import get_user_model
-from rest_framework.permissions import IsAuthenticated
-from drf_yasg.utils import swagger_auto_schema
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import authenticate, get_user_model, login, logout
+from django.shortcuts import redirect, render
 from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .forms import *
+from .forms import CustomAuthenticationForm
+from .models import *
+from .serializers import *
+
+
 def applicant_registration(request):
     if request.method == 'POST':
         form = ApplicantSignUpForm(request.POST)
@@ -70,7 +64,9 @@ def choice_registration(request):
     return render(request, 'choice_registration.html')
 
 from rest_framework_simplejwt.views import TokenObtainPairView
+
 from .serializers import CustomTokenObtainPairSerializer
+
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer

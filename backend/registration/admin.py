@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+
 from registration.models import *
+
 
 class CustomUserAdmin(BaseUserAdmin):
     # Определите поля, которые будут отображаться в списке пользователей
@@ -34,7 +36,9 @@ admin.site.register(CustomUser, CustomUserAdmin)
 
 
 from django.contrib import admin
+
 from .models import Employer  # Замените . на путь к вашей модели, если нужно
+
 
 @admin.register(Applicant)
 class ApplicantAdmin(admin.ModelAdmin):

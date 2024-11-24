@@ -1,8 +1,10 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
+
 from .models import *
+
+
 class ApplicantSignUpForm(UserCreationForm):
     class Meta:
         model = Applicant
@@ -47,8 +49,11 @@ class CustomAuthenticationForm(forms.Form):
         return self.cleaned_data
     
 from django import forms
-from api.models import Vacancy
 from django_select2.forms import Select2MultipleWidget
+
+from api.models import Vacancy
+
+
 class VacancyForm(forms.ModelForm):
     class Meta:
         model = Vacancy

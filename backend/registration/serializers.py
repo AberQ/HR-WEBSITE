@@ -1,11 +1,13 @@
 # serializers.py
-from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework import serializers
 
 User = get_user_model()
 
 from rest_framework import serializers
+
 from .models import *
+
 
 class ApplicantSerializer(serializers.ModelSerializer):
     class Meta:
@@ -39,6 +41,7 @@ class EmployerSerializer(serializers.ModelSerializer):
         return user
     
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
      @classmethod

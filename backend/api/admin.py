@@ -1,6 +1,8 @@
 from django.contrib import admin
-from api.models import *
 from django.core.exceptions import ValidationError
+
+from api.models import *
+
 
 @admin.register(Vacancy)
 class VacancyAdmin(admin.ModelAdmin):

@@ -1,9 +1,9 @@
 from django.urls import path
-from api.views.views_api_vacancies import *
+
 from api.views.views_api_resumes import *
-from api.views.views_test import *
 from api.views.views_api_tags import *
-from django.urls import path
+from api.views.views_api_vacancies import *
+from api.views.views_test import *
 from registration.views import *
 
 urlpatterns = [

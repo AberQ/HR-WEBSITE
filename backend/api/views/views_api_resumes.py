@@ -1,19 +1,17 @@
-from rest_framework import generics
-from ..serializers import *
-from rest_framework import generics
-from rest_framework.generics import *
-from rest_framework.response import Response
-from rest_framework import status
-from registration.views import *
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import permissions
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-from rest_framework import status
-from .swagger_properties import *
 from django.contrib.auth.models import *
-from django.core.exceptions import PermissionDenied
 from django.contrib.auth.validators import *
+from django.core.exceptions import PermissionDenied
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import generics, permissions, status
+from rest_framework.generics import *
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+from registration.views import *
+
+from ..serializers import *
+from .swagger_properties import *
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #API для резюме
