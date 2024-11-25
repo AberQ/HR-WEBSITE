@@ -6,7 +6,7 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from rest_framework_simplejwt.views import *
 from .forms import *
 from .forms import CustomAuthenticationForm
 from .models import *
@@ -134,6 +134,64 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         Кастомизированный эндпоинт для получения токена с дополнительным полем 'role'.
         """
         return super().post(request, *args, **kwargs)
+    
+
+class CustomTokenRefreshView(TokenViewBase):
+    """
+    Takes a refresh type JSON web token and returns an access type JSON web
+    token if the refresh token is valid.
+    """
+
+    _serializer_class = api_settings.TOKEN_REFRESH_SERIALIZER
+    @swagger_auto_schema(
+        operation_summary="Обновление JWT токена",
+        operation_description="Принимает refresh токен и возвращает новый access токен.",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=["refresh"],
+            properties={
+                "refresh": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description="Refresh токен, используемый для обновления access токена.",
+                    example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                ),
+            },
+        ),
+        responses={
+            200: openapi.Response(
+                description="Успешное обновление токена",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "access": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Новый access токен.",
+                            example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                        ),
+                    },
+                ),
+            ),
+            401: openapi.Response(
+                description="Ошибка аутентификации",
+                examples={
+                    "application/json": {
+                        "detail": "Token is invalid or expired",
+                        "code": "token_not_valid"
+                    }
+                },
+            ),
+        },
+    )
+    def post(self, request, *args, **kwargs):
+        """
+        Обновление access токена с использованием refresh токена.
+        """
+        return super().post(request, *args, **kwargs)
+
+token_refresh = TokenRefreshView.as_view()
+    
+
+
 User = get_user_model()
 
 

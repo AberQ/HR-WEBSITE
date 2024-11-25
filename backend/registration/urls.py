@@ -22,6 +22,6 @@ urlpatterns = [
 
     path('api/login/profile/', UserProfileView.as_view(), name='user-profile'),
     path('api/login/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/login/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/login/token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
     
 ]
