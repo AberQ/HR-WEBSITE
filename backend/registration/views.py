@@ -167,7 +167,59 @@ class RegisterEmployerView(generics.CreateAPIView):
     queryset = Employer.objects.all()
     serializer_class = EmployerSerializer
 
-    def create(self, request, *args, **kwargs):
+
+    @swagger_auto_schema(
+        operation_summary="Регистрация работодателя",
+        operation_description="Позволяет зарегистрировать нового работодателя, передав email, пароль, название компании и её описание.",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=["email", "password", "company_name"],
+            properties={
+                "email": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    format=openapi.FORMAT_EMAIL,
+                    description="Электронная почта работодателя",
+                    example="employer1@example.com"
+                ),
+                "password": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    format=openapi.FORMAT_PASSWORD,
+                    description="Пароль работодателя",
+                    example="securepassword123"
+                ),
+                "company_name": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description="Название компании работодателя",
+                    example="Tech Innovators Inc."
+                ),
+                "company_info": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    description="Информация о компании работодателя (опционально)",
+                    default="",
+                    example="Компания занимается разработкой ПО."
+                ),
+            },
+        ),
+             responses={
+            201: openapi.Response(
+                description="Успешная регистрация",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "id": openapi.Schema(type=openapi.TYPE_INTEGER, example=1),
+                        "email": openapi.Schema(type=openapi.TYPE_STRING, example="employer1@example.com"),
+                        "company_name": openapi.Schema(type=openapi.TYPE_STRING, example="Tech Innovators Inc."),
+                        "company_info": openapi.Schema(type=openapi.TYPE_STRING, example="Компания занимается разработкой ПО."),
+                    }
+                ),
+            ),
+            400: openapi.Response(
+                description="Ошибка валидации данных",
+            ),
+        },
+    )
+
+    def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
