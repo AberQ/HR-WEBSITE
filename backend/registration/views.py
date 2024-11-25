@@ -215,6 +215,11 @@ class RegisterEmployerView(generics.CreateAPIView):
             ),
             400: openapi.Response(
                 description="Ошибка валидации данных",
+                examples={
+                    "application/json": {
+                        "detail": "This field is required.",
+                    },
+                }
             ),
         },
     )
