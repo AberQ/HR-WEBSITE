@@ -13,7 +13,7 @@ class ApplicantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Applicant
         fields = ["id", "email", "password", "first_name", "last_name", "patronymic"]
-
+    
     def create(self, validated_data):
         user = Applicant(
             email=validated_data["email"],

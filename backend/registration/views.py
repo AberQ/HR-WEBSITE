@@ -70,13 +70,15 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import CustomTokenObtainPairSerializer
 
 
-class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = CustomTokenObtainPairSerializer
+
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # API для регистрации
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
 User = get_user_model()
 
 
@@ -84,7 +86,77 @@ class RegisterApplicantView(generics.CreateAPIView):
     queryset = Applicant.objects.all()
     serializer_class = ApplicantSerializer
 
-    def create(self, request, *args, **kwargs):
+
+    
+    @swagger_auto_schema(
+    operation_summary="Регистрация нового соискателя",
+    operation_description=(
+        "Эндпоинт позволяет зарегистрировать нового соискателя. "
+        "Необходимы данные в формате JSON. После успешной регистрации возвращаются данные нового пользователя."
+    ),
+    request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            "email": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Email соискателя",
+                example="applicant@example.com",
+            ),
+            "password": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Пароль для аккаунта",
+                example="secure_password_123",
+            ),
+            "first_name": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Имя соискателя",
+                example="Иван",
+            ),
+            "last_name": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Фамилия соискателя",
+                example="Иванов",
+            ),
+            "patronymic": openapi.Schema(
+                type=openapi.TYPE_STRING,
+                description="Отчество соискателя (необязательное поле)",
+                example="Иванович",
+            ),
+        },
+        required=["email", "password", "first_name", "last_name"],
+        example={
+            "email": "applicant@example.com",
+            "password": "secure_password_123",
+            "first_name": "Иван",
+            "last_name": "Иванов",
+            "patronymic": "Иванович",
+        },
+    ),
+    responses={
+        status.HTTP_201_CREATED: openapi.Response(
+            description="Успешная регистрация",
+            examples={
+                "application/json": {
+                    "id": 1,
+                    "email": "applicant@example.com",
+                    "first_name": "Иван",
+                    "last_name": "Иванов",
+                    "patronymic": "Иванович",
+                    "created_at": "2024-11-24T12:00:00Z"
+                }
+            }
+        ),
+        status.HTTP_400_BAD_REQUEST: openapi.Response(
+            description="Ошибка валидации данных",
+            examples={
+                "application/json": {
+                    "error": "Поле 'email' обязательно для заполнения."
+                }
+            }
+        ),
+    },
+)
+    def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
