@@ -78,7 +78,62 @@ from .serializers import CustomTokenObtainPairSerializer
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
-
+    @swagger_auto_schema(
+        operation_summary="Получение JWT токена",
+        operation_description="Позволяет получить JWT токен для пользователя. Возвращает access и refresh токены вместе с ролью пользователя.",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=["email", "password"],
+            properties={
+                "email": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    format=openapi.FORMAT_EMAIL,
+                    description="Электронная почта пользователя",
+                    example="applicant@example.com"
+                ),
+                "password": openapi.Schema(
+                    type=openapi.TYPE_STRING,
+                    format=openapi.FORMAT_PASSWORD,
+                    description="Пароль пользователя",
+                    example="1"
+                ),
+            },
+        ),
+        responses={
+            200: openapi.Response(
+                description="Успешное получение токена",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        "refresh": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Refresh токен для обновления access токена",
+                            example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                        ),
+                        "access": openapi.Schema(
+                            type=openapi.TYPE_STRING,
+                            description="Access токен для аутентификации",
+                            example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                        ),
+                        
+                    },
+                ),
+            ),
+            401: openapi.Response(
+                description="Ошибка аутентификации",
+                examples={
+                    "application/json": {
+                        "detail": "No active account found with the given credentials."
+                    }
+                },
+            ),
+        },
+    )
+    def post(self, request, *args, **kwargs):
+        """
+        Кастомизированный эндпоинт для получения токена с дополнительным полем 'role'.
+        """
+        return super().post(request, *args, **kwargs)
 User = get_user_model()
 
 
