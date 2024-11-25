@@ -137,13 +137,13 @@ class RegisterApplicantView(generics.CreateAPIView):
             description="Успешная регистрация",
             examples={
                 "application/json": {
-                    "id": 1,
-                    "email": "applicant@example.com",
-                    "first_name": "Иван",
-                    "last_name": "Иванов",
-                    "patronymic": "Иванович",
-                    "created_at": "2024-11-24T12:00:00Z"
-                }
+                                    "id": 4,
+                                    "email": "applicant1@example.com",
+                                    "password": "pbkdf2_sha256$870000$qWRm0EZcOyMM0n9K7UnXdy$P3zC2BRlO3weY1jX0Y8F1r5jqk/E4TdkrEzfiTdkTUw=",
+                                    "first_name": "Иван",
+                                    "last_name": "Иванов",
+                                    "patronymic": "Иванович"
+                                    }
             }
         ),
         status.HTTP_400_BAD_REQUEST: openapi.Response(
