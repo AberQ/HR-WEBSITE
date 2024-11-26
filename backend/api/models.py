@@ -24,17 +24,6 @@ class Language(models.Model):
         verbose_name_plural = "Языки"
 
 
-class WorkConditionTag(models.Model):
-    name = models.CharField(max_length=100, unique=True, verbose_name="Условие работы")
-
-    class Meta:
-        verbose_name = "Условие работы"
-        verbose_name_plural = "Условия работы"
-
-    def __str__(self):
-        return self.name
-
-
 class Tag(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="Название")
 

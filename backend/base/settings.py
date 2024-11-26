@@ -161,3 +161,15 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": False,  # Если True, будет генерироваться новый refresh token при каждом обновлении
     "BLACKLIST_AFTER_ROTATION": True,  # Если True, предыдущий refresh token будет помещен в черный список
 }
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",  
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        "TIMEOUT": 604800, 
+    }
+}
