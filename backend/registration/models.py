@@ -27,7 +27,7 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Суперпользователь должен иметь is_superuser=True.")
 
-        # Установите значение username по умолчанию
+       
 
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -60,7 +60,7 @@ class CustomAbstractUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
 
     objects = CustomUserManager()
-    USERNAME_FIELD = "email"  # или 'username' в зависимости от настроек
+    USERNAME_FIELD = "email"  
     REQUIRED_FIELDS = []
 
     class Meta:
@@ -131,4 +131,4 @@ class Employer(CustomUser):
         verbose_name_plural = _("Работодатели")
 
     def __str__(self):
-        return self.email  # или другое поле, которое вы хотите использовать в админке
+        return self.email  

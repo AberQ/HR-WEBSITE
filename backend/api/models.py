@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
-
+from django.core.cache import cache
 from registration.models import *
 
 EXPERIENCE_CHOICES = [
@@ -19,6 +19,26 @@ class Language(models.Model):
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def load_to_cache():
+        """
+        Загружает все языки в Redis.
+        """
+        languages = Language.objects.all()
+        data = {language.id: language.name for language in languages}
+        cache.set("languages", data, timeout=None)  # Без истечения срока
+
+    @staticmethod
+    def get_all_from_cache():
+        """
+        Возвращает все языки из Redis.
+        """
+        data = cache.get("languages")
+        if data is None:
+            Language.load_to_cache()
+            data = cache.get("languages")
+        return data
+
     class Meta:
         verbose_name = "Язык"
         verbose_name_plural = "Языки"
@@ -27,12 +47,37 @@ class Language(models.Model):
 class Tag(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="Название")
 
+    def __str__(self):
+        return self.name
+
+    @staticmethod
+    def load_to_cache():
+        """
+        Загружает все теги в Redis.
+        """
+        tags = Tag.objects.all()
+        data = {tag.id: tag.name for tag in tags}
+        print(f"Загружаю в Redis: {data}")  # Выводим данные перед записью в кэш
+        cache.set("tags", data, timeout=None)
+        print(f"Данные загружены в кэш: {cache.get('tags')}")
+
+
+    @staticmethod
+    def get_all_from_cache():
+        """
+        Возвращает все теги из Redis.
+        """
+        data = cache.get("tags")
+        print(f"Получено из кэша: {data}")  # Выводим данные из кэша
+        if data is None:
+            print("Данных нет в кэше. Загружаю их.")
+            Tag.load_to_cache()
+            data = cache.get("tags")
+        return data
+
     class Meta:
         verbose_name = "Навык"
         verbose_name_plural = "Навыки"
-
-    def __str__(self):
-        return self.name
 
 
 class Vacancy(models.Model):

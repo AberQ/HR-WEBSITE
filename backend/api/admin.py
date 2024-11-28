@@ -29,18 +29,18 @@ class VacancyAdmin(admin.ModelAdmin):
         "format",
         "employment_type",
     )
-    filter_horizontal = ("tags", "languages")  # Оставляем только для tags
+    filter_horizontal = ("tags", "languages")  
 
-    # Добавление пользовательского сообщения при ошибке валидации
+
     def save_model(self, request, obj, form, change):
         try:
-            obj.full_clean()  # Проверка на валидацию перед сохранением
+            obj.full_clean() 
             super().save_model(request, obj, form, change)
         except ValidationError as e:
             form.add_error("number_of_openings", e.messages)
 
 
-# Так как поле employment_type больше не ManyToMany, удаляем его из админки
+
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ("name",)
@@ -55,26 +55,42 @@ class ResumeAdmin(admin.ModelAdmin):
         "phone",
         "city",
         "updated_at",
-    )  # Поля, которые будут отображаться в списке
+    )  
     search_fields = (
         "candidate_name",
         "email",
         "desired_position",
-    )  # Поля, по которым будет осуществляться поиск
-    list_filter = ("city",)  # Фильтры для списка
-    ordering = ("-updated_at",)  # Сортировка по дате создания по убыванию
-    filter_horizontal = ("languages", "tags")  # Оставляем только для tags
+    )  
+    list_filter = ("city",)  
+    ordering = ("-updated_at",)  
+    filter_horizontal = ("languages", "tags")  
 
 
 admin.site.register(
     Resume, ResumeAdmin
-)  # Регистрация модели Resume с указанным админ-классом
+)  
 
 
 class LanguageAdmin(admin.ModelAdmin):
-    list_display = ("name",)  # Поля, которые будут отображаться в списке
-    search_fields = ("name",)  # Поля, по которым будет осуществляться поиск
+    list_display = ("name",)  
+    search_fields = ("name",)  
 
 
-# Регистрация моделей в админке
+
 admin.site.register(Language, LanguageAdmin)
+
+@admin.action(description="Загрузить языки в Redis")
+def load_languages_to_cache(modeladmin, request, queryset):
+    Language.load_to_cache()
+
+@admin.action(description="Загрузить навыки в Redis")
+def load_tags_to_cache(modeladmin, request, queryset):
+    Tag.load_to_cache()
+
+
+class LanguageAdmin(admin.ModelAdmin):
+    actions = [load_languages_to_cache]
+
+
+class TagAdmin(admin.ModelAdmin):
+    actions = [load_tags_to_cache]
