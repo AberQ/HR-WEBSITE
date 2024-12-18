@@ -16,9 +16,11 @@ services:
       - DATABASE_PASSWORD=123
       - DATABASE_HOST=db
       - DATABASE_PORT=5432
-      
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     depends_on:
       - db
+      - redis
 
   db:
     image: postgres:13
@@ -28,3 +30,10 @@ services:
       POSTGRES_PASSWORD: 123
     ports:
       - "5432:5432"
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
