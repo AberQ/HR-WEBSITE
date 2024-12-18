@@ -18,26 +18,25 @@ class Language(models.Model):
 
     def __str__(self):
         return self.name
+    def save(self, *args, **kwargs):
+        # Сохраняем в Redis при сохранении
+        cache.set(f'language:{self.id}', self, timeout=None)
+        super().save(*args, **kwargs)
 
     @staticmethod
-    def load_to_cache():
-        """
-        Загружает все языки в Redis.
-        """
-        languages = Language.objects.all()
-        data = {language.id: language.name for language in languages}
-        cache.set("languages", data, timeout=None)  # Без истечения срока
-
-    @staticmethod
-    def get_all_from_cache():
-        """
-        Возвращает все языки из Redis.
-        """
-        data = cache.get("languages")
-        if data is None:
-            Language.load_to_cache()
-            data = cache.get("languages")
-        return data
+    def get_by_id(language_id):
+        # Проверяем, есть ли язык в кеше
+        language = cache.get(f'language:{language_id}')
+        if not language:
+            # Если языка нет в кеше, извлекаем из базы данных и сохраняем в кеш
+            language = Language.objects.get(id=language_id)
+            cache.set(f'language:{language_id}', language, timeout=None)
+        return language
+    
+    def delete(self, *args, **kwargs):
+        # Удаляем тег из кеша
+        cache.delete(f'tag:{self.id}')
+        super().delete(*args, **kwargs)
 
     class Meta:
         verbose_name = "Язык"
@@ -50,30 +49,25 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-    @staticmethod
-    def load_to_cache():
-        """
-        Загружает все теги в Redis.
-        """
-        tags = Tag.objects.all()
-        data = {tag.id: tag.name for tag in tags}
-        print(f"Загружаю в Redis: {data}")  # Выводим данные перед записью в кэш
-        cache.set("tags", data, timeout=None)
-        print(f"Данные загружены в кэш: {cache.get('tags')}")
-
+    def save(self, *args, **kwargs):
+        # Сохраняем в Redis при сохранении
+        cache.set(f'tag:{self.id}', self, timeout=None)  # Время жизни не ограничено
+        super().save(*args, **kwargs)
+    
+    def delete(self, *args, **kwargs):
+        # Удаляем тег из кеша
+        cache.delete(f'tag:{self.id}')
+        super().delete(*args, **kwargs)
 
     @staticmethod
-    def get_all_from_cache():
-        """
-        Возвращает все теги из Redis.
-        """
-        data = cache.get("tags")
-        print(f"Получено из кэша: {data}")  # Выводим данные из кэша
-        if data is None:
-            print("Данных нет в кэше. Загружаю их.")
-            Tag.load_to_cache()
-            data = cache.get("tags")
-        return data
+    def get_by_id(tag_id):
+        # Проверяем, есть ли тег в кеши
+        tag = cache.get(f'tag:{tag_id}')
+        if not tag:
+            # Если тега нет в кеше, извлекаем из базы данных и сохраняем в кеш
+            tag = Tag.objects.get(id=tag_id)
+            cache.set(f'tag:{tag_id}', tag, timeout=None)
+        return tag
 
     class Meta:
         verbose_name = "Навык"

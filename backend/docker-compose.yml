@@ -3,7 +3,7 @@ version: '3'
 services:
   web:
     build: .
-    command: /bin/sh -c "while ! nc -z db 5432; do sleep 2; done; ./entrypoint.sh"  # Задержка перед запуском
+    command: /bin/sh -c "while ! nc -z db 5432; do sleep 2; done; while ! nc -z redis 6379; do sleep 2; done; ./entrypoint.sh"  # Задержка перед запуском
     volumes:
       - .:/app
     ports:
@@ -37,3 +37,7 @@ services:
     ports:
       - "6379:6379"
     restart: always
+
+networks:
+  default:
+    driver: bridge
