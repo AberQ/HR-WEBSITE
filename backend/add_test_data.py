@@ -1,14 +1,15 @@
 import os
-from test_data import *
 import django
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ImproperlyConfigured
+from django.core.cache import cache
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "base.settings")
 django.setup()
 
 from api.models import Language, Resume, Tag, Vacancy
 from registration.models import Applicant, Employer
+from test_data import *
 
 # Получаем модель пользователя
 User = get_user_model()
@@ -64,26 +65,40 @@ try:
         applicant = Applicant.objects.get(email=applicant_email)
         print(f"Applicant with {applicant_email} already exists.")
 
-    # Добавляем TechStackTags
-    
+    # Добавляем TechStackTags и кешируем их в Redis
     for tag_name in tags_list:
-        if not Tag.objects.filter(name=tag_name).exists():
-            tag = Tag(name=tag_name)
-            tag.save()
-            # print(f"Tag '{tag_name}' created!")
-        # else:
-        # print(f"Tag '{tag_name}' already exists.")
+        tag = cache.get(tag_name)
+        if not tag:
+            if not Tag.objects.filter(name=tag_name).exists():
+                tag = Tag(name=tag_name)
+                tag.save()
+                cache.set(tag_name, tag)
+                print(f"Tag '{tag_name}' created and cached!")
+            else:
+                tag = Tag.objects.get(name=tag_name)
+                cache.set(tag_name, tag)
+                print(f"Tag '{tag_name}' already exists and cached.")
+        else:
+            print(f"Tag '{tag_name}' found in cache.")
+
     print("Навыки готовы")
 
-    # Добавляем Languages
-    
+    # Добавляем Languages и кешируем их в Redis
     for language_name in languages:
-        if not Language.objects.filter(name=language_name).exists():
-            language = Language(name=language_name)
-            language.save()
-            # print(f"Language '{language_name}' created!")
-        # else:
-        # print(f"Language '{language_name}' already exists.")
+        language = cache.get(language_name)
+        if not language:
+            if not Language.objects.filter(name=language_name).exists():
+                language = Language(name=language_name)
+                language.save()
+                cache.set(language_name, language)
+                print(f"Language '{language_name}' created and cached!")
+            else:
+                language = Language.objects.get(name=language_name)
+                cache.set(language_name, language)
+                print(f"Language '{language_name}' already exists and cached.")
+        else:
+            print(f"Language '{language_name}' found in cache.")
+
     print("Языки готовы")
 
     # Создаем Vacancy, ссылаясь на созданного работодателя
@@ -93,7 +108,7 @@ try:
         ).exists():
             vacancy = Vacancy(
                 title="Junior Python Developer",
-                created_by=employer,  # Замените employer на корректное поле, если оно отличается
+                created_by=employer,
                 min_salary=50000,
                 max_salary=70000,
                 currency="RUB",
@@ -127,9 +142,9 @@ try:
                 city="Москва",
                 experience="До 1 года",
                 specialization="Программирование",
-                degree="bachelor",  # Пример степени
-                portfolio_link="https://github.com/AberQ/HR-WEBSITE",  # Пример пустой ссылки на портфолио
-                applicant=applicant,  # Ссылаемся на Applicant
+                degree="bachelor",
+                portfolio_link="https://github.com/AberQ/HR-WEBSITE",
+                applicant=applicant,
             )
             resume.save()
             # Присвоение тэгов и языков к резюме
@@ -142,10 +157,7 @@ try:
             resume = Resume.objects.filter(candidate_name=resume_candidate_name)
             print(f"Resume for {resume_candidate_name} already exists.")
 
-
 except ImproperlyConfigured:
-    print(
-        "Не удалось найти модель пользователя. Проверьте AUTH_USER_MODEL в settings.py"
-    )
+    print("Не удалось найти модель пользователя. Проверьте AUTH_USER_MODEL в settings.py")
 except Exception as e:
     print(f"Произошла ошибка: {e}")
