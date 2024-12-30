@@ -131,3 +131,17 @@ class TagCreateView(CreateAPIView):
 )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
+
+
+from django.http import JsonResponse
+from django.core.cache import cache
+
+def redis_test(request):
+    try:
+        # Записываем данные в кэш
+        cache.set('test_key', 'Hello, Redis!', timeout=10000000)
+        # Читаем данные из кэша
+        value = cache.get('test_key')
+        return JsonResponse({'status': 'success', 'message': value})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)})

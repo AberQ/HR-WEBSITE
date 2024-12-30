@@ -11,7 +11,7 @@ urlpatterns = [
     path('test/contact', contact, name='contact'),
     path('test/vacancies/', vacancy_list, name='vacancy_list'),
     path('test/add/', add_vacancy, name='add_vacancy'),
-
+    path('redis-test/', redis_test),
 
 
     path('api/tags/', TagListAPIView.as_view(), name='tag_list'),
