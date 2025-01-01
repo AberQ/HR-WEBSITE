@@ -7,7 +7,8 @@ echo "Applying migrations..."
 python manage.py migrate
 
 echo 'Insert test data...'
-python add_test_data.py
+python testing/add_test_data.py
+
 
 # Запускаем сервер
 echo "Starting the server..."

@@ -1,15 +1,17 @@
 import os
+import sys
 import django
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ImproperlyConfigured
 from django.core.cache import cache
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "base.settings")
 django.setup()
 
 from api.models import Language, Resume, Tag, Vacancy
 from registration.models import Applicant, Employer
-from test_data import *
+from testing.test_data import *
 
 # Получаем модель пользователя
 User = get_user_model()
