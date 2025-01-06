@@ -3,7 +3,9 @@ from django.db import models
 from django.utils import timezone
 from django.core.cache import cache
 from registration.models import *
-
+import json
+from django.core.serializers.json import DjangoJSONEncoder
+from django.core.cache import cache
 EXPERIENCE_CHOICES = [
     ("0", "Без опыта"),
     ("1", "До 1 года"),
@@ -13,35 +15,42 @@ EXPERIENCE_CHOICES = [
 ]
 
 
+
+
 class Language(models.Model):
     name = models.CharField(max_length=50, verbose_name="Язык")
 
     def __str__(self):
         return self.name
+
     def save(self, *args, **kwargs):
-        # Сохраняем в Redis при сохранении
-        cache.set(f'language:{self.id}', self, timeout=None)
+        # Сохраняем объект в базе данных
         super().save(*args, **kwargs)
 
+        # Сохраняем id и name в Redis
+        cache.set(f'language:{self.id}', {'id': self.id, 'name': self.name}, timeout=None)
+
     @staticmethod
-    def get_by_id(language_id):
-        # Проверяем, есть ли язык в кеше
-        language = cache.get(f'language:{language_id}')
-        if not language:
-            # Если языка нет в кеше, извлекаем из базы данных и сохраняем в кеш
-            language = Language.objects.get(id=language_id)
-            cache.set(f'language:{language_id}', language, timeout=None)
-        return language
-    
+    def get_by_name(language_name):
+        # Извлекаем значение из Redis
+        language_name_cached = cache.get(f'language:{language_name}')
+        if language_name_cached:
+            # Если значение найдено в кеше, возвращаем его
+            return language_name_cached
+
+        # Если значения нет в кеше, извлекаем из базы данных и сохраняем в кеш
+        language = Language.objects.get(name=language_name)
+        cache.set(f'language:{language.id}', {'id': language.id, 'name': language.name}, timeout=None)
+        return {'id': language.id, 'name': language.name}
+
     def delete(self, *args, **kwargs):
-        # Удаляем тег из кеша
-        cache.delete(f'tag:{self.id}')
+        # Удаляем объект из кеша
+        cache.delete(f'language:{self.id}')
         super().delete(*args, **kwargs)
 
     class Meta:
         verbose_name = "Язык"
         verbose_name_plural = "Языки"
-
 
 class Tag(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="Название")

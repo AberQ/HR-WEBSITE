@@ -92,11 +92,10 @@ try:
             if not Language.objects.filter(name=language_name).exists():
                 language = Language(name=language_name)
                 language.save()
-                cache.set(language_name, language)
                 print(f"Language '{language_name}' created and cached!")
             else:
                 language = Language.objects.get(name=language_name)
-                cache.set(language_name, language)
+                language.save(language_name, language)
                 print(f"Language '{language_name}' already exists and cached.")
         else:
             print(f"Language '{language_name}' found in cache.")

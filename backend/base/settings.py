@@ -175,3 +175,7 @@ CACHES = {
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
+
+REDIS_HOST = 'redis'  
+REDIS_PORT = 6379         
+REDIS_DB = 0 

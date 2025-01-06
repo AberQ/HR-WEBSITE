@@ -13,6 +13,8 @@ urlpatterns = [
     path('test/add/', add_vacancy, name='add_vacancy'),
     path('redis-test/', redis_test),
 
+    path('api/languages/', RedisLanguageListView.as_view(), name='language-list'),
+    path('api/languages/search/', LanguageSearchView.as_view(), name='language-search'),
 
     path('api/tags/', TagListAPIView.as_view(), name='tag_list'),
     path('api/tags/<int:id>/', TagDetailAPIView.as_view(), name='tag-detail'),

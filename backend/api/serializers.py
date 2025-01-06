@@ -220,3 +220,9 @@ class VacancySerializerForCreateAPI(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+
+class LanguageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Language
+        fields = ['id', 'name']

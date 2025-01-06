@@ -4,7 +4,7 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics, status
 from rest_framework.generics import *
-
+from django.core.exceptions import ObjectDoesNotExist
 from registration.views import *
 
 from ..serializers import *
@@ -145,3 +145,72 @@ def redis_test(request):
         return JsonResponse({'status': 'success', 'message': value})
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)})
+
+
+class LanguageListView(APIView):
+    def get(self, request):
+        languages = Language.objects.all()  # Извлекаем все языки
+        serializer = LanguageSerializer(languages, many=True)
+        return Response(serializer.data)
+    
+
+import redis
+import pickle
+from django.conf import settings
+r = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+
+
+class RedisLanguageListView(APIView):
+    def get(self, request):
+        # Получаем все ключи, начинающиеся с ':1:language:'
+        keys = r.keys(':1:language:*')
+
+        languages = []
+        for key in keys:
+            # Извлекаем данные для каждого ключа
+            language_data = r.get(key)
+            if language_data:
+                try:
+                    # Десериализуем данные с помощью pickle
+                    language_data = pickle.loads(language_data)
+                    languages.append(language_data)
+                except Exception as e:
+                    print(f"Ошибка при десериализации данных для ключа {key}: {e}")
+
+        # Сериализуем и возвращаем результат
+        serializer = LanguageSerializer(languages, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class LanguageSearchView(APIView):
+    def post(self, request):
+        # Получаем параметр 'name' из тела запроса
+        language_name = request.data.get('name', None)
+
+        if not language_name:
+            return Response({"detail": "Поле 'name' обязательно для поиска языка."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Формируем ключ для Redis, используя имя языка
+        cache_key = f':1:language:{language_name}'
+
+        # Пытаемся найти язык в кэше Redis
+        language_data = r.get(cache_key)
+        
+        if language_data:
+            # Если данные найдены в кэше, десериализуем их
+            try:
+                language = pickle.loads(language_data)
+                serializer = LanguageSerializer(language)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except Exception as e:
+                return Response({"detail": f"Ошибка при десериализации данных: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # Если языка нет в кэше, проверяем в базе данных
+        try:
+            language = Language.objects.get(name=language_name)
+            # Сохраняем данные в кэш для дальнейшего использования
+            r.set(cache_key, pickle.dumps(language))
+            serializer = LanguageSerializer(language)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except ObjectDoesNotExist:
+            return Response({"detail": "Язык не найден"}, status=status.HTTP_404_NOT_FOUND)
