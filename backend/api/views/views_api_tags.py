@@ -209,7 +209,7 @@ class LanguageSearchView(APIView):
         try:
             language = Language.objects.get(name=language_name)
             # Сохраняем данные в кэш для дальнейшего использования
-            r.set(cache_key, pickle.dumps(language))
+            #r.set(cache_key, pickle.dumps(language))
             serializer = LanguageSerializer(language)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except ObjectDoesNotExist:
