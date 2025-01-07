@@ -69,17 +69,17 @@ try:
 
     # Добавляем TechStackTags и кешируем их в Redis
     for tag_name in tags_list:
-        tag = cache.get(tag_name)
+        tag = cache.get(f'tag:{tag_name}')
         if not tag:
             if not Tag.objects.filter(name=tag_name).exists():
                 tag = Tag(name=tag_name)
-                tag.save()
-                cache.set(tag_name, tag)
+                tag.save()  # Сохраняем в базе данных
                 print(f"Tag '{tag_name}' created and cached!")
             else:
                 tag = Tag.objects.get(name=tag_name)
-                cache.set(tag_name, tag)
+                tag.save(tag_name, tag)  # Сохраняем в базе данных (если нужно дополнительное сохранение)
                 print(f"Tag '{tag_name}' already exists and cached.")
+            
         else:
             print(f"Tag '{tag_name}' found in cache.")
 

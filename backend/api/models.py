@@ -60,9 +60,20 @@ class Tag(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        # Сохраняем в Redis при сохранении
-        cache.set(f'tag:{self.id}', self, timeout=None)  # Время жизни не ограничено
-        super().save(*args, **kwargs)
+        # Проверяем, существует ли тег в Redis
+        if r.hexists('tags', self.name):
+            raise ValidationError(f"Тег '{self.name}' уже существует в Redis.")
+        
+        # Проверяем, существует ли тег в базе данных
+        if not self.id and Tag.objects.filter(name=self.name).exists():
+            raise ValidationError(f"Тег '{self.name}' уже существует в базе данных.")
+        else:
+            # Сохраняем объект в базу данных
+            super().save(*args, **kwargs)
+
+            # Сохраняем тег в Redis в хеш с ключом 'tags'
+            tag_data = {'id': self.id, 'name': self.name}
+            r.hset('tags', self.name, pickle.dumps(tag_data))
     
     def delete(self, *args, **kwargs):
         # Удаляем тег из кеша

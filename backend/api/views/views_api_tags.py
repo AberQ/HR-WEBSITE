@@ -6,7 +6,8 @@ from rest_framework import generics, status
 from rest_framework.generics import *
 from django.core.exceptions import ObjectDoesNotExist
 from registration.views import *
-
+from django.http import JsonResponse
+from django.core.cache import cache
 from ..serializers import *
 from .swagger_properties import *
 
@@ -133,8 +134,7 @@ class TagCreateView(CreateAPIView):
         return super().post(request, *args, **kwargs)
 
 
-from django.http import JsonResponse
-from django.core.cache import cache
+
 
 def redis_test(request):
     try:
@@ -216,3 +216,29 @@ class LanguageSearchView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except ObjectDoesNotExist:
             return Response({"detail": "Язык не найден"}, status=status.HTTP_404_NOT_FOUND)
+        
+
+
+class RedisTagListAPIView(APIView):
+    def get(self, request):
+        # Получаем все теги из Redis хеша 'tags'
+        tag_data = r.hgetall('tags')
+
+        if not tag_data:
+            return Response({"detail": "No tags found"}, status=status.HTTP_404_NOT_FOUND)
+
+        tags = []
+        for tag_id, data in tag_data.items():
+            try:
+                # Десериализуем данные с помощью pickle
+                tag_data = pickle.loads(data)
+                tags.append(tag_data)
+            except Exception as e:
+                print(f"Ошибка при десериализации данных для тега с ID {tag_id}: {e}")
+
+        if not tags:
+            return Response({"detail": "Tags not found or invalid data"}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Сериализуем и возвращаем результат
+        serializer = TagSerializer(tags, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
