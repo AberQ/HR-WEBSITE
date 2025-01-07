@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from django.core.cache import cache
 from ..serializers import *
 from .swagger_properties import *
-
+from django.http import HttpRequest
 
 class TagListAPIView(generics.ListAPIView):
     queryset = Tag.objects.all()
@@ -229,25 +229,38 @@ class LanguageSearchView(APIView):
 
 
 class RedisTagListAPIView(APIView):
-    def get(self, request):
-        # Получаем все теги из Redis хеша 'tags'
-        tag_data = r.hgetall('tags')
+    def get(self, request, *args, **kwargs):
+        try:
+            # Получаем все теги из Redis хеша 'tags'
+            tag_data = r.hgetall('tags')
 
-        if not tag_data:
-            return Response({"detail": "No tags found"}, status=status.HTTP_404_NOT_FOUND)
+            if not tag_data:
+                return Response({"detail": "No tags found in Redis"}, status=status.HTTP_404_NOT_FOUND)
 
-        tags = []
-        for tag_id, data in tag_data.items():
-            try:
-                # Десериализуем данные с помощью pickle
-                tag_data = pickle.loads(data)
-                tags.append(tag_data)
-            except Exception as e:
-                print(f"Ошибка при десериализации данных для тега с ID {tag_id}: {e}")
+            tags = []
+            for tag_id, data in tag_data.items():
+                try:
+                    # Десериализуем данные с помощью pickle
+                    tag_data = pickle.loads(data)
+                    tags.append(tag_data)
+                except Exception as e:
+                    print(f"Ошибка при десериализации данных для тега с ID {tag_id}: {e}")
 
-        if not tags:
-            return Response({"detail": "Tags not found or invalid data"}, status=status.HTTP_404_NOT_FOUND)
-        
-        # Сериализуем и возвращаем результат
-        serializer = TagSerializer(tags, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            if not tags:
+                return Response({"detail": "Tags not found or invalid data in Redis"}, status=status.HTTP_404_NOT_FOUND)
+
+            # Сериализация данных и возвращение ответа
+            serializer = TagSerializer(tags, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except redis.exceptions.ConnectionError:
+            # Если Redis не доступен, переключаемся на базу данных
+            print("Redis не доступен, используем базу данных")
+
+            # Используем запасной API для получения данных из базы данных
+            # Создаем экземпляр класса и вызываем метод get()
+            tag_list_view = TagListAPIView.as_view()
+            # Переопределяем request как HttpRequest
+            http_request = HttpRequest()
+            http_request.method = 'GET'
+            return tag_list_view(http_request, *args, **kwargs)
