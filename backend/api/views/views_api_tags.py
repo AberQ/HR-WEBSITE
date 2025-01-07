@@ -165,22 +165,28 @@ class RedisLanguageListView(APIView):
         # Получаем все ключи, начинающиеся с ':1:language:'
         keys = r.keys(':1:language:*')
 
+        if not keys:
+            return Response({"detail": "No languages found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Извлекаем все данные для ключей сразу с помощью mget()
+        language_data_list = r.mget(keys)
+
         languages = []
-        for key in keys:
-            # Извлекаем данные для каждого ключа
-            language_data = r.get(key)
+        for language_data in language_data_list:
             if language_data:
                 try:
                     # Десериализуем данные с помощью pickle
                     language_data = pickle.loads(language_data)
                     languages.append(language_data)
                 except Exception as e:
-                    print(f"Ошибка при десериализации данных для ключа {key}: {e}")
+                    print(f"Ошибка при десериализации данных: {e}")
+        
+        if not languages:
+            return Response({"detail": "Languages not found or invalid data"}, status=status.HTTP_404_NOT_FOUND)
 
         # Сериализуем и возвращаем результат
         serializer = LanguageSerializer(languages, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
 
 class LanguageSearchView(APIView):
     def post(self, request):
