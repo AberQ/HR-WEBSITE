@@ -6,4 +6,4 @@ class MyUser(HttpUser):
 
     @task
     def get_tags(self):
-        self.client.get("/api/languages/")  # Относительный путь
+        self.client.get("/api/tags/")  # Относительный путь

@@ -23,7 +23,7 @@ EXPERIENCE_CHOICES = [
 
 
 class Language(models.Model):
-    name = models.CharField(max_length=50, verbose_name="Язык")
+    name = models.CharField(max_length=50, verbose_name="Язык", unique=True)
 
     def __str__(self):
         return self.name
@@ -46,7 +46,7 @@ class Language(models.Model):
 
     def delete(self, *args, **kwargs):
         # Удаляем язык из Redis
-        r.hdel('languages', self.id)
+        r.hdel('languages', self.name)
         super().delete(*args, **kwargs)
 
     class Meta:
@@ -77,7 +77,7 @@ class Tag(models.Model):
     
     def delete(self, *args, **kwargs):
         # Удаляем тег из кеша
-        cache.delete(f'tag:{self.id}')
+        r.hdel('tags', self.name)
         super().delete(*args, **kwargs)
 
     @staticmethod
