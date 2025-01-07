@@ -29,11 +29,20 @@ class Language(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+        # Проверяем, существует ли язык в Redis
+        if r.hexists('languages', self.name):
+            raise ValidationError(f"Язык '{self.name}' уже существует в Redis.")
+        
+        # Проверяем, существует ли язык в базе данных
+        if not self.id and Language.objects.filter(name=self.name).exists():
+            raise ValidationError(f"Язык '{self.name}' уже существует в базе данных.")
+        else:
+        # Сохраняем объект в базу данных
+            super().save(*args, **kwargs)
 
-        # Сохраняем язык в Redis в хеш с ключом 'languages'
-        language_data = {'id': self.id, 'name': self.name}
-        r.hset('languages', self.id, pickle.dumps(language_data))
+            # Сохраняем язык в Redis в хеш с ключом 'languages'
+            language_data = {'id': self.id, 'name': self.name}
+            r.hset('languages', self.name, pickle.dumps(language_data))
 
     def delete(self, *args, **kwargs):
         # Удаляем язык из Redis
