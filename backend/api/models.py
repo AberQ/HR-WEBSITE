@@ -5,7 +5,12 @@ from django.core.cache import cache
 from registration.models import *
 import json
 from django.core.serializers.json import DjangoJSONEncoder
+import redis
+import pickle
+from django.conf import settings
 from django.core.cache import cache
+r = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+
 EXPERIENCE_CHOICES = [
     ("0", "Без опыта"),
     ("1", "До 1 года"),
@@ -24,28 +29,15 @@ class Language(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        # Сохраняем объект в базе данных
         super().save(*args, **kwargs)
 
-        # Сохраняем id и name в Redis
-        cache.set(f'language:{self.id}', {'id': self.id, 'name': self.name}, timeout=None)
-
-    @staticmethod
-    def get_by_name(language_name):
-        # Извлекаем значение из Redis
-        language_name_cached = cache.get(f'language:{language_name}')
-        if language_name_cached:
-            # Если значение найдено в кеше, возвращаем его
-            return language_name_cached
-
-        # Если значения нет в кеше, извлекаем из базы данных и сохраняем в кеш
-        language = Language.objects.get(name=language_name)
-        cache.set(f'language:{language.id}', {'id': language.id, 'name': language.name}, timeout=None)
-        return {'id': language.id, 'name': language.name}
+        # Сохраняем язык в Redis в хеш с ключом 'languages'
+        language_data = {'id': self.id, 'name': self.name}
+        r.hset('languages', self.id, pickle.dumps(language_data))
 
     def delete(self, *args, **kwargs):
-        # Удаляем объект из кеша
-        cache.delete(f'language:{self.id}')
+        # Удаляем язык из Redis
+        r.hdel('languages', self.id)
         super().delete(*args, **kwargs)
 
     class Meta:

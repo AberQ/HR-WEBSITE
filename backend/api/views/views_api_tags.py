@@ -162,25 +162,21 @@ r = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=set
 
 class RedisLanguageListView(APIView):
     def get(self, request):
-        # Получаем все ключи, начинающиеся с ':1:language:'
-        keys = r.keys(':1:language:*')
+        # Получаем все языки из Redis хеша 'languages'
+        language_data = r.hgetall('languages')
 
-        if not keys:
+        if not language_data:
             return Response({"detail": "No languages found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Извлекаем все данные для ключей сразу с помощью mget()
-        language_data_list = r.mget(keys)
-
         languages = []
-        for language_data in language_data_list:
-            if language_data:
-                try:
-                    # Десериализуем данные с помощью pickle
-                    language_data = pickle.loads(language_data)
-                    languages.append(language_data)
-                except Exception as e:
-                    print(f"Ошибка при десериализации данных: {e}")
-        
+        for lang_id, data in language_data.items():
+            try:
+                # Десериализуем данные с помощью pickle
+                language_data = pickle.loads(data)
+                languages.append(language_data)
+            except Exception as e:
+                print(f"Ошибка при десериализации данных для языка с ID {lang_id}: {e}")
+
         if not languages:
             return Response({"detail": "Languages not found or invalid data"}, status=status.HTTP_404_NOT_FOUND)
 
