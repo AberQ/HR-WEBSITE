@@ -162,27 +162,36 @@ r = redis.StrictRedis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=set
 
 class RedisLanguageListView(APIView):
     def get(self, request):
-        # Получаем все языки из Redis хеша 'languages'
-        language_data = r.hgetall('languages')
+        try:
+            # Попытка получить все языки из Redis хеша 'languages'
+            language_data = r.hgetall('languages')
 
-        if not language_data:
-            return Response({"detail": "No languages found"}, status=status.HTTP_404_NOT_FOUND)
+            if not language_data:
+                return Response({"detail": "No languages found in Redis"}, status=status.HTTP_404_NOT_FOUND)
 
-        languages = []
-        for lang_id, data in language_data.items():
-            try:
-                # Десериализуем данные с помощью pickle
-                language_data = pickle.loads(data)
-                languages.append(language_data)
-            except Exception as e:
-                print(f"Ошибка при десериализации данных для языка с ID {lang_id}: {e}")
+            languages = []
+            for lang_id, data in language_data.items():
+                try:
+                    # Десериализация данных с помощью pickle
+                    language_data = pickle.loads(data)
+                    languages.append(language_data)
+                except Exception as e:
+                    print(f"Ошибка при десериализации данных для языка с ID {lang_id}: {e}")
 
-        if not languages:
-            return Response({"detail": "Languages not found or invalid data"}, status=status.HTTP_404_NOT_FOUND)
+            if not languages:
+                return Response({"detail": "Languages not found or invalid data in Redis"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Сериализуем и возвращаем результат
-        serializer = LanguageSerializer(languages, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            # Сериализация данных и возвращение ответа
+            serializer = LanguageSerializer(languages, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except redis.exceptions.ConnectionError:
+            # Если Redis не доступен, переключаемся на базу данных
+            print("Redis не доступен, используем базу данных")
+
+            # Вызов метода get у LanguageListView без создания нового объекта request
+            language_list_view = LanguageListView()
+            return language_list_view.get(request)
 
 class LanguageSearchView(APIView):
     def post(self, request):
